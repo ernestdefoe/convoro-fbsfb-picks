@@ -1,0 +1,116 @@
+@layout('theme::layouts/admin')
+
+@section('title')@lang('picks.tab_seasons')@endsection
+@section('page_title')@lang('picks.seasons_heading')@endsection
+@section('page_sub')@lang('picks.seasons_note')@endsection
+@section('page_tabs')@include('picks::admin/partials/tabs', ['tab' => $tab])@endsection
+
+@section('content')
+
+@notempty($notice)<div class="admin-alert admin-alert-success">{{ $notice }}</div>@endnotempty
+@notempty($problem)<div class="admin-alert admin-alert-error">{{ $problem }}</div>@endnotempty
+
+@if($autoUnlock)
+<div class="admin-alert admin-alert-info">@lang('picks.auto_unlock_on')</div>
+@endif
+
+@empty($seasons)
+<div class="admin-card">
+    <div class="admin-card-body">
+        <div class="admin-empty">
+            <div class="admin-empty-title">@lang('picks.no_seasons')</div>
+            <div class="admin-empty-note">@lang('picks.no_seasons_note')</div>
+        </div>
+    </div>
+</div>
+@endempty
+
+@each ($seasons as $season)
+<div class="admin-card">
+    <div class="admin-card-header">{{ $season['name'] }}</div>
+    <div class="admin-card-body">
+        @empty($season['weeks'])
+        <div class="admin-empty">
+            <div class="admin-empty-title">@lang('picks.no_seasons')</div>
+            <div class="admin-empty-note">@lang('picks.no_seasons_note')</div>
+        </div>
+        @endempty
+
+        @notempty($season['weeks'])
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>@lang('picks.col_round')</th>
+                    <th>@lang('picks.col_dates')</th>
+                    <th>@lang('picks.col_games')</th>
+                    <th>@lang('picks.col_players')</th>
+                    <th class="col-mid">@lang('picks.col_state')</th>
+                    <th class="col-actions">@lang('picks.col_actions')</th>
+                </tr>
+            </thead>
+            <tbody>
+                @each ($season['weeks'] as $week)
+                <tr>
+                    <td>
+                        <div class="admin-cell-title">{{ $week['name'] }}</div>
+                        @if($week['season_type'] === 'postseason')
+                        <span class="admin-cell-note">@lang('picks.round_postseason')</span>
+                        @endif
+                    </td>
+                    <td><span class="admin-cell-meta">{{ $week['start_date'] }} — {{ $week['end_date'] }}</span></td>
+                    <td>
+                        <span class="admin-cell-meta">@lang('picks.games_progress', ['finished' => $week['finished'], 'total' => $week['games']])</span>
+                    </td>
+                    <td>
+                        <span class="admin-cell-meta">@lang('picks.players_picks', ['players' => $week['players'], 'picks' => $week['picks']])</span>
+                    </td>
+                    <td class="col-mid">
+                        @if($week['is_open'])<span class="badge badge-ok">@lang('picks.round_open')</span>@endif
+                        @if(!$week['is_open'])<span class="badge badge-other">@lang('picks.round_closed')</span>@endif
+                    </td>
+                    <td class="col-actions">
+                        {#
+                            🚨 Opening a round is the moment the pick'em starts
+                            taking picks, so it is a button somebody presses
+                            rather than something a sync decides. Closing one
+                            asks first, because it stops everybody mid-round.
+                        #}
+                        @if(!$week['is_open'])
+                        <form method="POST" action="/admin/picks/weeks/{{ $week['id'] }}/open" class="admin-inline-form">
+                            @csrf
+                            <button type="submit" class="admin-btn admin-btn-sm">@lang('picks.open_round')</button>
+                        </form>
+                        @endif
+
+                        @if($week['is_open'])
+                        <form method="POST" action="/admin/picks/weeks/{{ $week['id'] }}/close" class="admin-inline-form"
+                              onsubmit='return confirm(@json(__("picks.close_confirm")))'>
+                            @csrf
+                            <button type="submit" class="admin-btn admin-btn-sm">@lang('picks.close_round')</button>
+                        </form>
+                        @endif
+
+                        {#
+                            Renaming lives in the row rather than in a card of
+                            its own, because a season is seventeen rounds and
+                            seventeen cards of one text box each is a page
+                            nobody can find anything on.
+                        #}
+                        <form method="POST" action="/admin/picks/weeks/{{ $week['id'] }}/rename" class="admin-inline-form">
+                            @csrf
+                            <label class="admin-checkbox-label" for="name-{{ $week['id'] }}">@lang('picks.round_name')</label>
+                            <input type="text" id="name-{{ $week['id'] }}" name="name" class="admin-input input-sm"
+                                   maxlength="100" value="{{ $week['name'] }}">
+                            <button type="submit" class="admin-btn admin-btn-sm">@lang('picks.rename')</button>
+                        </form>
+                    </td>
+                </tr>
+                @endeach
+            </tbody>
+        </table>
+        @endnotempty
+    </div>
+</div>
+@endeach
+
+@endsection

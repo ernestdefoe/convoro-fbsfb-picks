@@ -1,0 +1,130 @@
+@layout('theme::layouts/main')
+
+@section('title')@lang('picks.leaderboard')@endsection
+
+@section('breadcrumb')
+<a href="/picks">@lang('picks.title')</a>
+<span>@lang('picks.leaderboard')</span>
+@endsection
+
+@section('content')
+@include('picks::front/styles')
+
+<div class="page-header">
+    <div>
+        <h2>@lang('picks.leaderboard')</h2>
+        <p class="page-header-note">@lang('picks.intro')</p>
+    </div>
+
+    <div class="page-header-actions">
+        <a class="btn btn-secondary btn-sm" href="/picks">@lang('picks.board')</a>
+        @notempty($user)
+        <a class="btn btn-secondary btn-sm" href="/picks/me">@lang('picks.my_record')</a>
+        @endnotempty
+    </div>
+</div>
+
+{#
+    🚨 The same honesty line the board carries. A leaderboard is derived from
+    results a scheduled job fetched, so it is exactly as current as that job —
+    and saying so before the table is the difference between a standing that is
+    a few minutes behind and one that claims to be final when it is not.
+#}
+@if($everSynced)
+<p class="picks-meta">@lang('picks.scores_as_of', ['when' => $scoresAsOf])</p>
+@endif
+@if(!$everSynced)
+<div class="alert alert-warning">
+    <div>@lang('picks.never_synced')</div>
+    @if($isAdmin)<div>@lang('picks.never_synced_admin')</div>@endif
+</div>
+@endif
+
+{#
+    Three scopes, and the week one is only offered when there is a week to
+    offer. A tab that leads to a permanently empty table is a tab people learn
+    to distrust.
+#}
+<div class="picks-week-nav">
+    @if($week !== null)
+    <a class="btn btn-sm @if($scope === 'week')btn-primary @else btn-secondary @endif"
+       href="/picks/leaderboard?scope=week">@lang('picks.scope_week')</a>
+    @endif
+    <a class="btn btn-sm @if($scope === 'season')btn-primary @else btn-secondary @endif"
+       href="/picks/leaderboard?scope=season">@lang('picks.scope_season')</a>
+    <a class="btn btn-sm @if($scope === 'alltime')btn-primary @else btn-secondary @endif"
+       href="/picks/leaderboard?scope=alltime">@lang('picks.scope_alltime')</a>
+</div>
+
+@if($scope === 'week' && $week !== null)
+<h3>{{ $week['name'] }}</h3>
+@endif
+
+@notempty($mine)
+<p class="picks-meta">@lang('picks.your_standing', ['rank' => $mine['rank'], 'players' => $mine['players']])</p>
+@endnotempty
+
+@if($viewerId > 0 && empty($mine))
+<p class="picks-meta">@lang('picks.no_standing')</p>
+@endif
+
+@empty($rows)
+<div class="card">
+    <div class="empty-state">
+        <div class="empty-title">@lang('picks.empty_board')</div>
+        <div class="empty-note">@lang('picks.empty_board_note')</div>
+    </div>
+</div>
+@endempty
+
+@notempty($rows)
+<div class="card">
+    {#
+        🚨 Its own scroller. Core has no front-end table wrapper class — the
+        admin one is `.admin-table-wrap` and is scoped to admin screens — and a
+        seven-column table on a phone has to scroll inside itself rather than
+        making the whole page scroll sideways.
+    #}
+    <div class="picks-scroll">
+        <table class="picks-table">
+            <thead>
+                <tr>
+                    <th class="picks-num">@lang('picks.col_rank')</th>
+                    <th>@lang('picks.col_player')</th>
+                    <th class="picks-num">@lang('picks.col_points')</th>
+                    <th class="picks-num">@lang('picks.col_correct')</th>
+                    <th class="picks-num">@lang('picks.col_picks')</th>
+                    <th class="picks-num">@lang('picks.col_accuracy')</th>
+                    <th>@lang('picks.col_move')</th>
+                </tr>
+            </thead>
+            <tbody>
+                @each ($rows as $row)
+                <tr @if($row['user_id'] === $viewerId)class="picks-you"@endif>
+                    <td class="picks-num">{{ $row['rank'] }}</td>
+                    <td>{{ $row['display_name'] }}</td>
+                    <td class="picks-num">{{ $row['total_points'] }}</td>
+                    <td class="picks-num">{{ $row['correct_picks'] }}</td>
+                    <td class="picks-num">{{ $row['total_picks'] }}</td>
+                    <td class="picks-num">{{ $row['accuracy'] }}%</td>
+                    <td>
+                        {#
+                            🚨 No arrow at all for somebody who has never been
+                            ranked before. `movement` is null there rather than
+                            zero, because "held station" is a claim about a
+                            previous position nobody recorded.
+                        #}
+                        @if($row['movement'] === null)<span class="picks-meta">@lang('picks.new_entry')</span>@endif
+                        @if($row['movement'] !== null && $row['movement'] > 0)<span class="picks-meta">@lang('picks.moved_up', ['count' => $row['movement']])</span>@endif
+                        @if($row['movement'] !== null && $row['movement'] < 0)<span class="picks-meta">@lang('picks.moved_down', ['count' => -$row['movement']])</span>@endif
+                        @if($row['movement'] === 0)<span class="picks-meta">@lang('picks.moved_none')</span>@endif
+                    </td>
+                </tr>
+                @endeach
+            </tbody>
+        </table>
+    </div>
+</div>
+@endnotempty
+
+@endsection

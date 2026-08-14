@@ -1,0 +1,125 @@
+@layout('theme::layouts/admin')
+
+@section('title')@lang('picks.tab_teams')@endsection
+@section('page_title')@lang('picks.teams_heading')@endsection
+@section('page_sub')@lang('picks.teams_note')@endsection
+@section('page_tabs')@include('picks::admin/partials/tabs', ['tab' => $tab])@endsection
+
+@section('content')
+
+@notempty($notice)<div class="admin-alert admin-alert-success">{{ $notice }}</div>@endnotempty
+@notempty($problem)<div class="admin-alert admin-alert-error">{{ $problem }}</div>@endnotempty
+
+<div class="admin-card">
+    <div class="admin-card-header">@lang('picks.link_forums')</div>
+    <div class="admin-card-body">
+        @if(!$hasForums)
+        <p class="admin-hint">@lang('picks.link_forums_no_module')</p>
+        @endif
+
+        @if($hasForums)
+        <p class="admin-hint">@lang('picks.link_forums_note')</p>
+        <form method="POST" action="/admin/picks/teams/link-forums" class="admin-inline-form">
+            @csrf
+            <button type="submit" class="admin-btn admin-btn-sm">@lang('picks.link_forums')</button>
+        </form>
+        @endif
+
+        <p class="admin-hint">@choice('picks.teams_stored', $total) &middot; @choice('picks.teams_no_logo', $withoutLogo)</p>
+    </div>
+</div>
+
+<div class="admin-card">
+    <div class="admin-card-body">
+        <form method="GET" action="/admin/picks/teams">
+            <div class="admin-form-group">
+                <label for="conference">@lang('picks.col_conference')</label>
+                <select id="conference" name="conference" class="admin-input input-lg">
+                    <option value="">@lang('picks.any_conference')</option>
+                    @each ($conferences as $option)
+                    <option value="{{ $option }}" @if($option === $conference)selected @endif>{{ $option }}</option>
+                    @endeach
+                </select>
+            </div>
+
+            <div class="admin-form-group">
+                <label for="q">@lang('picks.col_team')</label>
+                <input type="text" id="q" name="q" class="admin-input input-lg" autocomplete="off" value="{{ $search }}">
+            </div>
+
+            <button type="submit" class="admin-btn admin-btn-sm">@lang('picks.filter_apply')</button>
+        </form>
+    </div>
+</div>
+
+@empty($teams)
+<div class="admin-card">
+    <div class="admin-card-body">
+        <div class="admin-empty">
+            <div class="admin-empty-title">@lang('picks.no_teams')</div>
+            <div class="admin-empty-note">@lang('picks.no_teams_note')</div>
+        </div>
+    </div>
+</div>
+@endempty
+
+@notempty($teams)
+<div class="admin-card">
+    <div class="admin-card-body">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>@lang('picks.col_team')</th>
+                    <th>@lang('picks.col_conference')</th>
+                    <th class="col-mid">@lang('picks.col_logo')</th>
+                    <th class="col-mid">@lang('picks.col_forum')</th>
+                    <th class="col-actions">@lang('picks.col_actions')</th>
+                </tr>
+            </thead>
+            <tbody>
+                @each ($teams as $team)
+                <tr>
+                    <td>
+                        <div class="admin-cell-title">{{ $team['name'] }}</div>
+                        @notempty($team['abbreviation'])<span class="admin-cell-note">{{ $team['abbreviation'] }}</span>@endnotempty
+                    </td>
+                    <td><span class="admin-cell-meta">{{ $team['conference'] }}</span></td>
+                    <td class="col-mid">
+                        @if($team['logo_custom'])<span class="badge badge-ok">@lang('picks.logo_custom')</span>@endif
+                        @if(!$team['logo_custom'] && $team['logo_path'] !== '')<span class="badge badge-other">@lang('picks.logo_provider')</span>@endif
+                        @if($team['logo_path'] === '')<span class="badge badge-lock">@lang('picks.logo_none')</span>@endif
+                    </td>
+                    <td class="col-mid">
+                        @if($team['forum_id'] > 0)<span class="badge badge-ok">@lang('picks.forum_linked')</span>@endif
+                        @if($team['forum_id'] < 1)<span class="admin-cell-note">@lang('picks.forum_none')</span>@endif
+                    </td>
+                    <td class="col-actions">
+                        {#
+                            🚨 A logo is an address, not an upload. Nothing is
+                            downloaded, nothing is written to this site's disk,
+                            and nothing survives uninstalling Picks — which is
+                            what the Flarum original's 139 converted WebP files
+                            did not manage.
+                        #}
+                        <form method="POST" action="/admin/picks/teams/{{ $team['id'] }}/logo" class="admin-inline-form">
+                            @csrf
+                            <label class="admin-checkbox-label" for="light-{{ $team['id'] }}">@lang('picks.logo_light')</label>
+                            <input type="text" id="light-{{ $team['id'] }}" name="logo_path" class="admin-input input-lg"
+                                   autocomplete="off" value="{{ $team['logo_path'] }}">
+                            <label class="admin-checkbox-label" for="dark-{{ $team['id'] }}">@lang('picks.logo_dark')</label>
+                            <input type="text" id="dark-{{ $team['id'] }}" name="logo_dark_path" class="admin-input input-lg"
+                                   autocomplete="off" value="{{ $team['logo_dark_path'] }}">
+                            <button type="submit" class="admin-btn admin-btn-sm">@lang('picks.save')</button>
+                        </form>
+                    </td>
+                </tr>
+                @endeach
+            </tbody>
+        </table>
+
+        <p class="admin-hint">@lang('picks.logo_note')</p>
+    </div>
+</div>
+@endnotempty
+
+@endsection

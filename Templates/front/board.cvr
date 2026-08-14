@@ -1,0 +1,237 @@
+@layout('theme::layouts/main')
+
+@section('title')@lang('picks.title')@endsection
+
+@section('breadcrumb')
+<span>@lang('picks.title')</span>
+@endsection
+
+@section('content')
+@include('picks::front/styles')
+
+<div class="page-header">
+    <div>
+        <h2>@lang('picks.title')</h2>
+        <p class="page-header-note">@lang('picks.intro')</p>
+    </div>
+
+    <div class="page-header-actions">
+        <a class="btn btn-secondary btn-sm" href="/picks/leaderboard">@lang('picks.leaderboard')</a>
+        @notempty($user)
+        <a class="btn btn-secondary btn-sm" href="/picks/me">@lang('picks.my_record')</a>
+        @endnotempty
+    </div>
+</div>
+
+@notempty($notice)<div class="alert alert-success">{{ $notice }}</div>@endnotempty
+@notempty($problem)<div class="alert alert-error">{{ $problem }}</div>@endnotempty
+
+{#
+    🚨 The line that keeps this page honest.
+
+    Everything below is what a scheduled job last managed to fetch, not what is
+    true this second. Saying when that was, in plain words and before anything
+    claims to be a score, is the difference between a page that is a few minutes
+    behind and a page that lies.
+#}
+@if($everSynced)
+<p class="picks-meta">@lang('picks.fixtures_as_of', ['when' => $asOf])@if($liveScores) @lang('picks.scores_as_of', ['when' => $scoresAsOf])@endif</p>
+@endif
+@if(!$everSynced)
+<div class="alert alert-warning">
+    <div>@lang('picks.never_synced')</div>
+    {# 🚨 The configuration hint is for administrators only. #}
+    @if($isAdmin)<div>@lang('picks.never_synced_admin')</div>@endif
+</div>
+@endif
+
+@notempty($weeks)
+<div class="picks-week-nav">
+    @each ($weeks as $option)
+    <a class="btn btn-sm @if($week !== null && (int) $option['id'] === (int) $week['id'])btn-primary @else btn-secondary @endif"
+       href="/picks/week/{{ $option['id'] }}">{{ $option['name'] }}</a>
+    @endeach
+</div>
+@endnotempty
+
+@if($week === null)
+<div class="card">
+    <div class="empty-state">
+        <div class="empty-title">@lang('picks.no_week')</div>
+        <div class="empty-note">@lang('picks.no_week_note')</div>
+    </div>
+</div>
+@endif
+
+@if($week !== null)
+
+{# An unopened round is visible to administrators only, and says so. #}
+@if($hidden)
+<div class="alert alert-warning">
+    <div>@lang('picks.week_hidden')</div>
+    <div>@lang('picks.week_hidden_admin')</div>
+</div>
+@endif
+
+<h3>{{ $week['name'] }}</h3>
+
+@notempty($user)
+<p class="picks-meta">@lang('picks.picked_count', ['picked' => $picked, 'total' => $total])</p>
+@endnotempty
+
+@empty($user)
+<p class="picks-meta">@lang('picks.sign_in_to_play')</p>
+@endempty
+
+@empty($games)
+<div class="card">
+    <div class="empty-state">
+        <div class="empty-title">@lang('picks.no_games')</div>
+        <div class="empty-note">@lang('picks.no_games_note')</div>
+    </div>
+</div>
+@endempty
+
+<div class="picks-list">
+    @each ($games as $game)
+    <div class="card picks-game">
+        <div class="picks-meta">
+            @if($game['open'])@lang('picks.locks', ['when' => $game['closes']])@endif
+            @if(!$game['open'] && !$game['locked'])@lang('picks.locked')@endif
+            @if($game['locked'])@lang('picks.kickoff', ['when' => $game['starts']])@endif
+            @if($game['neutral']) &middot; @lang('picks.neutral_site')@endif
+
+            {#
+                🚨 Four states, and "not known" is a real one. It means the
+                scoreboard has stopped answering, which is a different thing
+                from a game that has not kicked off — and calling it either of
+                those would be a claim nobody here can support.
+            #}
+            @if($game['state'] === 'live') &middot; <span class="badge badge-ok">@lang('picks.state_live')</span>@endif
+            @if($game['state'] === 'final') &middot; <span class="badge">@lang('picks.state_final')</span>@endif
+            @if($game['state'] === 'unknown') &middot; <span class="badge badge-lock">@lang('picks.state_unknown')</span>@endif
+        </div>
+
+        @if($game['state'] === 'unknown')
+        <div class="picks-meta">@lang('picks.state_unknown_note')</div>
+        @endif
+
+        <div class="picks-teams">
+            @each ([['side' => 'away', 'team' => $game['away']], ['side' => 'home', 'team' => $game['home']]] as $entry)
+            <div class="picks-side
+                @if($game['mine'] !== null && $game['mine']['selected_outcome'] === $entry['side'])picks-side-chosen @endif
+                @if($game['result'] === $entry['side'] && $game['state'] === 'final')picks-side-correct @endif">
+
+                @notempty($entry['team']['logo_path'])
+                <img class="picks-logo" src="{{ $entry['team']['logo_path'] }}" alt="" loading="lazy" referrerpolicy="no-referrer">
+                @endnotempty
+
+                <span class="picks-name">
+                    {#
+                        A link to the team's own forum where this site has one.
+                        Never required, and a forum restricted to some groups is
+                        never linked — see Teams::linkForums().
+                    #}
+                    @notempty($entry['team']['forum_slug'])
+                    <a href="/forum/{{ $entry['team']['forum_slug'] }}">{{ $entry['team']['name'] }}</a>
+                    @endnotempty
+                    @empty($entry['team']['forum_slug']){{ $entry['team']['name'] }}@endempty
+                </span>
+
+                @if($game['shows_score'])
+                <span class="picks-score cv-tabular">{{ $entry['side'] === 'home' ? $game['home_score'] : $game['away_score'] }}</span>
+                @endif
+            </div>
+            @endeach
+        </div>
+
+        {#
+            🚨 The pick form appears only when the SERVER says the game is open.
+            `$game['open']` was decided by Games::open() against a row read this
+            request, and submitting anyway is refused again on the way in — this
+            is what somebody sees, not what enforces anything.
+        #}
+        @if($game['open'] && $mayPlay)
+        <form method="POST" action="/picks/game/{{ $game['id'] }}" class="picks-form">
+            @csrf
+            @if($confidence)
+            <label for="confidence-{{ $game['id'] }}">@lang('picks.confidence')</label>
+            <select id="confidence-{{ $game['id'] }}" name="confidence" class="form-select input-xs">
+                <option value="">@lang('picks.confidence_none')</option>
+                @each ($confidenceRange as $level)
+                <option value="{{ $level }}" @if($game['mine'] !== null && $game['mine']['confidence'] === $level)selected @endif>{{ $level }}</option>
+                @endeach
+            </select>
+            @endif
+
+            <button type="submit" name="outcome" value="away" class="btn btn-secondary btn-sm">@lang('picks.pick_away')</button>
+            <button type="submit" name="outcome" value="home" class="btn btn-secondary btn-sm">@lang('picks.pick_home')</button>
+        </form>
+
+        @if($game['mine'] !== null)
+        <form method="POST" action="/picks/game/{{ $game['id'] }}/withdraw" class="picks-form"
+              onsubmit='return confirm(@json(__("picks.withdraw_confirm")))'>
+            @csrf
+            <button type="submit" class="btn btn-quiet btn-sm">@lang('picks.withdraw')</button>
+        </form>
+        @endif
+        @endif
+
+        @if($confidence && $game['open'] && $mayPlay)
+        <p class="picks-meta">@lang('picks.confidence_note')</p>
+        @endif
+
+        @if($game['mine'] !== null)
+        <p class="picks-meta">
+            @lang('picks.your_pick'):
+            <strong>{{ $game['mine']['selected_outcome'] === 'home' ? $game['home']['name'] : $game['away']['name'] }}</strong>
+            @if($confidence && $game['mine']['confidence'] !== null) &middot; @lang('picks.confidence') {{ $game['mine']['confidence'] }}@endif
+            @if($game['mine']['is_correct'] === true) &middot; @lang('picks.outcome_correct')@endif
+            @if($game['mine']['is_correct'] === false) &middot; @lang('picks.outcome_wrong')@endif
+            @if($game['mine']['is_correct'] === null) &middot; @lang('picks.outcome_pending')@endif
+        </p>
+        @endif
+
+        @if($game['mine'] === null && !$game['open'])
+        <p class="picks-meta">@lang('picks.no_pick')</p>
+        @endif
+
+        {#
+            🚨 Everybody's picks, and they are here ONLY because the service
+            handed them over — which it does only once this game's cut-off has
+            passed. Before that `$game['others']` is empty and this whole block
+            renders the one honest sentence instead. The template does not
+            decide; it could not, and it must not look as though it does.
+        #}
+        @if($game['locked'])
+        <div>
+            <div class="picks-meta">@lang('picks.everyone')</div>
+
+            @empty($game['others'])
+            <div class="picks-meta">@lang('picks.nobody_picked')</div>
+            @endempty
+
+            @notempty($game['others'])
+            @notempty($game['tally'])
+            <div class="picks-meta">@lang('picks.split', ['home' => $game['tally']['home'], 'away' => $game['tally']['away']])</div>
+            @endnotempty
+
+            <div class="picks-others">
+                @each ($game['others'] as $other)
+                <span class="picks-other">{{ $other['display_name'] }} —
+                    {{ $other['selected_outcome'] === 'home' ? $game['home']['abbreviation'] : $game['away']['abbreviation'] }}@if($confidence && $other['confidence'] !== null) ({{ $other['confidence'] }})@endif</span>
+                @endeach
+            </div>
+            @endnotempty
+        </div>
+        @endif
+
+        @if(!$game['locked'])
+        <p class="picks-meta">@lang('picks.hidden_until_cutoff')</p>
+        @endif
+    </div>
+    @endeach
+</div>
+
+@endif
+@endsection

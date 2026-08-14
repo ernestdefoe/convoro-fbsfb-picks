@@ -1,0 +1,10 @@
+{#
+    Picks' own sub-navigation.
+
+    Four screens, and each one answers a different question: how the game is
+    run, which rounds are open, what the fixtures say, and who the teams are.
+#}
+<a class="admin-tab" href="/admin/picks" @if($tab === 'settings')aria-current="page"@endif>@lang('picks.tab_settings')</a>
+<a class="admin-tab" href="/admin/picks/seasons" @if($tab === 'seasons')aria-current="page"@endif>@lang('picks.tab_seasons')</a>
+<a class="admin-tab" href="/admin/picks/games" @if($tab === 'games')aria-current="page"@endif>@lang('picks.tab_games')</a>
+<a class="admin-tab" href="/admin/picks/teams" @if($tab === 'teams')aria-current="page"@endif>@lang('picks.tab_teams')</a>

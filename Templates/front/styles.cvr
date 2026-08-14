@@ -1,0 +1,52 @@
+{#
+    The board's styling.
+
+    🚨 Emitted only on Picks' own pages — the module gates this hook on the
+    path. Convoro has no way for an extension to ship a stylesheet, so a
+    `head.after` hook is the door; OnAir, Quests, SEO, Signal and Member Map all
+    found the same wall and took it.
+
+    🚨 Every colour is a core token. Hard-coding one would look right in the
+    theme it was written against and wrong in every other, and a pick'em is
+    exactly the sort of page a community re-skins.
+#}
+<style>
+.picks-meta { color: var(--text-muted, #6b7280); font-size: .875rem; }
+.picks-week-nav { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
+.picks-list { display: flex; flex-direction: column; gap: 1rem; }
+.picks-game { display: flex; flex-direction: column; gap: .75rem; }
+.picks-teams { display: flex; align-items: stretch; gap: .75rem; flex-wrap: wrap; }
+
+/*
+ * Each side is a button-sized target. `flex: 1 1 12rem` rather than a fixed
+ * width so two long team names do not push the card sideways on a phone —
+ * a board that scrolls horizontally is a board nobody picks on.
+ */
+.picks-side { flex: 1 1 12rem; display: flex; align-items: center; gap: .5rem; padding: .625rem .75rem;
+    border: 1px solid var(--border, #e5e7eb); border-radius: var(--radius, 8px); background: var(--bg-alt, transparent); }
+.picks-side-chosen { border-color: var(--primary, #2563eb); border-width: 2px; }
+.picks-side-correct { border-color: var(--success, #16a34a); border-width: 2px; }
+.picks-side-wrong { border-color: var(--danger, #dc2626); border-width: 2px; }
+.picks-logo { width: 2rem; height: 2rem; object-fit: contain; flex: none; }
+.picks-name { font-weight: 600; }
+.picks-score { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 700; }
+.picks-form { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.picks-others { display: flex; flex-wrap: wrap; gap: .375rem; }
+.picks-other { font-size: .8125rem; padding: .125rem .5rem; border-radius: 999px;
+    border: 1px solid var(--border, #e5e7eb); }
+/*
+ * 🚨 The table scrolls inside this, not the page. Core ships no front-end
+ * table wrapper (`.admin-table-wrap` is an admin class), and a seven-column
+ * leaderboard on a phone would otherwise make the whole document scroll
+ * sideways — which breaks every other element on it too.
+ */
+.picks-scroll { overflow-x: auto; }
+.picks-table { width: 100%; border-collapse: collapse; }
+.picks-table th, .picks-table td { padding: .5rem .625rem; text-align: left;
+    border-bottom: 1px solid var(--border, #e5e7eb); }
+.picks-table .picks-num { text-align: right; font-variant-numeric: tabular-nums; }
+.picks-you { font-weight: 700; }
+.picks-cards { display: flex; flex-wrap: wrap; gap: 1rem; }
+.picks-card { flex: 1 1 12rem; }
+.picks-card-value { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+</style>

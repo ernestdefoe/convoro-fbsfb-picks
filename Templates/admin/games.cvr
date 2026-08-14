@@ -1,0 +1,148 @@
+@layout('theme::layouts/admin')
+
+@section('title')@lang('picks.tab_games')@endsection
+@section('page_title')@lang('picks.games_heading')@endsection
+@section('page_sub')@lang('picks.games_note')@endsection
+@section('page_tabs')@include('picks::admin/partials/tabs', ['tab' => $tab])@endsection
+
+@section('content')
+
+@notempty($notice)<div class="admin-alert admin-alert-success">{{ $notice }}</div>@endnotempty
+@notempty($problem)<div class="admin-alert admin-alert-error">{{ $problem }}</div>@endnotempty
+
+<div class="admin-card">
+    <div class="admin-card-body">
+        <form method="GET" action="/admin/picks/games">
+            <div class="admin-form-group">
+                <label for="week">@lang('picks.filter_week')</label>
+                <select id="week" name="week" class="admin-input input-lg">
+                    <option value="0">@lang('picks.all_rounds')</option>
+                    @each ($weeks as $week)
+                    <option value="{{ $week['id'] }}" @if((int) $week['id'] === (int) $weekId)selected @endif>{{ $week['label'] }}</option>
+                    @endeach
+                </select>
+            </div>
+
+            <div class="admin-form-group">
+                <label for="status">@lang('picks.filter_status')</label>
+                <select id="status" name="status" class="admin-input input-sm">
+                    <option value="">@lang('picks.all_states')</option>
+                    <option value="scheduled" @if($status === 'scheduled')selected @endif>@lang('picks.status_scheduled')</option>
+                    <option value="closed" @if($status === 'closed')selected @endif>@lang('picks.status_closed')</option>
+                    <option value="in_progress" @if($status === 'in_progress')selected @endif>@lang('picks.status_in_progress')</option>
+                    <option value="finished" @if($status === 'finished')selected @endif>@lang('picks.status_finished')</option>
+                </select>
+            </div>
+
+            <div class="admin-form-group">
+                <label for="q">@lang('picks.filter_search')</label>
+                <input type="text" id="q" name="q" class="admin-input input-lg" autocomplete="off" value="{{ $search }}">
+            </div>
+
+            <button type="submit" class="admin-btn admin-btn-sm">@lang('picks.filter_apply')</button>
+        </form>
+
+        <p class="admin-hint">@choice('picks.games_total', $total)</p>
+    </div>
+</div>
+
+@empty($games)
+<div class="admin-card">
+    <div class="admin-card-body">
+        <div class="admin-empty">
+            <div class="admin-empty-title">@lang('picks.no_games_found')</div>
+            <div class="admin-empty-note">@lang('picks.no_games_found_note')</div>
+        </div>
+    </div>
+</div>
+@endempty
+
+@notempty($games)
+<div class="admin-card">
+    <div class="admin-card-body">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>@lang('picks.col_game')</th>
+                    <th>@lang('picks.col_kickoff')</th>
+                    <th>@lang('picks.col_cutoff')</th>
+                    <th class="col-mid">@lang('picks.col_state')</th>
+                    <th class="col-mid">@lang('picks.col_score')</th>
+                    <th class="col-actions">@lang('picks.col_actions')</th>
+                </tr>
+            </thead>
+            <tbody>
+                @each ($games as $game)
+                <tr>
+                    <td>
+                        <div class="admin-cell-title">{{ $game['away']['name'] }} @lang('picks.at') {{ $game['home']['name'] }}</div>
+                        <span class="admin-cell-note">{{ $game['week_name'] }}@if($game['neutral']) &middot; @lang('picks.neutral_site')@endif</span>
+                    </td>
+                    <td><span class="admin-cell-meta">{{ gmdate('D j M Y H:i', $game['kickoff']) }}</span></td>
+                    <td>
+                        <span class="admin-cell-meta">{{ gmdate('D j M Y H:i', $game['cutoff']) }}</span>
+                        @if($game['locked'])<span class="admin-cell-note">@lang('picks.locked')</span>@endif
+                    </td>
+                    <td class="col-mid">
+                        @if($game['state'] === 'final')<span class="badge badge-ok">@lang('picks.state_final')</span>@endif
+                        @if($game['state'] === 'live')<span class="badge badge-ok">@lang('picks.state_live')</span>@endif
+                        @if($game['state'] === 'scheduled')<span class="badge badge-other">@lang('picks.state_scheduled')</span>@endif
+                        {#
+                            🚨 Four states, not three. "Not known" means the
+                            scoreboard has stopped answering, which is a
+                            different thing from a game that has not started —
+                            and showing it as either of the others would be a
+                            claim nobody here is in a position to make.
+                        #}
+                        @if($game['state'] === 'unknown')<span class="badge badge-lock">@lang('picks.state_unknown')</span>@endif
+                    </td>
+                    <td class="col-mid">
+                        @if($game['home_score'] === null)<span class="admin-cell-note">—</span>@endif
+                        @if($game['home_score'] !== null)
+                        <span class="cv-tabular">{{ $game['away_score'] }} — {{ $game['home_score'] }}</span>
+                        <span class="admin-cell-note">{{ $game['confirmed'] }}</span>
+                        @endif
+                    </td>
+                    <td class="col-actions">
+                        <form method="POST" action="/admin/picks/games/{{ $game['id'] }}/result" class="admin-inline-form">
+                            @csrf
+                            <label class="admin-checkbox-label" for="away-{{ $game['id'] }}">@lang('picks.away')</label>
+                            <input type="number" id="away-{{ $game['id'] }}" name="away_score" class="admin-input input-xs"
+                                   min="0" max="255" value="{{ $game['away_score'] }}">
+                            <label class="admin-checkbox-label" for="home-{{ $game['id'] }}">@lang('picks.home')</label>
+                            <input type="number" id="home-{{ $game['id'] }}" name="home_score" class="admin-input input-xs"
+                                   min="0" max="255" value="{{ $game['home_score'] }}">
+                            <button type="submit" class="admin-btn admin-btn-sm">@lang('picks.enter_result')</button>
+                        </form>
+
+                        @if($game['home_score'] !== null)
+                        <form method="POST" action="/admin/picks/games/{{ $game['id'] }}/clear" class="admin-inline-form"
+                              onsubmit='return confirm(@json(__("picks.clear_confirm")))'>
+                            @csrf
+                            <button type="submit" class="admin-btn admin-btn-sm">@lang('picks.clear_result')</button>
+                        </form>
+                        @endif
+                    </td>
+                </tr>
+                @endeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if($pagination->lastPage > 1)
+<div class="admin-pagination">
+    @notempty($pagination->previousPage())
+    <a class="admin-btn admin-btn-sm" href="{{ $pagination->url($pagination->previousPage()) }}">&laquo;</a>
+    @endnotempty
+    @each ($pagination->pages() as $page)
+    <a class="admin-btn admin-btn-sm" href="{{ $pagination->url($page) }}">{{ $page }}</a>
+    @endeach
+    @notempty($pagination->nextPage())
+    <a class="admin-btn admin-btn-sm" href="{{ $pagination->url($pagination->nextPage()) }}">&raquo;</a>
+    @endnotempty
+</div>
+@endif
+@endnotempty
+
+@endsection

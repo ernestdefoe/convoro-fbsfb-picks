@@ -1,0 +1,108 @@
+@layout('theme::layouts/main')
+
+@section('title')@lang('picks.my_record')@endsection
+
+@section('breadcrumb')
+<a href="/picks">@lang('picks.title')</a>
+<span>@lang('picks.my_record')</span>
+@endsection
+
+@section('content')
+@include('picks::front/styles')
+
+<div class="page-header">
+    <div>
+        <h2>@lang('picks.my_record')</h2>
+        <p class="page-header-note">@lang('picks.intro')</p>
+    </div>
+
+    <div class="page-header-actions">
+        <a class="btn btn-secondary btn-sm" href="/picks">@lang('picks.board')</a>
+        <a class="btn btn-secondary btn-sm" href="/picks/leaderboard">@lang('picks.leaderboard')</a>
+    </div>
+</div>
+
+@if($everSynced)
+<p class="picks-meta">@lang('picks.scores_as_of', ['when' => $scoresAsOf])</p>
+@endif
+
+{#
+    Three scopes, and each one says the field size next to the rank. "4th" on
+    its own is meaningless — fourth of five is a different afternoon from
+    fourth of two hundred.
+#}
+<div class="picks-cards">
+    @each ([['label' => 'picks.record_week', 'row' => $weekStanding], ['label' => 'picks.record_season', 'row' => $seasonStanding], ['label' => 'picks.record_alltime', 'row' => $allTimeStanding]] as $card)
+    <div class="card picks-card">
+        <div class="picks-meta">@lang($card['label'])</div>
+
+        @empty($card['row'])
+        <div class="picks-card-value">—</div>
+        <div class="picks-meta">@lang('picks.no_standing')</div>
+        @endempty
+
+        @notempty($card['row'])
+        <div class="picks-card-value">{{ $card['row']['total_points'] }}</div>
+        <div class="picks-meta">@lang('picks.record_points')</div>
+        <div class="picks-meta">@lang('picks.record_of', ['correct' => $card['row']['correct_picks'], 'total' => $card['row']['total_picks']])</div>
+        <div class="picks-meta">@lang('picks.record_rank', ['rank' => $card['row']['rank'], 'players' => $card['row']['players']])</div>
+        @endnotempty
+    </div>
+    @endeach
+</div>
+
+<h3>@lang('picks.history')</h3>
+
+@empty($history)
+<div class="card">
+    <div class="empty-state">
+        <div class="empty-title">@lang('picks.no_history')</div>
+        <div class="empty-note">@lang('picks.no_history_note')</div>
+    </div>
+</div>
+@endempty
+
+@notempty($history)
+<div class="card">
+    <div class="picks-scroll">
+        <table class="picks-table">
+            <thead>
+                <tr>
+                    <th>@lang('picks.col_game')</th>
+                    <th>@lang('picks.your_pick')</th>
+                    @if($confidence)<th class="picks-num">@lang('picks.confidence')</th>@endif
+                    <th class="picks-num">@lang('picks.col_score')</th>
+                    <th>@lang('picks.col_state')</th>
+                </tr>
+            </thead>
+            <tbody>
+                @each ($history as $pick)
+                <tr>
+                    <td>{{ $pick['away_name'] }} @lang('picks.at') {{ $pick['home_name'] }}</td>
+                    <td>{{ $pick['picked_name'] }}</td>
+                    @if($confidence)<td class="picks-num">@if($pick['confidence'] === null)—@endif@if($pick['confidence'] !== null){{ $pick['confidence'] }}@endif</td>@endif
+                    <td class="picks-num">
+                        @if($pick['home_score'] === null)—@endif
+                        @if($pick['home_score'] !== null)<span class="cv-tabular">{{ $pick['away_score'] }} — {{ $pick['home_score'] }}</span>@endif
+                    </td>
+                    <td>
+                        {#
+                            🚨 Three outcomes, and "not played yet" is one of
+                            them. `is_correct` is null until a game is scored,
+                            and rendering that as a loss — which a bare boolean
+                            would — tells a member they got a game wrong that
+                            nobody has played.
+                        #}
+                        @if($pick['is_correct'] === true)<span class="badge badge-ok">@lang('picks.outcome_correct')</span>@endif
+                        @if($pick['is_correct'] === false)<span class="badge badge-lock">@lang('picks.outcome_wrong')</span>@endif
+                        @if($pick['is_correct'] === null)<span class="badge">@lang('picks.outcome_pending')</span>@endif
+                    </td>
+                </tr>
+                @endeach
+            </tbody>
+        </table>
+    </div>
+</div>
+@endnotempty
+
+@endsection

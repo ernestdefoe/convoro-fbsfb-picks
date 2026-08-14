@@ -1,0 +1,259 @@
+@layout('theme::layouts/admin')
+
+@section('title')@lang('picks.admin_title')@endsection
+@section('page_title')@lang('picks.admin_title')@endsection
+@section('page_sub')@lang('picks.admin_intro')@endsection
+@section('page_tabs')@include('picks::admin/partials/tabs', ['tab' => $tab])@endsection
+
+@section('content')
+
+@notempty($notice)<div class="admin-alert admin-alert-success">{{ $notice }}</div>@endnotempty
+@notempty($problem)<div class="admin-alert admin-alert-error">{{ $problem }}</div>@endnotempty
+
+{#
+    🚨 The first card says how this thing runs, and it goes first deliberately.
+
+    Everything on the front end is a row a scheduled job wrote. Somebody who
+    does not know that will press "Fetch now" and watch nothing happen, decide
+    the extension is broken, and never look at the scheduled task runner — which
+    is the actual thing that was wrong.
+
+    🚨 No shell command anywhere on this screen. Convoro is administrable
+    without a terminal; the honest thing is to point at the screen that already
+    reports the runner.
+#}
+<div class="admin-card">
+    <div class="admin-card-header">@lang('picks.how_it_works')</div>
+    <div class="admin-card-body">
+        <p class="admin-hint">@lang('picks.how_it_works_note')</p>
+        <p class="admin-hint">@choice('picks.how_it_works_schedule', $callBudget)</p>
+        <p class="admin-hint">@lang('picks.how_it_works_scores')</p>
+        <p class="admin-hint">@lang('picks.how_it_works_cron')</p>
+    </div>
+</div>
+
+<div class="admin-card">
+    <div class="admin-card-header">@lang('picks.status_heading')</div>
+    <div class="admin-card-body">
+        @if($settings->fixturesStatus() === 'ok')
+        <p><span class="badge badge-ok">@lang('picks.status_ok')</span> @lang('picks.status_ok_body')</p>
+        @endif
+        @if($settings->fixturesStatus() === 'unreachable')
+        <p><span class="badge badge-lock">@lang('picks.status_unreachable')</span> @lang('picks.status_unreachable_body')</p>
+        @endif
+        @if($settings->fixturesStatus() === 'idle' || $settings->fixturesStatus() === 'unconfigured')
+        <p><span class="badge badge-other">@lang('picks.status_idle')</span> @lang('picks.status_idle_body')</p>
+        @endif
+        @if($settings->fixturesStatus() === '')
+        <p><span class="badge badge-other">@lang('picks.status_never')</span> @lang('picks.status_never_body')</p>
+        @endif
+
+        {#
+            🚨 Four times, not two. "Last tried" and "last answered" are
+            different facts and the gap between them is the whole diagnosis: a
+            job that has run every hour and has not had an answer since Tuesday
+            is a provider that is down, which is nothing like a job that has not
+            run at all.
+        #}
+        <p class="form-hint">@lang('picks.status_fixtures_tried', ['when' => $fixturesAt])</p>
+        <p class="form-hint">@lang('picks.status_fixtures_answered', ['when' => $fixturesOkAt])</p>
+        <p class="form-hint">@lang('picks.status_scores_tried', ['when' => $scoresAt])</p>
+        <p class="form-hint">@lang('picks.status_scores_answered', ['when' => $scoresOkAt])</p>
+
+        @notempty($settings->fixturesError())
+        <p class="form-hint">@lang('picks.status_reason', ['reason' => $settings->fixturesError()])</p>
+        @endnotempty
+        @notempty($settings->scoresError())
+        <p class="form-hint">@lang('picks.status_reason', ['reason' => $settings->scoresError()])</p>
+        @endnotempty
+
+        <p class="admin-hint">@lang('picks.status_stale_note', ['minutes' => $staleMinutes])</p>
+        <p class="admin-hint">@choice('picks.status_teams', $teamCount)</p>
+
+        <form method="POST" action="/admin/picks/sync" class="admin-inline-form">
+            @csrf
+            <button type="submit" class="admin-btn admin-btn-sm">@lang('picks.sync_now')</button>
+        </form>
+        <p class="admin-hint">@lang('picks.sync_now_note')</p>
+
+        <form method="POST" action="/admin/picks/recalculate" class="admin-inline-form">
+            @csrf
+            <button type="submit" class="admin-btn admin-btn-sm">@lang('picks.recalculate')</button>
+        </form>
+        <p class="admin-hint">@lang('picks.recalculate_note')</p>
+    </div>
+</div>
+
+<form method="POST" action="/admin/picks/settings">
+    @csrf
+
+    <div class="admin-card">
+        <div class="admin-card-header">@lang('picks.settings_heading')</div>
+        <div class="admin-card-body">
+            <div class="admin-form-group">
+                <label class="admin-checkbox-label">
+                    <input type="checkbox" name="picks_enabled" value="1" @if($settings->enabled())checked @endif>
+                    @lang('picks.setting_enabled')
+                </label>
+                <div class="form-hint">@lang('picks.setting_enabled_note')</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-header">@lang('picks.api_heading')</div>
+        <div class="admin-card-body">
+            <p class="admin-hint">@lang('picks.api_note')</p>
+
+            {#
+                🚨 There is no `value` here and there never may be.
+
+                A stored credential printed back into a form is a credential in
+                a browser cache, in a screenshot, and in the support ticket that
+                screenshot is attached to. The box only ever says whether one
+                exists, through the placeholder, and a blank box means "leave it
+                alone" — clearing it is the separate button below.
+
+                🚨 `text`, not `password`. Nothing is exposed by that: the box
+                is empty on every load whether or not a key is stored. The
+                password-manager hints are off because this credential belongs
+                to a data provider rather than to the administrator's account,
+                and offering to save it as a login here is both wrong and a
+                popup to dismiss on every visit.
+            #}
+            <div class="admin-form-group">
+                <label for="picks_cfbd_key">@lang('picks.setting_key')</label>
+                <input type="text" id="picks_cfbd_key" name="picks_cfbd_key"
+                       class="admin-input input-lg" autocomplete="off"
+                       data-1p-ignore data-lpignore="true" data-form-type="other"
+                       placeholder="@if($settings->hasCfbdKey())@lang('picks.unchanged')@endif">
+                <div class="form-hint">@lang('picks.setting_key_note')</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-header">@lang('picks.season_heading')</div>
+        <div class="admin-card-body">
+            <div class="admin-form-group">
+                <label for="picks_season_year">@lang('picks.setting_year')</label>
+                <input type="number" id="picks_season_year" name="picks_season_year"
+                       class="admin-input input-sm" autocomplete="off"
+                       min="1900" max="2200" value="{{ $settings->seasonYear() }}">
+                <div class="form-hint">@lang('picks.setting_year_note')</div>
+            </div>
+
+            <div class="admin-form-group">
+                <label for="picks_conference">@lang('picks.setting_conference')</label>
+                <select id="picks_conference" name="picks_conference" class="admin-input input-sm">
+                    <option value="">@lang('picks.any_conference')</option>
+                    @each ($conferences as $conference)
+                    <option value="{{ $conference }}" @if($conference === $settings->conference())selected @endif>{{ $conference }}</option>
+                    @endeach
+                </select>
+                <div class="form-hint">@lang('picks.setting_conference_note')</div>
+            </div>
+
+            <div class="admin-form-group">
+                <label class="admin-checkbox-label">
+                    <input type="checkbox" name="picks_sync_regular" value="1" @if($settings->syncsRegular())checked @endif>
+                    @lang('picks.setting_regular')
+                </label>
+            </div>
+
+            <div class="admin-form-group">
+                <label class="admin-checkbox-label">
+                    <input type="checkbox" name="picks_sync_postseason" value="1" @if($settings->syncsPostseason())checked @endif>
+                    @lang('picks.setting_postseason')
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-header">@lang('picks.rules_heading')</div>
+        <div class="admin-card-body">
+            <div class="admin-form-group">
+                <label for="picks_lock_offset">@lang('picks.setting_offset')</label>
+                <input type="number" id="picks_lock_offset" name="picks_lock_offset"
+                       class="admin-input input-sm" min="0" max="10080"
+                       value="{{ $settings->lockOffsetMinutes() }}">
+                <div class="form-hint">@lang('picks.setting_offset_note')</div>
+            </div>
+
+            <div class="admin-form-group">
+                <label class="admin-checkbox-label">
+                    <input type="checkbox" name="picks_confidence_mode" value="1" @if($settings->confidenceMode())checked @endif>
+                    @lang('picks.setting_confidence')
+                </label>
+                <div class="form-hint">@lang('picks.setting_confidence_note')</div>
+            </div>
+
+            <div class="admin-form-group">
+                <label for="picks_confidence_penalty">@lang('picks.setting_penalty')</label>
+                <select id="picks_confidence_penalty" name="picks_confidence_penalty" class="admin-input input-lg">
+                    <option value="none" @if($settings->confidencePenalty() === 'none')selected @endif>@lang('picks.penalty_none')</option>
+                    <option value="half" @if($settings->confidencePenalty() === 'half')selected @endif>@lang('picks.penalty_half')</option>
+                    <option value="full" @if($settings->confidencePenalty() === 'full')selected @endif>@lang('picks.penalty_full')</option>
+                </select>
+                <div class="form-hint">@lang('picks.setting_penalty_note')</div>
+            </div>
+
+            <div class="admin-form-group">
+                <label class="admin-checkbox-label">
+                    <input type="checkbox" name="picks_auto_unlock" value="1" @if($settings->autoUnlock())checked @endif>
+                    @lang('picks.setting_auto_unlock')
+                </label>
+                <div class="form-hint">@lang('picks.setting_auto_unlock_note')</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-header">@lang('picks.live_heading')</div>
+        <div class="admin-card-body">
+            <p class="admin-hint">@lang('picks.live_note')</p>
+
+            <div class="admin-form-group">
+                <label class="admin-checkbox-label">
+                    <input type="checkbox" name="picks_live_scores" value="1" @if($settings->liveScores())checked @endif>
+                    @lang('picks.setting_live')
+                </label>
+            </div>
+
+            <div class="admin-form-group">
+                <label for="picks_live_interval">@lang('picks.setting_interval')</label>
+                <input type="number" id="picks_live_interval" name="picks_live_interval"
+                       class="admin-input input-sm" min="2" max="240"
+                       value="{{ $settings->pollMinutes() }}">
+                <div class="form-hint">@lang('picks.setting_interval_note')</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-body">
+            <button type="submit" class="admin-btn admin-btn-primary">@lang('picks.save')</button>
+        </div>
+    </div>
+</form>
+
+{#
+    Clearing the credential is a separate, deliberate act, because a blank box
+    in the form above means "I did not touch this".
+#}
+@if($settings->hasCfbdKey())
+<div class="admin-card">
+    <div class="admin-card-header">@lang('picks.key_stored')</div>
+    <div class="admin-card-body">
+        <p class="admin-hint">@lang('picks.credentials_note')</p>
+
+        <form method="POST" action="/admin/picks/forget" class="admin-inline-form">
+            @csrf
+            <button type="submit" class="admin-btn admin-btn-sm">@lang('picks.forget_key')</button>
+        </form>
+    </div>
+</div>
+@endif
+
+@endsection
