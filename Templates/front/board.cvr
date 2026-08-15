@@ -9,6 +9,34 @@
 @section('content')
 @include('picks::front/styles')
 
+@php
+    /*
+     * 🚨 The crest that suits the theme being rendered.
+     *
+     * ESPN publishes two: `500` is drawn for a light ground and `500-dark` is
+     * the pale mark for a dark one, and Picks stores both — but the board only
+     * ever used the light one, so on a dark theme every navy and black crest
+     * sat invisible on a dark tile. The column was populated the whole time and
+     * simply never read.
+     *
+     * Falls back either way, because a team synced before `logo_dark_path`
+     * existed has only the one.
+     */
+    $crest = static function (array $team) use ($themeMode): string {
+        $dark = ($themeMode ?? 'light') === 'dark';
+
+        $preferred = $dark
+            ? (string) ($team['logo_dark_path'] ?? '')
+            : (string) ($team['logo_path'] ?? '');
+
+        if (trim($preferred) !== '') {
+            return $preferred;
+        }
+
+        return (string) ($team['logo_path'] ?? $team['logo_dark_path'] ?? '');
+    };
+@endphp
+
 <div class="page-header">
     <div>
         <h2>@lang('picks.title')</h2>
@@ -116,22 +144,87 @@
         <div class="picks-meta">@lang('picks.state_unknown_note')</div>
         @endif
 
+        {#
+            🚨 The team IS the button when the game is open.
+
+            Asked for directly: *"I don't want to have to click pick home team
+            or away team, I want to just click on the team to pick it."* Two
+            named buttons underneath meant reading the tile, then finding the
+            matching button — the thing being chosen and the control that chose
+            it were different objects on the page.
+
+            🚨 So the FORM wraps the teams, and each tile is a submit carrying
+            its own side. The confidence select has to sit inside that same form
+            and before them, because it is submitted by whichever tile is
+            pressed.
+
+            🚨 A link cannot live inside a button — the HTML is invalid and the
+            browser will not let you click either. So the team's forum link is
+            rendered only when the tile is NOT a button. That is a real loss on
+            an open game, taken deliberately: picking is what somebody came to
+            this page to do, and the same link is on every forum listing.
+        #}
+        @if($game['open'] && $mayPlay)
+        <form method="POST" action="/picks/game/{{ $game['id'] }}" class="picks-form picks-form-teams">
+            @csrf
+
+            @if($confidence)
+            <div class="picks-confidence">
+                <label for="confidence-{{ $game['id'] }}">@lang('picks.confidence')</label>
+                <select id="confidence-{{ $game['id'] }}" name="confidence" class="form-select input-xs">
+                    <option value="">@lang('picks.confidence_none')</option>
+                    @each ($confidenceRange as $level)
+                    <option value="{{ $level }}" @if($game['mine'] !== null && $game['mine']['confidence'] === $level)selected @endif>{{ $level }}</option>
+                    @endeach
+                </select>
+            </div>
+            @endif
+
+            <div class="picks-teams">
+                @each ([['side' => 'away', 'team' => $game['away']], ['side' => 'home', 'team' => $game['home']]] as $entry)
+                <button type="submit" name="outcome" value="{{ $entry['side'] }}"
+                        class="picks-side picks-side-pick
+                        @if($game['mine'] !== null && $game['mine']['selected_outcome'] === $entry['side'])picks-side-chosen @endif"
+                        @if($game['mine'] !== null && $game['mine']['selected_outcome'] === $entry['side'])aria-pressed="true"@endif
+                        title="@lang('picks.pick_this', ['team' => $entry['team']['name']])">
+
+                    @notempty($crest($entry['team']))
+                    <img class="picks-logo" src="{{ $crest($entry['team']) }}" alt="" loading="lazy" referrerpolicy="no-referrer">
+                    @endnotempty
+
+                    <span class="picks-name">{{ $entry['team']['name'] }}</span>
+
+                    @if($game['shows_score'])
+                    <span class="picks-score cv-tabular">{{ $entry['side'] === 'home' ? $game['home_score'] : $game['away_score'] }}</span>
+                    @endif
+                </button>
+                @endeach
+            </div>
+        </form>
+
+        @if($game['mine'] !== null)
+        <form method="POST" action="/picks/game/{{ $game['id'] }}/withdraw" class="picks-form"
+              onsubmit='return confirm(@json(__("picks.withdraw_confirm")))'>
+            @csrf
+            <button type="submit" class="btn btn-quiet btn-sm">@lang('picks.withdraw')</button>
+        </form>
+        @endif
+        @endif
+
+        {# Not open, or not allowed to play: the tile is a plain panel again,
+           and the team's forum link comes back with it. #}
+        @if(!$game['open'] || !$mayPlay)
         <div class="picks-teams">
             @each ([['side' => 'away', 'team' => $game['away']], ['side' => 'home', 'team' => $game['home']]] as $entry)
             <div class="picks-side
                 @if($game['mine'] !== null && $game['mine']['selected_outcome'] === $entry['side'])picks-side-chosen @endif
                 @if($game['result'] === $entry['side'] && $game['state'] === 'final')picks-side-correct @endif">
 
-                @notempty($entry['team']['logo_path'])
-                <img class="picks-logo" src="{{ $entry['team']['logo_path'] }}" alt="" loading="lazy" referrerpolicy="no-referrer">
+                @notempty($crest($entry['team']))
+                <img class="picks-logo" src="{{ $crest($entry['team']) }}" alt="" loading="lazy" referrerpolicy="no-referrer">
                 @endnotempty
 
                 <span class="picks-name">
-                    {#
-                        A link to the team's own forum where this site has one.
-                        Never required, and a forum restricted to some groups is
-                        never linked — see Teams::linkForums().
-                    #}
                     @notempty($entry['team']['forum_slug'])
                     <a href="/forum/{{ $entry['team']['forum_slug'] }}">{{ $entry['team']['name'] }}</a>
                     @endnotempty
@@ -144,37 +237,6 @@
             </div>
             @endeach
         </div>
-
-        {#
-            🚨 The pick form appears only when the SERVER says the game is open.
-            `$game['open']` was decided by Games::open() against a row read this
-            request, and submitting anyway is refused again on the way in — this
-            is what somebody sees, not what enforces anything.
-        #}
-        @if($game['open'] && $mayPlay)
-        <form method="POST" action="/picks/game/{{ $game['id'] }}" class="picks-form">
-            @csrf
-            @if($confidence)
-            <label for="confidence-{{ $game['id'] }}">@lang('picks.confidence')</label>
-            <select id="confidence-{{ $game['id'] }}" name="confidence" class="form-select input-xs">
-                <option value="">@lang('picks.confidence_none')</option>
-                @each ($confidenceRange as $level)
-                <option value="{{ $level }}" @if($game['mine'] !== null && $game['mine']['confidence'] === $level)selected @endif>{{ $level }}</option>
-                @endeach
-            </select>
-            @endif
-
-            <button type="submit" name="outcome" value="away" class="btn btn-secondary btn-sm">@lang('picks.pick_away')</button>
-            <button type="submit" name="outcome" value="home" class="btn btn-secondary btn-sm">@lang('picks.pick_home')</button>
-        </form>
-
-        @if($game['mine'] !== null)
-        <form method="POST" action="/picks/game/{{ $game['id'] }}/withdraw" class="picks-form"
-              onsubmit='return confirm(@json(__("picks.withdraw_confirm")))'>
-            @csrf
-            <button type="submit" class="btn btn-quiet btn-sm">@lang('picks.withdraw')</button>
-        </form>
-        @endif
         @endif
 
         @if($confidence && $game['open'] && $mayPlay)

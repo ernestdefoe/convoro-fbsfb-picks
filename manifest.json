@@ -1,8 +1,8 @@
 {
     "key": "picks",
     "name": "Picks",
-    "version": "1.0.0",
-    "description": "A college football pick'em for your community. Members pick a winner in every game of the open week, the board locks each game the moment its cutoff passes, and a scheduled sync brings the fixtures and the scores in from CollegeFootballData and ESPN. Leaderboards run at three scopes — this week, this season, all time — and every figure on every page says how old it is.",
+    "version": "1.0.3",
+    "description": "A college football pick'em for your community. Members pick a winner in every game of the open week, the board locks each game the moment its cutoff passes, and a scheduled sync brings the fixtures and the scores in from CollegeFootballData and ESPN. Leaderboards run at three scopes \u2014 this week, this season, all time \u2014 and every figure on every page says how old it is.",
     "author": "Ernest Defoe",
     "convoro": "^1.3.10",
     "requires": [

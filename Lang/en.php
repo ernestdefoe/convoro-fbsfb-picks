@@ -82,6 +82,13 @@ return [
     'no_pick' => 'You have not picked this game',
     'pick_home' => 'Pick the home team',
     'pick_away' => 'Pick the away team',
+
+    /*
+     * 🚨 The tile itself is the button now, so this is what says what pressing
+     * it does — a picture of a helmet with no label is not a control anybody
+     * should have to guess at.
+     */
+    'pick_this' => 'Pick {team}',
     'withdraw' => 'Take it back',
     'withdraw_confirm' => 'Take back your pick on this game?',
     'pick_saved' => 'Pick saved.',

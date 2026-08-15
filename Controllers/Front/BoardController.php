@@ -279,7 +279,20 @@ final class BoardController extends Controller
             'weeks' => $seasons->openWeeks(),
             'asOf' => Picks::ago($settings->fixturesOkAt()),
             'scoresAsOf' => Picks::ago($settings->scoresOkAt()),
-            'everSynced' => $settings->fixturesOkAt() > 0,
+            /*
+             * 🚨 "Has this site got fixtures" — not "has the sync ever run".
+             *
+             * These were the same question until an importer put a whole
+             * season's schedule in without CollegeFootballData being involved
+             * at all. The board then listed 655 games underneath a banner
+             * saying nothing had been fetched yet, which is the site calling
+             * itself broken while visibly working.
+             *
+             * A successful sync still counts, so a site with a key and an empty
+             * off-season table is not told it has no fixtures.
+             */
+            'everSynced' => $settings->fixturesOkAt() > 0
+                || $this->app->make('db')->table('picks_events')->exists(),
             'liveScores' => $settings->liveScores(),
 
             /*

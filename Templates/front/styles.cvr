@@ -25,6 +25,35 @@
 .picks-side { flex: 1 1 12rem; display: flex; align-items: center; gap: .5rem; padding: .625rem .75rem;
     border: 1px solid var(--border, #e5e7eb); border-radius: var(--radius, 8px); background: var(--bg-alt, transparent); }
 .picks-side-chosen { border-color: var(--primary, #2563eb); border-width: 2px; }
+
+/*
+ * 🚨 The pickable tile is a <button>, so every browser default has to come off
+ * — font, background and alignment are not inherited into a button the way they
+ * are into a div, and without this the two states of the same tile look like
+ * two different components.
+ */
+.picks-side-pick {
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    background: none;
+    cursor: pointer;
+    width: 100%;
+    transition: border-color .12s ease, transform .12s ease;
+}
+.picks-side-pick:hover { border-color: var(--primary, #2563eb); }
+.picks-side-pick:active { transform: translateY(1px); }
+
+/* 🚨 A visible focus ring, because this is now the primary control on the page
+   and it must be reachable and obvious from the keyboard. */
+.picks-side-pick:focus-visible {
+    outline: 2px solid var(--primary, #2563eb);
+    outline-offset: 2px;
+}
+
+.picks-confidence { display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem; }
+.picks-form-teams { display: block; }
+
 .picks-side-correct { border-color: var(--success, #16a34a); border-width: 2px; }
 .picks-side-wrong { border-color: var(--danger, #dc2626); border-width: 2px; }
 .picks-logo { width: 2rem; height: 2rem; object-fit: contain; flex: none; }

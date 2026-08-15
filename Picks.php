@@ -90,6 +90,21 @@ final class Picks extends Module
             ->item('picks', '/admin/picks', 'picks.nav')
             ->badge(fn (): int => $this->app->make('picks.settings')->problems());
 
+        /*
+         * Where this extension's pages are, so a widget can be scoped to them.
+         *
+         * 🚨 Without this the section is simply unknown, and a widget carrying
+         * ANY section condition reads as "hidden from you" on every one of
+         * these pages — including to the administrator arranging them, who is
+         * given no reason. Registered in register() beside everything else,
+         * rather than in boot(), so it exists before a page is rendered.
+         */
+        $this->app->make('widget_sections')->register('picks', [
+            'label' => 'picks.nav',
+            'paths' => ['/picks'],
+            'module' => 'picks',
+        ]);
+
         $db = $this->app->make('db');
 
         $this->app->singleton('picks.settings', fn (): Settings => new Settings($db));
