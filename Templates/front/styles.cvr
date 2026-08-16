@@ -15,14 +15,24 @@
 .picks-week-nav { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
 .picks-list { display: flex; flex-direction: column; gap: 1rem; }
 .picks-game { display: flex; flex-direction: column; gap: .75rem; }
-.picks-teams { display: flex; align-items: stretch; gap: .75rem; flex-wrap: wrap; }
+/*
+ * 🚨 The two teams sit SIDE BY SIDE, always — `nowrap` is load-bearing.
+ *
+ * This wrapped before, with each side given a 12rem basis, so on any card
+ * narrower than about 25rem the two teams fell onto separate lines and a
+ * fixture read as two stacked rows rather than as one game. That is most cards
+ * on most screens. A matchup is a pair, and it has to look like one.
+ */
+.picks-teams { display: flex; align-items: stretch; gap: .75rem; flex-wrap: nowrap; }
 
 /*
- * Each side is a button-sized target. `flex: 1 1 12rem` rather than a fixed
- * width so two long team names do not push the card sideways on a phone —
- * a board that scrolls horizontally is a board nobody picks on.
+ * `flex: 1 1 0` with `min-width: 0` rather than a 12rem basis: the two share
+ * the card evenly and are allowed to SHRINK, which is what keeps them on one
+ * line without the board ever scrolling sideways — a board that scrolls
+ * horizontally is a board nobody picks on. Without `min-width: 0` a long team
+ * name sets a floor on the flex item and pushes the card wide anyway.
  */
-.picks-side { flex: 1 1 12rem; display: flex; align-items: center; gap: .5rem; padding: .625rem .75rem;
+.picks-side { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: .5rem; padding: .625rem .75rem;
     border: 1px solid var(--border, #e5e7eb); border-radius: var(--radius, 8px); background: var(--bg-alt, transparent); }
 .picks-side-chosen { border-color: var(--primary, #2563eb); border-width: 2px; }
 
@@ -56,9 +66,32 @@
 
 .picks-side-correct { border-color: var(--success, #16a34a); border-width: 2px; }
 .picks-side-wrong { border-color: var(--danger, #dc2626); border-width: 2px; }
-.picks-logo { width: 2rem; height: 2rem; object-fit: contain; flex: none; }
-.picks-name { font-weight: 600; }
+/*
+ * 🚨 `flex: none` so the crest keeps its full size while the NAME is what
+ * gives way in a narrow tile. Without it the logo is the thing flex shrinks,
+ * and the bigger size below would quietly become the old one again on exactly
+ * the cards where it was too small to begin with.
+ *
+ * No background, no plate, no radius: these crests are not square and most have
+ * transparent ground, so anything behind one takes a bite out of somebody's
+ * team.
+ */
+.picks-logo { width: 3.25rem; height: 3.25rem; object-fit: contain; flex: none; }
+
+/* `min-width: 0` lets a long name wrap instead of setting a floor on the tile. */
+.picks-name { font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
 .picks-score { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 700; }
+
+/*
+ * On a phone the two teams STAY side by side — that is the whole point of the
+ * change — and it is the inside of each tile that stacks instead, crest above
+ * name. A row layout at this width would leave a 3.25rem crest beside about
+ * four characters of team name.
+ */
+@media (max-width: 32rem) {
+    .picks-side { flex-direction: column; align-items: center; text-align: center; gap: .35rem; }
+    .picks-score { margin-left: 0; }
+}
 .picks-form { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
 .picks-others { display: flex; flex-wrap: wrap; gap: .375rem; }
 .picks-other { font-size: .8125rem; padding: .125rem .5rem; border-radius: 999px;
