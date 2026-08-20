@@ -352,4 +352,7 @@ return [
     'forums_linked' => 'Linked {linked} of them. {unmatched} have no forum on this site.',
     'forum_linked' => 'Linked',
     'forum_none' => '—',
+
+    // Where do I get this? — see themes/default/templates/partials/setup-link.cvr
+    'setup_hint' => 'Sign in and request a key; it arrives by email. The free tier is enough for a season of picks.',
 ];

@@ -128,6 +128,7 @@
                        data-1p-ignore data-lpignore="true" data-form-type="other"
                        placeholder="@if($settings->hasCfbdKey())@lang('picks.unchanged')@endif">
                 <div class="form-hint">@lang('picks.setting_key_note')</div>
+                @include('theme::partials/setup-link', ['href' => 'https://collegefootballdata.com/key', 'service' => 'CollegeFootballData', 'what' => __('picks.setup_hint')])
             </div>
         </div>
     </div>
