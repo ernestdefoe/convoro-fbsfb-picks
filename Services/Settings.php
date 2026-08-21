@@ -93,6 +93,43 @@ final class Settings
         'picks_scores_error' => '',
 
         'picks_teams_ok_at' => '0',
+
+        /*
+         * 🚨 The provider's monthly allowance, and what Picks has spent of it.
+         *
+         * CollegeFootballData counts calls per calendar month and answers 429
+         * with "Monthly call quota exceeded" once the allowance is gone — for
+         * the rest of the month, whatever you do. Convoro's standing rule is
+         * that queued work caps its own outbound calls, and this is that cap:
+         * Picks stops one call short of the provider stopping it, so the board
+         * degrades to "not refreshed lately" instead of to nothing at all.
+         *
+         * 🚨 The default is deliberately UNDER the free tier rather than at it.
+         * The allowance is shared with anything else using the same key, and a
+         * budget that exactly matches the limit is a budget that is discovered
+         * to be wrong by running out.
+         */
+        'picks_monthly_cap' => '900',
+        'picks_calls_used' => '0',
+
+        // The month `picks_calls_used` counts, as YYYY-MM. A different month
+        // means the counter is stale and starts again.
+        'picks_calls_period' => '',
+
+        /*
+         * 🚨 Epoch seconds before which fixtures must not be fetched at all.
+         *
+         * Set when a provider refuses. Without it the hourly schedule keeps
+         * asking a provider that has already said no — for thirty-eight hours
+         * straight, on the site this was found on — which fixes nothing, and
+         * on a per-call plan spends money to be told no again.
+         */
+        'picks_fixtures_retry_after' => '0',
+
+        // Epoch of the last completed pass over every week. A pass costs one
+        // call per week, so the next one waits rather than starting the moment
+        // the last finished. See Sync::PASS_GAP.
+        'picks_fixtures_pass_at' => '0',
     ];
 
     /** Keys a form may send but must never be able to blank by omission. */
@@ -374,6 +411,93 @@ final class Settings
     {
         $this->put('picks_teams_ok_at', (string) time());
         $this->values = null;
+    }
+
+    /* --------------------------------------------------------- call budget */
+
+    /** The provider allowance this site is working to, per calendar month. */
+    public function monthlyCap(): int
+    {
+        return max(0, (int) $this->get('picks_monthly_cap'));
+    }
+
+    /**
+     * Calls spent this month.
+     *
+     * 🚨 Reads as zero in a new month rather than being reset by a job. There
+     * is no monthly tick in Convoro, and a counter that needs one is a counter
+     * that reads as full forever on a site whose scheduler stopped.
+     */
+    public function callsUsed(): int
+    {
+        if ($this->get('picks_calls_period') !== self::period()) {
+            return 0;
+        }
+
+        return max(0, (int) $this->get('picks_calls_used'));
+    }
+
+    public function callsLeft(): int
+    {
+        $cap = $this->monthlyCap();
+
+        // No cap set means no budget to enforce. An operator on a paid plan
+        // with no monthly limit should not have to invent a number.
+        return $cap === 0 ? PHP_INT_MAX : max(0, $cap - $this->callsUsed());
+    }
+
+    /** Counts one call against this month, rolling the period when it turns. */
+    public function recordCall(): void
+    {
+        $period = self::period();
+        $used = $this->get('picks_calls_period') === $period
+            ? max(0, (int) $this->get('picks_calls_used'))
+            : 0;
+
+        $this->put('picks_calls_period', $period);
+        $this->put('picks_calls_used', (string) ($used + 1));
+
+        $this->values = null;
+    }
+
+    public function retryAfter(): int
+    {
+        return max(0, (int) $this->get('picks_fixtures_retry_after'));
+    }
+
+    /** Refuses to fetch fixtures until the given moment. */
+    public function holdOffUntil(int $when): void
+    {
+        $this->put('picks_fixtures_retry_after', (string) max(0, $when));
+        $this->values = null;
+    }
+
+    public function passAt(): int
+    {
+        return max(0, (int) $this->get('picks_fixtures_pass_at'));
+    }
+
+    public function recordPass(): void
+    {
+        $this->put('picks_fixtures_pass_at', (string) time());
+        $this->values = null;
+    }
+
+    /**
+     * The first moment of next month, in UTC.
+     *
+     * What a provider counting per calendar month resets on, and the only
+     * honest answer to "when will this work again" once a quota is gone.
+     */
+    public static function quotaResetsAt(): int
+    {
+        return (int) (new \DateTimeImmutable('first day of next month 00:00:00', new \DateTimeZone('UTC')))
+            ->getTimestamp();
+    }
+
+    private static function period(): string
+    {
+        return gmdate('Y-m');
     }
 
     private function put(string $key, string $value): void

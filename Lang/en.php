@@ -174,6 +174,24 @@ return [
     'health_never' => 'Nothing fetched yet',
     'health_never_note' => 'Picks fetches on a schedule. Check the scheduled task runner on this screen.',
 
+    /*
+     * The provider declining, which is not the provider breaking. Each of
+     * these says what ran out, when it comes back, and what to change if
+     * waiting is not good enough — because an operator reading this row is
+     * deciding what to do, not admiring the diagnosis.
+     */
+    'setting_cap' => 'Monthly call budget',
+    'setting_cap_note' => 'How many calls Picks may make to CollegeFootballData in a calendar month. It stops one short of your plan rather than being cut off mid-season, and spreads the rest across the weeks that can still change. Zero means your plan has no monthly limit and Picks should not enforce one. Used so far this month: {used}.',
+
+    'health_quota' => 'Monthly quota used up',
+    'health_quota_note' => 'CollegeFootballData has stopped answering until its allowance resets on {resumes}. The board keeps every fixture already fetched and scores still arrive from ESPN, but changed kick-off times will not appear until then. Raise the plan on your CollegeFootballData account, or lower the monthly call budget below so Picks spreads what you have across the month. Fixtures last fetched {when}.',
+    'health_budget' => 'Call budget spent',
+    'health_budget_note' => 'Picks has made {used} of the {cap} provider calls it is allowed this month and has stopped on purpose, so the allowance is not spent before the season needs it. Fetching resumes on {resumes}. Raise the monthly call budget if your plan allows more. Fixtures last fetched {when}.',
+    'health_rate' => 'Asked too often',
+    'health_rate_note' => 'The provider is refusing for the moment rather than for the month. Picks waits an hour and tries again by itself — nothing needs doing. Fixtures last fetched {when}.',
+    'health_rejected' => 'API key rejected',
+    'health_rejected_note' => 'CollegeFootballData will not accept the key on this site. Check it has not expired and paste it in again below. Fixtures last fetched {when}.',
+
     /* --------------------------------------------------------- admin: tabs */
 
     'tab_settings' => 'Settings',

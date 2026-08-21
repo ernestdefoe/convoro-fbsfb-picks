@@ -225,6 +225,31 @@ final class Picks extends Module
                 ];
             }
 
+            /*
+             * 🚨 A provider that declined is not a provider that broke.
+             *
+             * "Cannot fetch" with a red Needs-fixing chip was shown for a
+             * spent monthly quota — a thing no operator can fix by looking at
+             * their server, on a screen whose whole job is telling them what
+             * to do next. A refusal says what ran out, when it comes back, and
+             * what to change if waiting is not good enough.
+             */
+            $refusal = $this->refusal($settings->fixturesStatus());
+
+            if ($refusal !== null) {
+                return [
+                    'label' => $label,
+                    'value' => __('picks.' . $refusal['value']),
+                    'tone' => $refusal['tone'],
+                    'note' => __('picks.' . $refusal['note'], [
+                        'when' => self::ago($settings->fixturesOkAt()),
+                        'resumes' => gmdate('j F', $settings->retryAfter() ?: Settings::quotaResetsAt()),
+                        'used' => number_format($settings->callsUsed()),
+                        'cap' => number_format($settings->monthlyCap()),
+                    ]),
+                ];
+            }
+
             if ($settings->fixturesStatus() === 'unreachable' || $settings->scoresStatus() === 'unreachable') {
                 return [
                     'label' => $label,
@@ -259,6 +284,33 @@ final class Picks extends Module
                 'note' => __('picks.health_ok_note', ['when' => self::ago($settings->fixturesOkAt())]),
             ];
         });
+    }
+
+    /**
+     * The screen's reading of a provider refusal, or null if it was not one.
+     *
+     * @return array{value: string, tone: string, note: string}|null
+     */
+    private function refusal(string $status): ?array
+    {
+        return match ($status) {
+            /*
+             * 🚨 A warning, not a fault, and the distinction is the point.
+             * Every fixture already fetched is still on the board and every
+             * score still arrives — ESPN is a different provider and is not
+             * involved. What has stopped is learning about changes, and it
+             * restarts on a date this row can name.
+             */
+            'quota' => ['value' => 'health_quota', 'tone' => 'warn', 'note' => 'health_quota_note'],
+            'budget' => ['value' => 'health_budget', 'tone' => 'warn', 'note' => 'health_budget_note'],
+            'rate_limited' => ['value' => 'health_rate', 'tone' => 'warn', 'note' => 'health_rate_note'],
+
+            // 🚨 Stays red. A rejected key is the one failure that is fixed by
+            // a person, now, and nothing comes back on its own.
+            'key_rejected' => ['value' => 'health_rejected', 'tone' => 'bad', 'note' => 'health_rejected_note'],
+
+            default => null,
+        };
     }
 
     /**

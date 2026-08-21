@@ -78,6 +78,11 @@ final class PicksController extends Controller
             'picks_lock_offset' => (string) $offsetAfter,
             'picks_confidence_penalty' => (string) $request->post('picks_confidence_penalty'),
             'picks_live_interval' => (string) max(0, (int) $request->post('picks_live_interval')),
+
+            // 🚨 Zero is meaningful and is not the same as blank: it means the
+            // plan has no monthly limit worth policing, so Picks stops
+            // policing one. Anything else is a ceiling it keeps itself under.
+            'picks_monthly_cap' => (string) max(0, (int) $request->post('picks_monthly_cap')),
         ]);
 
         /*

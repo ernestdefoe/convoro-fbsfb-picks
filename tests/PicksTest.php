@@ -849,6 +849,72 @@ return [
         });
     },
 
+    'a spent monthly quota is told apart from an outage' => static function () use ($db, $withSettings): void {
+        /*
+         * 🚨 The bug this exists for: a 429 carrying "Monthly call quota
+         * exceeded" was recorded as `unreachable`, so a live site showed
+         * "Cannot fetch — Needs fixing" for thirty-eight hours about something
+         * no operator could fix, while the schedule kept asking a provider
+         * that had already said no.
+         */
+        $withSettings(['picks_cfbd_key' => 'zz-key', 'picks_monthly_cap' => '900', 'picks_calls_used' => '0'], static function () use ($db): void {
+            $quota = new PicksScriptedHttp(['/teams' => [429, ['message' => 'Monthly call quota exceeded.']]]);
+            [, $error] = (new Cfbd($quota, new Settings($db)))->teams();
+            assertSame('quota spent', $error, 'a spent monthly allowance read as a plain outage');
+
+            // A 429 without the monthly wording is a rate, and passes on its own.
+            $rate = new PicksScriptedHttp(['/teams' => [429, ['message' => 'Too many requests']]]);
+            [, $rateError] = (new Cfbd($rate, new Settings($db)))->teams();
+            assertSame('rate limited', $rateError);
+        });
+    },
+
+    'the call budget is spent before the provider is asked, not after' => static function () use ($db, $withSettings): void {
+        /*
+         * 🚨 Convoro's standing rule is that queued work caps its own outbound
+         * calls. Counting after the call means the last call of the month is
+         * always the provider's refusal rather than ours.
+         */
+        $withSettings(['picks_cfbd_key' => 'zz-key', 'picks_monthly_cap' => '2', 'picks_calls_used' => '0', 'picks_calls_period' => gmdate('Y-m')], static function () use ($db): void {
+            $http = new PicksScriptedHttp(['/teams' => [200, []]]);
+            $settings = new Settings($db);
+            $cfbd = new Cfbd($http, $settings);
+
+            $cfbd->teams();
+            $cfbd->teams();
+            assertSame(2, (new Settings($db))->callsUsed(), 'calls are not being counted against the month');
+
+            [, $error] = $cfbd->teams();
+            assertSame('budget spent', $error, 'the budget did not stop the third call');
+            assertSame(2, count($http->asked), 'a call was made after the budget was gone');
+        });
+    },
+
+    'a cap of zero is no cap, not a cap of none' => static function () use ($db, $withSettings): void {
+        // An operator on a plan with no monthly limit should not have to
+        // invent a number, and must not have Picks refuse every call because
+        // the field is empty.
+        $withSettings(['picks_cfbd_key' => 'zz-key', 'picks_monthly_cap' => '0', 'picks_calls_used' => '9999', 'picks_calls_period' => gmdate('Y-m')], static function () use ($db): void {
+            $http = new PicksScriptedHttp(['/teams' => [200, []]]);
+
+            [, $error] = (new Cfbd($http, new Settings($db)))->teams();
+
+            assertSame('', $error, 'an unlimited plan was refused by its own budget');
+            assertSame(1, count($http->asked));
+        });
+    },
+
+    'a counter from last month reads as zero rather than as full' => static function () use ($db, $withSettings): void {
+        /*
+         * 🚨 There is no monthly tick in Convoro, and a counter that needs one
+         * reads as full for ever on a site whose scheduler stopped. The period
+         * is stored with the count so the roll-over needs nobody.
+         */
+        $withSettings(['picks_calls_used' => '5000', 'picks_calls_period' => '1999-01'], static function () use ($db): void {
+            assertSame(0, (new Settings($db))->callsUsed(), 'a stale month was counted as this one');
+        });
+    },
+
     'a rejected key is named as a rejected key' => static function () use ($db, $withSettings): void {
         /*
          * 🚨 401 is the one failure an operator can actually fix, and "HTTP

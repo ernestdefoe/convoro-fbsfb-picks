@@ -218,12 +218,43 @@ final class Cfbd
             return [[], 'unconfigured'];
         }
 
+        /*
+         * 🚨 The budget is checked BEFORE the call, not after it.
+         *
+         * Counting a call once it has been made tells you the allowance is
+         * gone one call too late, which on a monthly quota means the last call
+         * of the month is always the provider's refusal rather than ours.
+         */
+        if ($this->settings->callsLeft() < 1) {
+            return [[], 'budget spent'];
+        }
+
+        $this->settings->recordCall();
+
         [$status, $body] = $this->http->getJson(self::BASE . $path, $query, [
             'Authorization' => 'Bearer ' . $key,
         ]);
 
         if ($status === 0) {
             return [[], 'no answer'];
+        }
+
+        /*
+         * 🚨 429 is not "cannot reach". It is the provider working perfectly
+         * and declining, and it has to be told apart from an outage because
+         * the response to it is the opposite one: an outage is retried, a
+         * refusal must not be.
+         *
+         * CFBD spends its allowance per calendar month and says so in the
+         * body. Anything else 429 is a rate this site is exceeding, which will
+         * pass on its own.
+         */
+        if ($status === 429) {
+            $message = is_array($body) && isset($body['message']) && is_string($body['message'])
+                ? $body['message']
+                : '';
+
+            return [[], stripos($message, 'monthly') !== false ? 'quota spent' : 'rate limited'];
         }
 
         /*

@@ -42,6 +42,32 @@ final class Sync
     /** CFBD calls one `fixtures()` run may make. See the note above. */
     public const CALL_BUDGET = 6;
 
+    /**
+     * 🚨 How long to wait after finishing a pass over every week.
+     *
+     * Without this the cursor wrapped straight back to zero and the whole
+     * season was re-fetched every few hours, for ever. On the site this was
+     * found on that was six calls an hour, ~4,300 a month, against a provider
+     * allowance a fraction of that — the quota was gone by the 20th and the
+     * board went dark a week before the season opened.
+     *
+     * Fixtures do move, so a pass still has to come round again; they do not
+     * move hourly. Twelve hours is two passes a day over the weeks that can
+     * still change, which is more than enough to catch a rescheduled kickoff
+     * and roughly a tenth of the calls.
+     */
+    public const PASS_GAP = 43200;
+
+    /**
+     * 🚨 How long after its last game a week stops being re-fetched.
+     *
+     * A played week is history: the fixtures cannot change and the scores come
+     * from ESPN, not from here. Two days rather than zero because a provider
+     * corrects the odd result late, and because a game postponed into the
+     * following week must not freeze the week it left.
+     */
+    public const SETTLED_AFTER = 172800;
+
     /** Members re-scored inline before the rest are handed to another job. */
     public const RESCORE_BATCH = 100;
 
@@ -79,6 +105,18 @@ final class Sync
             return ['skipped' => 'unconfigured'];
         }
 
+        /*
+         * 🚨 A provider that has already refused is not asked again until the
+         * moment it said, and the status is left EXACTLY as it was.
+         *
+         * Recording anything here would overwrite the reason with a fresher,
+         * emptier one every hour, and the health screen would lose the only
+         * sentence that explains what an operator is looking at.
+         */
+        if ($this->settings->retryAfter() > time()) {
+            return ['skipped' => 'holding off'];
+        }
+
         // Housekeeping that needs no network and must happen whatever else
         // does: a game past its cutoff should read as closed on every screen.
         $closed = $this->games->closePassed();
@@ -99,7 +137,8 @@ final class Sync
                 // 🚨 The cursor is NOT advanced. A failed step is retried next
                 // hour rather than skipped, which is the difference between a
                 // provider hiccup and a week of fixtures nobody ever fetches.
-                $this->settings->recordFixtures('unreachable', $error);
+                $this->settings->holdOffUntil(self::holdFor($error));
+                $this->settings->recordFixtures(self::statusFor($error), $error);
 
                 return $summary + ['error' => $error];
             }
@@ -113,8 +152,22 @@ final class Sync
             $cursor = 1;
         }
 
+        /*
+         * 🚨 Only the weeks that can still change. A settled week is skipped
+         * for the rest of the season, which is what takes a pass from "every
+         * week, for ever" down to the handful that are still moving.
+         */
         $weekNumbers = $this->regularWeekNumbers($seasonId);
         $steps = count($weekNumbers) + 1; // the weeks, then the postseason
+
+        /*
+         * Between passes, do the housekeeping and stop. `closePassed()` above
+         * has already run — that is the part that must happen every hour, and
+         * it needs nobody's network.
+         */
+        if ($cursor === 0 && $this->settings->passAt() + self::PASS_GAP > time()) {
+            return $summary + ['skipped' => 'between passes'];
+        }
 
         while ($budget > 0 && $cursor <= $steps) {
             $isPostseason = $cursor > count($weekNumbers);
@@ -126,7 +179,8 @@ final class Sync
             $budget--;
 
             if ($error !== '') {
-                $this->settings->recordFixtures('unreachable', $error, $cursor);
+                $this->settings->holdOffUntil(self::holdFor($error));
+                $this->settings->recordFixtures(self::statusFor($error), $error, $cursor);
 
                 return $summary + ['error' => $error];
             }
@@ -137,6 +191,10 @@ final class Sync
         // 🚨 Wraps rather than stopping. The fixture list keeps changing all
         // season — kickoffs move, games are added — so a sync that ran once and
         // considered itself finished would leave a stale board by October.
+        if ($cursor > $steps) {
+            $this->settings->recordPass();
+        }
+
         $this->settings->recordFixtures('ok', '', $cursor > $steps ? 0 : $cursor);
 
         $this->maybeUnlockNext();
@@ -327,16 +385,88 @@ final class Sync
     private function regularWeekNumbers(int $seasonId): array
     {
         $out = [];
+        $settledBefore = time() - self::SETTLED_AFTER;
 
         foreach ($this->seasons->weeks($seasonId) as $week) {
-            if ($week['season_type'] === Seasons::REGULAR && $week['week_number'] > 0) {
-                $out[] = $week['week_number'];
+            if ($week['season_type'] !== Seasons::REGULAR || $week['week_number'] < 1) {
+                continue;
             }
+
+            /*
+             * 🚨 A week whose last game finished days ago is not fetched again
+             * for the rest of the season. Its fixtures cannot change, and its
+             * scores come from ESPN rather than from here — so re-fetching it
+             * spends the provider allowance to learn nothing.
+             *
+             * A week with no end_date is NEVER treated as settled. That is a
+             * week the calendar has not described yet, and guessing it is over
+             * would quietly drop it from the board.
+             */
+            $end = (string) ($week['end_date'] ?? '');
+
+            if ($end !== '' && strtotime($end . ' 23:59:59 UTC') < $settledBefore) {
+                continue;
+            }
+
+            $out[] = $week['week_number'];
         }
 
         sort($out);
 
         return $out;
+    }
+
+    /**
+     * The status a failure is recorded under.
+     *
+     * 🚨 Every failure used to be `unreachable`, which put "Cannot fetch" and
+     * a red Needs-fixing chip in front of an operator for something no
+     * operator can fix. What the screen says and what the sync does both
+     * follow from this, so they cannot drift apart.
+     */
+    private static function statusFor(string $error): string
+    {
+        return match ($error) {
+            'quota spent' => 'quota',
+            'budget spent' => 'budget',
+            'rate limited' => 'rate_limited',
+            'key rejected' => 'key_rejected',
+            default => 'unreachable',
+        };
+    }
+
+    /**
+     * What to do about an error the provider returned.
+     *
+     * 🚨 A refusal and an outage are different events wearing the same shape.
+     * An outage is retried on the next tick, because it may already be over. A
+     * refusal must NOT be retried, because the next call gets the same answer
+     * and, on a metered plan, is charged for it.
+     *
+     * @return int the moment fixtures may be fetched again, 0 for "right away"
+     */
+    private static function holdFor(string $error): int
+    {
+        return match ($error) {
+            // Gone until the provider's month turns. Nothing an operator does
+            // brings it back, so asking again before then is pure noise.
+            'quota spent' => Settings::quotaResetsAt(),
+
+            // This site's own cap. Same reset, and reaching it means the cap
+            // is doing its job.
+            'budget spent' => Settings::quotaResetsAt(),
+
+            // A rate, not an allowance: it passes. An hour is longer than any
+            // per-minute window and short enough to catch the same day.
+            'rate limited' => time() + 3600,
+
+            // 🚨 A rejected key is not retried on a timer either — it is fixed
+            // by a person. Half an hour keeps the log readable while somebody
+            // is actually pasting a new one in.
+            'key rejected' => time() + 1800,
+
+            default => 0,
+        };
     }
 
     /* -------------------------------------------------------------- scores */
