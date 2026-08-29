@@ -176,7 +176,7 @@ final class Espn
                  * "2nd & 10 at TCU 45" is a sentence, and the yard line is
                  * already the least durable thing on the strip.
                  */
-                'down' => trim((string) ($situation['shortDownDistanceText'] ?? '')),
+                'down' => self::downAndDistance($situation),
                 'red_zone' => !empty($situation['isRedZone']),
 
                 /*
@@ -190,5 +190,40 @@ final class Espn
         }
 
         return [$out, ''];
+    }
+
+    /**
+     * "2nd & 10", from whichever the feed happened to send.
+     *
+     * 🚨 The text is not always there. ESPN's situation block changes shape
+     * through a game — between possessions it can carry `down` and `distance`
+     * as bare numbers with no sentence built from them, and after a score it
+     * carries `down = 0`, which means there is no down rather than a zeroth one.
+     *
+     * Nothing is invented from a missing possession, though. Absence there is
+     * an answer: it means nobody has settled with the ball, and a football
+     * drawn beside a guess is worse than no football at all.
+     *
+     * @param array<string, mixed> $situation
+     */
+    private static function downAndDistance(array $situation): string
+    {
+        $text = trim((string) ($situation['shortDownDistanceText'] ?? ''));
+
+        if ($text !== '') {
+            return $text;
+        }
+
+        $down = (int) ($situation['down'] ?? 0);
+
+        if ($down < 1 || $down > 4) {
+            return '';
+        }
+
+        $distance = (int) ($situation['distance'] ?? 0);
+        $ordinal = [1 => '1st', 2 => '2nd', 3 => '3rd', 4 => '4th'][$down];
+
+        // "& Goal" is what a scoreboard says when the distance IS the end zone.
+        return $distance > 0 ? $ordinal . ' & ' . $distance : $ordinal . ' & Goal';
     }
 }
