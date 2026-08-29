@@ -572,6 +572,11 @@ final class Sync
                 $entry['away'],
                 (bool) $entry['completed'],
                 $now,
+                [
+                    'period' => $entry['period'] ?? 0,
+                    'clock' => $entry['clock'] ?? '',
+                    'detail' => $entry['detail'] ?? '',
+                ],
             );
 
             $updated++;

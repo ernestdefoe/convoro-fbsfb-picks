@@ -124,10 +124,26 @@ final class Espn
                 }
             }
 
+            /*
+             * The clock, for a scoreboard that means to look like one.
+             *
+             * 🚨 Period is safe to show and the clock is not, on its own:
+             * a quarter lasts fifteen minutes and a game clock moves every
+             * second, so a number fetched a minute ago is a lie by the time it
+             * is read. Both are carried, along with WHEN they were true, and
+             * the front end decides what is still worth showing.
+             */
+            $clock = $competition['status'] ?? [];
+
             $out[] = [
                 'id' => $id,
                 'home' => $home,
                 'away' => $away,
+                'period' => (int) ($clock['period'] ?? 0),
+                'clock' => trim((string) ($clock['displayClock'] ?? '')),
+                // "2nd Quarter", "Halftime", "End of 3rd" — ESPN's own words,
+                // which are better than any we would invent from a number.
+                'detail' => trim((string) ($type['shortDetail'] ?? $type['detail'] ?? '')),
 
                 /*
                  * 🚨 `completed`, not `state === 'post'`. ESPN puts a game into

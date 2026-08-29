@@ -452,8 +452,17 @@ final class Games
      *
      * @return bool whether this call newly finished the game
      */
-    public function recordFromSource(int $id, ?int $home, ?int $away, bool $completed, ?int $now = null): bool
-    {
+    /**
+     * @param array<string, mixed> $clock period, clock and ESPN's own wording
+     */
+    public function recordFromSource(
+        int $id,
+        ?int $home,
+        ?int $away,
+        bool $completed,
+        ?int $now = null,
+        array $clock = [],
+    ): bool {
         $now ??= time();
         $game = $this->db->table('picks_events')->where('id', $id)->first();
 
@@ -468,6 +477,19 @@ final class Games
         if ($home !== null && $away !== null) {
             $changed['home_score'] = max(0, $home);
             $changed['away_score'] = max(0, $away);
+        }
+
+        /*
+         * 🚨 Stamped with WHEN it was true, because a clock without that
+         * is worse than no clock. Fifteen minutes of quarter is safe to print
+         * an hour later; "2:41 to play" is wrong within seconds of being read,
+         * so the front end needs to know how old this is to decide.
+         */
+        if ($clock !== []) {
+            $changed['period'] = max(0, (int) ($clock['period'] ?? 0));
+            $changed['clock'] = mb_substr((string) ($clock['clock'] ?? ''), 0, 16);
+            $changed['clock_detail'] = mb_substr((string) ($clock['detail'] ?? ''), 0, 64);
+            $changed['clock_at'] = $now;
         }
 
         if ($completed) {
