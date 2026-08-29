@@ -97,6 +97,26 @@ class Http
              */
             CURLOPT_FOLLOWLOCATION => false,
             CURLOPT_HTTPHEADER => $lines,
+
+            /*
+             * 🚨 Say who is calling, because ESPN refuses anybody who does not.
+             *
+             * PHP's cURL extension sends NO User-Agent unless it is told to —
+             * unlike the curl command, which always sends its own. ESPN's edge
+             * answers 403 to a request with no User-Agent, and every live score
+             * fetch this site ever made was refused: 717 fixtures, not one
+             * score, ever. It went unnoticed until the season started, because
+             * out of season there is nothing to fetch and "no scores" looks
+             * exactly like "no games".
+             *
+             * 🚨 This is the true identity of the client, not a disguise. The
+             * request IS libcurl, and this is the string curl itself would send
+             * — measured on the box: `curl/8.5.0` and `python-requests/…` are
+             * answered, while a browser string, an invented "Convoro/1.29.2"
+             * and no header at all are all 403. Pretending to be Chrome would
+             * be both a lie and a 403.
+             */
+            CURLOPT_USERAGENT => 'curl/' . (curl_version()['version'] ?? '8'),
         ]);
 
         $raw = curl_exec($handle);
