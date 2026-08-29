@@ -35,13 +35,38 @@ final class Espn
     }
 
     /**
-     * Every game on today's scoreboard that has kicked off.
+     * The ESPN calendar runs on US EASTERN time, not UTC and not ours.
      *
+     * 🚨 A 10pm Saturday kickoff on the east coast is already Sunday in UTC, so
+     * asking for the UTC date would miss the whole of Saturday night — every
+     * week, and only the late games, which is the hardest kind of gap to spot.
+     * The date asked for is the Eastern one.
+     */
+    private const CALENDAR_ZONE = 'America/New_York';
+
+    /**
+     * Every game on the scoreboard for a given day that has kicked off.
+     *
+     * 🚨 Ask for a DATE. Called bare, this endpoint answers with a slate of its
+     * own choosing — 25 games that did not include the one actually being
+     * played when this was found, while `?dates=20260829` returned the eight
+     * that were on and ours among them. So a live game could be refreshed all
+     * afternoon and never be in the answer.
+     *
+     * @param int|null $when a moment on the day wanted; now if not given
      * @return array{0: list<array{id: int, home: ?int, away: ?int, completed: bool}>, 1: string}
      */
-    public function scoreboard(): array
+    public function scoreboard(?int $when = null): array
     {
-        [$status, $body] = $this->http->getJson(self::SCOREBOARD);
+        $day = (new \DateTimeImmutable('@' . ($when ?? time())))
+            ->setTimezone(new \DateTimeZone(self::CALENDAR_ZONE))
+            ->format('Ymd');
+
+        [$status, $body] = $this->http->getJson(self::SCOREBOARD, [
+            'dates' => $day,
+            // Well past a full Saturday, so the answer is never truncated.
+            'limit' => 900,
+        ]);
 
         if ($status === 0) {
             return [[], 'no answer'];

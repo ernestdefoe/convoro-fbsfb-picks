@@ -500,7 +500,46 @@ final class Sync
             return ['skipped' => 'nothing playing'];
         }
 
-        [$live, $error] = $this->espn->scoreboard();
+        /*
+         * 🚨 The same window `anyActive()` uses, asked of ESPN's calendar.
+         *
+         * ESPN answers per DATE, in US Eastern. A game kicking off at 23:30 in
+         * California is already tomorrow there and still today here, so asking
+         * only about the current moment's date loses the tail of every long
+         * Saturday — the late games, which is the hardest gap to notice.
+         *
+         * Six hours back is the same reach `anyActive()` allows a game to keep
+         * running, so these two agree by construction rather than by luck. It
+         * is one call on all but a couple of hours a week, and two then.
+         */
+        $days = [];
+        $live = [];
+        $error = '';
+
+        foreach ([$now - 21600, $now] as $moment) {
+            [$slate, $failure] = $this->espn->scoreboard($moment);
+
+            $day = (new \DateTimeImmutable('@' . $moment))
+                ->setTimezone(new \DateTimeZone('America/New_York'))
+                ->format('Ymd');
+
+            if (isset($days[$day])) {
+                continue;
+            }
+
+            $days[$day] = true;
+
+            if ($failure !== '') {
+                $error = $failure;
+                break;
+            }
+
+            foreach ($slate as $entry) {
+                $live[(int) $entry['id']] = $entry;
+            }
+        }
+
+        $live = array_values($live);
 
         if ($error !== '') {
             // 🚨 Nothing is written. Every game keeps what it had, and its
