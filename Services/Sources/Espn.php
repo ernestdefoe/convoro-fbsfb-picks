@@ -108,18 +108,43 @@ final class Espn
             $home = null;
             $away = null;
 
+            /*
+             * Who has the ball, as OUR word for a side rather than ESPN's id
+             * for a team.
+             *
+             * 🚨 `situation.possession` is an ESPN team id, and nothing in
+             * this database is keyed by one. Resolving it here — against the
+             * two competitors we are already reading — means the rest of the
+             * system stores "home" or "away", which is what a scoreboard
+             * actually needs and cannot drift out of step with anybody's team
+             * table.
+             */
+            $situation = $competition['situation'] ?? [];
+            $hasBall = (string) ($situation['possession'] ?? '');
+            $possession = '';
+
             foreach ($competition['competitors'] ?? [] as $competitor) {
-                if (!is_array($competitor) || !isset($competitor['score'])) {
+                if (!is_array($competitor)) {
+                    continue;
+                }
+
+                $side = (string) ($competitor['homeAway'] ?? '');
+
+                if ($hasBall !== '' && (string) ($competitor['id'] ?? '') === $hasBall) {
+                    $possession = $side;
+                }
+
+                if (!isset($competitor['score'])) {
                     continue;
                 }
 
                 $score = (int) $competitor['score'];
 
-                if (($competitor['homeAway'] ?? '') === 'home') {
+                if ($side === 'home') {
                     $home = $score;
                 }
 
-                if (($competitor['homeAway'] ?? '') === 'away') {
+                if ($side === 'away') {
                     $away = $score;
                 }
             }
@@ -144,6 +169,15 @@ final class Espn
                 // "2nd Quarter", "Halftime", "End of 3rd" — ESPN's own words,
                 // which are better than any we would invent from a number.
                 'detail' => trim((string) ($type['shortDetail'] ?? $type['detail'] ?? '')),
+                'possession' => $possession,
+
+                /*
+                 * The short form. "2nd & 10" is what belongs on a scoreboard;
+                 * "2nd & 10 at TCU 45" is a sentence, and the yard line is
+                 * already the least durable thing on the strip.
+                 */
+                'down' => trim((string) ($situation['shortDownDistanceText'] ?? '')),
+                'red_zone' => !empty($situation['isRedZone']),
 
                 /*
                  * 🚨 `completed`, not `state === 'post'`. ESPN puts a game into

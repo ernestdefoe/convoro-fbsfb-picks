@@ -490,6 +490,18 @@ final class Games
             $changed['clock'] = mb_substr((string) ($clock['clock'] ?? ''), 0, 16);
             $changed['clock_detail'] = mb_substr((string) ($clock['detail'] ?? ''), 0, 64);
             $changed['clock_at'] = $now;
+
+            /*
+             * 🚨 Possession shares the clock's timestamp on purpose. It
+             * moves faster than anything else on the board — a few plays,
+             * sometimes one — so it goes stale in the same breath, and two
+             * timestamps that must agree are two that eventually will not.
+             */
+            $changed['possession'] = in_array($clock['possession'] ?? '', ['home', 'away'], true)
+                ? (string) $clock['possession']
+                : '';
+            $changed['down_distance'] = mb_substr((string) ($clock['down'] ?? ''), 0, 32);
+            $changed['red_zone'] = !empty($clock['red_zone']) ? 1 : 0;
         }
 
         if ($completed) {

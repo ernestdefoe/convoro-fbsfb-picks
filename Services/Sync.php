@@ -576,6 +576,9 @@ final class Sync
                     'period' => $entry['period'] ?? 0,
                     'clock' => $entry['clock'] ?? '',
                     'detail' => $entry['detail'] ?? '',
+                    'possession' => $entry['possession'] ?? '',
+                    'down' => $entry['down'] ?? '',
+                    'red_zone' => $entry['red_zone'] ?? false,
                 ],
             );
 
