@@ -210,7 +210,19 @@ final class Espn
     {
         $text = trim((string) ($situation['shortDownDistanceText'] ?? ''));
 
-        if ($text !== '') {
+        /*
+         * 🚨 A negative distance is refused, not printed.
+         *
+         * Caught live: ESPN sent "4th & -1" for a minute either side of the
+         * half, and it went straight onto the board. A scoreboard reading
+         * "4th & -1" is not a scoreboard with a small mistake on it, it is one
+         * nobody trusts again — and a feed being briefly wrong is a normal
+         * event, not an exceptional one.
+         *
+         * Showing nothing is the honest answer while the provider disagrees
+         * with itself; the score and the clock beside it are unaffected.
+         */
+        if ($text !== '' && !preg_match('/-\s*\d/', $text)) {
             return $text;
         }
 
