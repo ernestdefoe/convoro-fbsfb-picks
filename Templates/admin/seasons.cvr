@@ -14,6 +14,29 @@
 <div class="admin-alert admin-alert-info">@lang('picks.auto_unlock_on')</div>
 @endif
 
+<div class="admin-card">
+    <div class="admin-card-header">@lang('picks.follow_a_league')</div>
+    <div class="admin-card-body">
+        <p class="admin-muted">@lang('picks.follow_a_league_note')</p>
+
+        <form method="POST" action="/admin/picks/seasons/follow" class="admin-inline-form">
+            @csrf
+            <label class="admin-checkbox-label" for="follow-league">@lang('picks.league')</label>
+            <select id="follow-league" name="league" class="admin-input input-sm">
+                @each ($leagues as $key => $label)
+                <option value="{{ $key }}">{{ $label }}</option>
+                @endeach
+            </select>
+
+            <label class="admin-checkbox-label" for="follow-year">@lang('picks.season_year')</label>
+            <input type="number" id="follow-year" name="year" class="admin-input input-sm"
+                   min="2000" max="{{ $thisYear + 2 }}" value="{{ $thisYear }}">
+
+            <button type="submit" class="admin-btn admin-btn-sm">@lang('picks.follow')</button>
+        </form>
+    </div>
+</div>
+
 @empty($seasons)
 <div class="admin-card">
     <div class="admin-card-body">
@@ -27,7 +50,7 @@
 
 @each ($seasons as $season)
 <div class="admin-card">
-    <div class="admin-card-header">{{ $season['name'] }}</div>
+    <div class="admin-card-header">{{ $season['name'] }} <span class="admin-muted">{{ $season['league'] }}</span></div>
     <div class="admin-card-body">
         @empty($season['weeks'])
         <div class="admin-empty">

@@ -347,15 +347,25 @@ final class Games
     public function upsertFixture(array $values, int $lockOffsetMinutes): array
     {
         $cfbdId = (int) ($values['cfbd_id'] ?? 0);
+        $externalId = trim((string) ($values['external_id'] ?? ''));
         $homeId = (int) ($values['home_team_id'] ?? 0);
         $awayId = (int) ($values['away_team_id'] ?? 0);
         $matchAt = (int) ($values['match_at'] ?? 0);
 
-        if ($cfbdId < 1 || $homeId < 1 || $awayId < 1 || $matchAt < 1) {
+        /*
+         * 🚨 EITHER identifier will do, and the one supplied is the one the
+         * game is looked up by. College football arrives with a CFBD id; every
+         * other league arrives from ESPN with an id of its own and no CFBD id
+         * at all. Insisting on the old column would silently reject every
+         * fixture that is not college football.
+         */
+        if (($cfbdId < 1 && $externalId === '') || $homeId < 1 || $awayId < 1 || $matchAt < 1) {
             return [0, false];
         }
 
-        $existing = $this->db->table('picks_events')->where('cfbd_id', $cfbdId)->first();
+        $existing = $cfbdId > 0
+            ? $this->db->table('picks_events')->where('cfbd_id', $cfbdId)->first()
+            : $this->db->table('picks_events')->where('external_id', $externalId)->first();
 
         $changed = [
             'week_id' => (int) ($values['week_id'] ?? 0),
@@ -386,6 +396,7 @@ final class Games
         if ($existing === null) {
             $id = (int) $this->db->table('picks_events')->insertGetId($changed + [
                 'cfbd_id' => $cfbdId,
+                'external_id' => $externalId,
                 'status' => $changed['status'] ?? self::SCHEDULED,
                 'created_at' => date('Y-m-d H:i:s'),
             ]);

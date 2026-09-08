@@ -29,6 +29,7 @@ $router->group()
         $router->post('/recalculate', [PicksController::class, 'recalculate'], 'admin.picks.recalculate');
 
         $router->get('/seasons', [SeasonController::class, 'index'], 'admin.picks.seasons');
+        $router->post('/seasons/follow', [SeasonController::class, 'follow'], 'admin.picks.seasons.follow');
         $router->post('/weeks/{id}/open', [SeasonController::class, 'open'], 'admin.picks.week.open');
         $router->post('/weeks/{id}/close', [SeasonController::class, 'close'], 'admin.picks.week.close');
         $router->post('/weeks/{id}/rename', [SeasonController::class, 'rename'], 'admin.picks.week.rename');

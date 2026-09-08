@@ -7,6 +7,7 @@ namespace Convoro\Extensions\Picks\Controllers\Admin;
 use Convoro\Engine\Http\Controller;
 use Convoro\Engine\Http\Request;
 use Convoro\Engine\Http\Response;
+use Convoro\Extensions\Picks\Services\Leagues\Leagues;
 
 /**
  * Seasons and weeks, and the switch that decides whether a round is running.
@@ -28,6 +29,7 @@ final class SeasonController extends Controller
     public function index(Request $request): Response
     {
         $seasons = $this->app->make('picks.seasons');
+        $leagues = new Leagues();
         $games = $this->app->make('picks.games');
         $store = $this->app->make('picks.store');
 
@@ -47,10 +49,13 @@ final class SeasonController extends Controller
                 ];
             }
 
+            $league = $leagues->get($season['league'] ?? null);
+
             $rows[] = [
                 'id' => (int) $season['id'],
                 'name' => (string) $season['name'],
                 'year' => (int) $season['year'],
+                'league' => $league->name,
                 'weeks' => $weeks,
             ];
         }
@@ -59,10 +64,48 @@ final class SeasonController extends Controller
             'user' => $this->user($request),
             'tab' => 'seasons',
             'seasons' => $rows,
+            'leagues' => $leagues->choices(),
+            'thisYear' => (int) date('Y'),
             'autoUnlock' => $this->app->make('picks.settings')->autoUnlock(),
             'notice' => $this->session($request)->getFlash(self::NOTICE),
             'problem' => $this->session($request)->getFlash(self::PROBLEM),
         ]);
+    }
+
+    /**
+     * Start following a league.
+     *
+     * 🚨 Creating the SEASON is the whole action — the fixtures arrive on the
+     * next scheduled sync rather than in this request. Fetching a full season
+     * inline is what killed the college sync's first version: an admin request
+     * with a seventeen-week schedule fetch in it was simply killed by the
+     * server, and left half a season behind with no way to tell.
+     */
+    public function follow(Request $request): Response
+    {
+        $leagues = new Leagues();
+        $league = (string) $request->post('league');
+        $year = (int) $request->post('year');
+
+        if (!$leagues->has($league)) {
+            return $this->fail($request, __('picks.season_league_unknown'));
+        }
+
+        /*
+         * 🚨 Bounded rather than trusted. A typo of 202 or 20266 creates a
+         * season nothing will ever sync into, and the only symptom is an empty
+         * card somebody has to work out how to delete.
+         */
+        if ($year < 2000 || $year > (int) date('Y') + 2) {
+            return $this->fail($request, __('picks.season_year_unlikely'));
+        }
+
+        $this->app->make('picks.seasons')->seasonForYear($year, $league);
+
+        return $this->ok($request, __('picks.season_following', [
+            'league' => $leagues->get($league)->name,
+            'year' => (string) $year,
+        ]));
     }
 
     public function open(Request $request): Response

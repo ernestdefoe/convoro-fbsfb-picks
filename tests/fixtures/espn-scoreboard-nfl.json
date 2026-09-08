@@ -1,0 +1,1410 @@
+{
+ "events": [
+  {
+   "id": "401872656",
+   "date": "2026-09-10T00:20Z",
+   "name": "New England Patriots at Seattle Seahawks",
+   "shortName": "NE @ SEA",
+   "season": {
+    "year": 2026,
+    "type": 2,
+    "slug": "regular-season"
+   },
+   "week": {
+    "number": 1
+   },
+   "competitions": [
+    {
+     "id": "401872656",
+     "date": "2026-09-10T00:20Z",
+     "attendance": 0,
+     "type": {
+      "id": "1",
+      "abbreviation": "STD"
+     },
+     "timeValid": true,
+     "neutralSite": false,
+     "conferenceCompetition": false,
+     "playByPlayAvailable": false,
+     "recent": false,
+     "venue": {
+      "id": "3673",
+      "fullName": "Lumen Field",
+      "address": {
+       "city": "Seattle",
+       "state": "WA",
+       "country": "USA"
+      },
+      "indoor": false
+     },
+     "competitors": [
+      {
+       "id": "26",
+       "type": "team",
+       "order": 0,
+       "homeAway": "home",
+       "team": {
+        "id": "26",
+        "location": "Seattle",
+        "name": "Seahawks",
+        "abbreviation": "SEA",
+        "displayName": "Seattle Seahawks",
+        "color": "002a5c",
+        "alternateColor": "69be28",
+        "isActive": true,
+        "venue": {
+         "id": "3673"
+        }
+       },
+       "score": "0",
+       "curatedRank": {
+        "current": 99
+       },
+       "statistics": [],
+       "records": [
+        {
+         "name": "overall",
+         "abbreviation": "Any",
+         "type": "total",
+         "summary": "0-0"
+        },
+        {
+         "name": "Home",
+         "type": "home",
+         "summary": "0-0"
+        },
+        {
+         "name": "Road",
+         "type": "road",
+         "summary": "0-0"
+        }
+       ]
+      },
+      {
+       "id": "17",
+       "type": "team",
+       "order": 1,
+       "homeAway": "away",
+       "team": {
+        "id": "17",
+        "location": "New England",
+        "name": "Patriots",
+        "abbreviation": "NE",
+        "displayName": "New England Patriots",
+        "color": "002a5c",
+        "alternateColor": "c60c30",
+        "isActive": true,
+        "venue": {
+         "id": "3738"
+        }
+       },
+       "score": "0",
+       "curatedRank": {
+        "current": 99
+       },
+       "statistics": [],
+       "records": [
+        {
+         "name": "overall",
+         "abbreviation": "Any",
+         "type": "total",
+         "summary": "0-0"
+        },
+        {
+         "name": "Home",
+         "type": "home",
+         "summary": "0-0"
+        },
+        {
+         "name": "Road",
+         "type": "road",
+         "summary": "0-0"
+        }
+       ]
+      }
+     ],
+     "notes": [],
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 0,
+      "type": {
+       "id": "1",
+       "name": "STATUS_SCHEDULED",
+       "state": "pre",
+       "completed": false,
+       "detail": "Wed, September 9th at 8:20 PM EDT",
+       "shortDetail": "9/9 - 8:20 PM EDT"
+      },
+      "isTBDFlex": false
+     },
+     "broadcasts": [
+      {
+       "market": "national",
+       "names": [
+        "NBC"
+       ]
+      }
+     ],
+     "format": {
+      "regulation": {
+       "periods": 4
+      }
+     },
+     "tickets": [
+      {
+       "summary": "Tickets as low as $268",
+       "numberAvailable": 3683
+      }
+     ],
+     "startDate": "2026-09-10T00:20Z",
+     "broadcast": "NBC",
+     "geoBroadcasts": [
+      {
+       "type": {
+        "id": "1",
+        "shortName": "TV"
+       },
+       "market": {
+        "id": "1",
+        "type": "National"
+       },
+       "media": {
+        "shortName": "NBC"
+       },
+       "lang": "en",
+       "region": "us"
+      }
+     ],
+     "odds": [
+      {
+       "provider": {
+        "id": "100",
+        "name": "DraftKings",
+        "priority": 1,
+        "displayName": "DraftKings"
+       },
+       "details": "SEA -3",
+       "overUnder": 44.5,
+       "spread": -3.0,
+       "awayTeamOdds": {
+        "favorite": false,
+        "underdog": true,
+        "team": {
+         "id": "17",
+         "abbreviation": "NE",
+         "name": "Patriots",
+         "displayName": "New England Patriots"
+        },
+        "favoriteAtOpen": false
+       },
+       "homeTeamOdds": {
+        "favorite": true,
+        "underdog": false,
+        "team": {
+         "id": "26",
+         "abbreviation": "SEA",
+         "name": "Seahawks",
+         "displayName": "Seattle Seahawks"
+        },
+        "favoriteAtOpen": true
+       },
+       "moneyline": {
+        "displayName": "Moneyline",
+        "home": {
+         "close": {
+          "odds": "-170",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "home",
+            "desktop",
+            "bets",
+            "draftkings"
+           ],
+           "text": "Home Bet",
+           "shortText": "Home Bet",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872656,
+             "betSide": "home",
+             "betType": "straight"
+            }
+           }
+          }
+         },
+         "open": {
+          "odds": "-192"
+         }
+        },
+        "away": {
+         "close": {
+          "odds": "+142",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "away",
+            "desktop",
+            "bets",
+            "draftkings"
+           ],
+           "text": "Away Bet",
+           "shortText": "Away Bet",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872656,
+             "betSide": "away",
+             "betType": "straight"
+            }
+           }
+          }
+         },
+         "open": {
+          "odds": "+160"
+         }
+        }
+       },
+       "pointSpread": {
+        "displayName": "Spread",
+        "home": {
+         "close": {
+          "line": "-3",
+          "odds": "-118",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "homeSpread",
+            "desktop",
+            "bets"
+           ],
+           "text": "Home Point Spread",
+           "shortText": "Home Point Spread",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872656,
+             "betSide": "none",
+             "betType": "straight",
+             "betDetails": "Spread:SEA-3"
+            }
+           }
+          }
+         },
+         "open": {
+          "line": "-3.5",
+          "odds": "-110"
+         }
+        },
+        "away": {
+         "close": {
+          "line": "+3",
+          "odds": "-102",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "awaySpread",
+            "desktop",
+            "bets"
+           ],
+           "text": "Away Point Spread",
+           "shortText": "Away Point Spread",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872656,
+             "betSide": "none",
+             "betType": "straight",
+             "betDetails": "Spread:NE+3"
+            }
+           }
+          }
+         },
+         "open": {
+          "line": "+3.5",
+          "odds": "-110"
+         }
+        }
+       },
+       "total": {
+        "displayName": "Total",
+        "over": {
+         "close": {
+          "line": "o44.5",
+          "odds": "-108",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "over",
+            "desktop",
+            "bets"
+           ],
+           "text": "Over Odds",
+           "shortText": "Over Odds",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872656,
+             "betSide": "over",
+             "betType": "straight",
+             "betDetails": "Over:44.5"
+            }
+           }
+          }
+         },
+         "open": {
+          "line": "o44.5",
+          "odds": "-110"
+         }
+        },
+        "under": {
+         "close": {
+          "line": "u44.5",
+          "odds": "-112",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "under",
+            "desktop",
+            "bets"
+           ],
+           "text": "Under Odds",
+           "shortText": "Under Odds",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872656,
+             "betSide": "under",
+             "betType": "straight",
+             "betDetails": "Under:44.5"
+            }
+           }
+          }
+         },
+         "open": {
+          "line": "u44.5",
+          "odds": "-110"
+         }
+        }
+       },
+       "link": {
+        "language": "en-US",
+        "rel": [
+         "game",
+         "desktop",
+         "bets"
+        ],
+        "text": "See More Odds",
+        "shortText": "Game",
+        "isExternal": true,
+        "isPremium": false,
+        "tracking": {
+         "campaign": "betting-integrations",
+         "tags": {
+          "league": "nfl",
+          "sport": "football",
+          "gameId": 401872656,
+          "betSide": "none",
+          "betType": "straight"
+         }
+        }
+       },
+       "header": {
+        "text": "Game Odds"
+       },
+       "footer": {
+        "disclaimer": "GAMBLING PROBLEM? CALL 1-800-GAMBLER or 1-800-MY-RESET, (800) 327-5050 or visit gamblinghelplinema.org (MA). Call 877-8-HOPENY/text HOPENY (467369) (NY). Call 888-789-7777/visit ccpg.org (CT), or visit www.mdgamblinghelp.org (MD), 1-800-981-0023 (PR). 21+ and present in most states. (18+ DC/KY/NH/PR/WY). Void in ONT. Eligibility restrictions apply. Terms: draftkings.com/sportsbook. On behalf of Boot Hill Casino (KS). Pass-thru of per wager tax may apply in IL."
+       }
+      }
+     ],
+     "highlights": []
+    }
+   ],
+   "weather": {
+    "displayValue": "Mostly sunny",
+    "temperature": 74,
+    "highTemperature": 74,
+    "conditionId": "2",
+    "link": {
+     "language": "en-US",
+     "rel": [
+      "98134"
+     ],
+     "text": "Weather",
+     "shortText": "Weather",
+     "isExternal": true,
+     "isPremium": false
+    }
+   },
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 0,
+    "type": {
+     "id": "1",
+     "name": "STATUS_SCHEDULED",
+     "state": "pre",
+     "completed": false,
+     "detail": "Wed, September 9th at 8:20 PM EDT",
+     "shortDetail": "9/9 - 8:20 PM EDT"
+    }
+   }
+  },
+  {
+   "id": "401872657",
+   "date": "2026-09-11T00:35Z",
+   "name": "San Francisco 49ers at Los Angeles Rams",
+   "shortName": "SF VS LAR",
+   "season": {
+    "year": 2026,
+    "type": 2,
+    "slug": "regular-season"
+   },
+   "week": {
+    "number": 1
+   },
+   "competitions": [
+    {
+     "id": "401872657",
+     "date": "2026-09-11T00:35Z",
+     "attendance": 0,
+     "type": {
+      "id": "1",
+      "abbreviation": "STD"
+     },
+     "timeValid": true,
+     "neutralSite": true,
+     "conferenceCompetition": false,
+     "playByPlayAvailable": false,
+     "recent": false,
+     "venue": {
+      "id": "9119",
+      "fullName": "Melbourne Cricket Ground",
+      "address": {
+       "city": "Melbourne",
+       "state": "VIC",
+       "country": "Australia"
+      },
+      "indoor": false
+     },
+     "competitors": [
+      {
+       "id": "14",
+       "type": "team",
+       "order": 0,
+       "homeAway": "home",
+       "team": {
+        "id": "14",
+        "location": "Los Angeles",
+        "name": "Rams",
+        "abbreviation": "LAR",
+        "displayName": "Los Angeles Rams",
+        "color": "003594",
+        "alternateColor": "ffd100",
+        "isActive": true,
+        "venue": {
+         "id": "477"
+        }
+       },
+       "score": "0",
+       "curatedRank": {
+        "current": 99
+       },
+       "statistics": [],
+       "records": [
+        {
+         "name": "overall",
+         "abbreviation": "Any",
+         "type": "total",
+         "summary": "0-0"
+        },
+        {
+         "name": "Home",
+         "type": "home",
+         "summary": "0-0"
+        },
+        {
+         "name": "Road",
+         "type": "road",
+         "summary": "0-0"
+        }
+       ]
+      },
+      {
+       "id": "25",
+       "type": "team",
+       "order": 1,
+       "homeAway": "away",
+       "team": {
+        "id": "25",
+        "location": "San Francisco",
+        "name": "49ers",
+        "abbreviation": "SF",
+        "displayName": "San Francisco 49ers",
+        "color": "aa0000",
+        "alternateColor": "b3995d",
+        "isActive": true,
+        "venue": {
+         "id": "4738"
+        }
+       },
+       "score": "0",
+       "curatedRank": {
+        "current": 99
+       },
+       "statistics": [],
+       "records": [
+        {
+         "name": "overall",
+         "abbreviation": "Any",
+         "type": "total",
+         "summary": "0-0"
+        },
+        {
+         "name": "Home",
+         "type": "home",
+         "summary": "0-0"
+        },
+        {
+         "name": "Road",
+         "type": "road",
+         "summary": "0-0"
+        }
+       ]
+      }
+     ],
+     "notes": [
+      {
+       "type": "event",
+       "headline": "NFL Melbourne Game"
+      }
+     ],
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 0,
+      "type": {
+       "id": "1",
+       "name": "STATUS_SCHEDULED",
+       "state": "pre",
+       "completed": false,
+       "detail": "Thu, September 10th at 8:35 PM EDT",
+       "shortDetail": "9/10 - 8:35 PM EDT"
+      },
+      "isTBDFlex": false
+     },
+     "broadcasts": [
+      {
+       "market": "national",
+       "names": [
+        "Netflix"
+       ]
+      }
+     ],
+     "format": {
+      "regulation": {
+       "periods": 4
+      }
+     },
+     "startDate": "2026-09-11T00:35Z",
+     "broadcast": "Netflix",
+     "geoBroadcasts": [
+      {
+       "type": {
+        "id": "4",
+        "shortName": "Streaming"
+       },
+       "market": {
+        "id": "1",
+        "type": "National"
+       },
+       "media": {
+        "shortName": "Netflix"
+       },
+       "lang": "en",
+       "region": "us"
+      }
+     ],
+     "odds": [
+      {
+       "provider": {
+        "id": "100",
+        "name": "DraftKings",
+        "priority": 1
+       },
+       "details": "LAR -3.5",
+       "overUnder": 48.5,
+       "spread": -3.5,
+       "awayTeamOdds": {
+        "favorite": false,
+        "underdog": true,
+        "team": {
+         "id": "25",
+         "abbreviation": "SF",
+         "name": "49ers",
+         "displayName": "San Francisco 49ers"
+        },
+        "favoriteAtOpen": false
+       },
+       "homeTeamOdds": {
+        "favorite": true,
+        "underdog": false,
+        "team": {
+         "id": "14",
+         "abbreviation": "LAR",
+         "name": "Rams",
+         "displayName": "Los Angeles Rams"
+        },
+        "favoriteAtOpen": true
+       },
+       "moneyline": {
+        "displayName": "Moneyline",
+        "home": {
+         "close": {
+          "odds": "-192",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "home",
+            "desktop",
+            "bets",
+            "draftkings"
+           ],
+           "text": "Home Bet",
+           "shortText": "Home Bet",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872657,
+             "betSide": "home",
+             "betType": "straight"
+            }
+           }
+          }
+         },
+         "open": {
+          "odds": "-155"
+         }
+        },
+        "away": {
+         "close": {
+          "odds": "+160",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "away",
+            "desktop",
+            "bets",
+            "draftkings"
+           ],
+           "text": "Away Bet",
+           "shortText": "Away Bet",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872657,
+             "betSide": "away",
+             "betType": "straight"
+            }
+           }
+          }
+         },
+         "open": {
+          "odds": "+130"
+         }
+        }
+       },
+       "pointSpread": {
+        "displayName": "Spread",
+        "home": {
+         "close": {
+          "line": "-3.5",
+          "odds": "-112",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "homeSpread",
+            "desktop",
+            "bets"
+           ],
+           "text": "Home Point Spread",
+           "shortText": "Home Point Spread",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872657,
+             "betSide": "none",
+             "betType": "straight",
+             "betDetails": "Spread:LAR-3.5"
+            }
+           }
+          }
+         },
+         "open": {
+          "line": "-2.5",
+          "odds": "-120"
+         }
+        },
+        "away": {
+         "close": {
+          "line": "+3.5",
+          "odds": "-108",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "awaySpread",
+            "desktop",
+            "bets"
+           ],
+           "text": "Away Point Spread",
+           "shortText": "Away Point Spread",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872657,
+             "betSide": "none",
+             "betType": "straight",
+             "betDetails": "Spread:SF+3.5"
+            }
+           }
+          }
+         },
+         "open": {
+          "line": "+2.5",
+          "odds": "+100"
+         }
+        }
+       },
+       "total": {
+        "displayName": "Total",
+        "over": {
+         "close": {
+          "line": "o48.5",
+          "odds": "-105",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "over",
+            "desktop",
+            "bets"
+           ],
+           "text": "Over Odds",
+           "shortText": "Over Odds",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872657,
+             "betSide": "over",
+             "betType": "straight",
+             "betDetails": "Over:48.5"
+            }
+           }
+          }
+         },
+         "open": {
+          "line": "o48.5",
+          "odds": "-110"
+         }
+        },
+        "under": {
+         "close": {
+          "line": "u48.5",
+          "odds": "-115",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "under",
+            "desktop",
+            "bets"
+           ],
+           "text": "Under Odds",
+           "shortText": "Under Odds",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872657,
+             "betSide": "under",
+             "betType": "straight",
+             "betDetails": "Under:48.5"
+            }
+           }
+          }
+         },
+         "open": {
+          "line": "u48.5",
+          "odds": "-110"
+         }
+        }
+       },
+       "link": {
+        "language": "en-US",
+        "rel": [
+         "game",
+         "desktop",
+         "bets"
+        ],
+        "text": "See More Odds",
+        "shortText": "Game",
+        "isExternal": true,
+        "isPremium": false,
+        "tracking": {
+         "campaign": "betting-integrations",
+         "tags": {
+          "league": "nfl",
+          "sport": "football",
+          "gameId": 401872657,
+          "betSide": "none",
+          "betType": "straight"
+         }
+        }
+       },
+       "header": {
+        "text": "Game Odds"
+       },
+       "footer": {
+        "disclaimer": "GAMBLING PROBLEM? CALL 1-800-GAMBLER or 1-800-MY-RESET, (800) 327-5050 or visit gamblinghelplinema.org (MA). Call 877-8-HOPENY/text HOPENY (467369) (NY). Call 888-789-7777/visit ccpg.org (CT), or visit www.mdgamblinghelp.org (MD), 1-800-981-0023 (PR). 21+ and present in most states. (18+ DC/KY/NH/PR/WY). Void in ONT. Eligibility restrictions apply. Terms: draftkings.com/sportsbook. On behalf of Boot Hill Casino (KS). Pass-thru of per wager tax may apply in IL."
+       }
+      }
+     ],
+     "highlights": []
+    }
+   ],
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 0,
+    "type": {
+     "id": "1",
+     "name": "STATUS_SCHEDULED",
+     "state": "pre",
+     "completed": false,
+     "detail": "Thu, September 10th at 8:35 PM EDT",
+     "shortDetail": "9/10 - 8:35 PM EDT"
+    }
+   }
+  },
+  {
+   "id": "401872925",
+   "date": "2026-09-13T17:00Z",
+   "name": "Tampa Bay Buccaneers at Cincinnati Bengals",
+   "shortName": "TB @ CIN",
+   "season": {
+    "year": 2026,
+    "type": 2,
+    "slug": "regular-season"
+   },
+   "week": {
+    "number": 1
+   },
+   "competitions": [
+    {
+     "id": "401872925",
+     "date": "2026-09-13T17:00Z",
+     "attendance": 0,
+     "type": {
+      "id": "1",
+      "abbreviation": "STD"
+     },
+     "timeValid": true,
+     "neutralSite": false,
+     "conferenceCompetition": false,
+     "playByPlayAvailable": false,
+     "recent": false,
+     "venue": {
+      "id": "3874",
+      "fullName": "Paycor Stadium",
+      "address": {
+       "city": "Cincinnati",
+       "state": "OH",
+       "country": "USA"
+      },
+      "indoor": false
+     },
+     "competitors": [
+      {
+       "id": "4",
+       "type": "team",
+       "order": 0,
+       "homeAway": "home",
+       "team": {
+        "id": "4",
+        "location": "Cincinnati",
+        "name": "Bengals",
+        "abbreviation": "CIN",
+        "displayName": "Cincinnati Bengals",
+        "color": "fb4f14",
+        "alternateColor": "000000",
+        "isActive": true,
+        "venue": {
+         "id": "3874"
+        }
+       },
+       "score": "0",
+       "curatedRank": {
+        "current": 99
+       },
+       "statistics": [],
+       "records": [
+        {
+         "name": "overall",
+         "abbreviation": "Any",
+         "type": "total",
+         "summary": "0-0"
+        },
+        {
+         "name": "Home",
+         "type": "home",
+         "summary": "0-0"
+        },
+        {
+         "name": "Road",
+         "type": "road",
+         "summary": "0-0"
+        }
+       ]
+      },
+      {
+       "id": "27",
+       "type": "team",
+       "order": 1,
+       "homeAway": "away",
+       "team": {
+        "id": "27",
+        "location": "Tampa Bay",
+        "name": "Buccaneers",
+        "abbreviation": "TB",
+        "displayName": "Tampa Bay Buccaneers",
+        "color": "bd1c36",
+        "alternateColor": "3e3a35",
+        "isActive": true,
+        "venue": {
+         "id": "3886"
+        }
+       },
+       "score": "0",
+       "curatedRank": {
+        "current": 99
+       },
+       "statistics": [],
+       "records": [
+        {
+         "name": "overall",
+         "abbreviation": "Any",
+         "type": "total",
+         "summary": "0-0"
+        },
+        {
+         "name": "Home",
+         "type": "home",
+         "summary": "0-0"
+        },
+        {
+         "name": "Road",
+         "type": "road",
+         "summary": "0-0"
+        }
+       ]
+      }
+     ],
+     "notes": [],
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 0,
+      "type": {
+       "id": "1",
+       "name": "STATUS_SCHEDULED",
+       "state": "pre",
+       "completed": false,
+       "detail": "Sun, September 13th at 1:00 PM EDT",
+       "shortDetail": "9/13 - 1:00 PM EDT"
+      },
+      "isTBDFlex": false
+     },
+     "broadcasts": [
+      {
+       "market": "national",
+       "names": [
+        "FOX"
+       ]
+      }
+     ],
+     "format": {
+      "regulation": {
+       "periods": 4
+      }
+     },
+     "tickets": [
+      {
+       "summary": "Tickets as low as $139",
+       "numberAvailable": 3747
+      }
+     ],
+     "startDate": "2026-09-13T17:00Z",
+     "broadcast": "FOX",
+     "geoBroadcasts": [
+      {
+       "type": {
+        "id": "1",
+        "shortName": "TV"
+       },
+       "market": {
+        "id": "1",
+        "type": "National"
+       },
+       "media": {
+        "shortName": "FOX"
+       },
+       "lang": "en",
+       "region": "us"
+      }
+     ],
+     "odds": [
+      {
+       "provider": {
+        "id": "100",
+        "name": "DraftKings",
+        "priority": 1
+       },
+       "details": "CIN -3.5",
+       "overUnder": 50.5,
+       "spread": -3.5,
+       "awayTeamOdds": {
+        "favorite": false,
+        "underdog": true,
+        "team": {
+         "id": "27",
+         "abbreviation": "TB",
+         "name": "Buccaneers",
+         "displayName": "Tampa Bay Buccaneers"
+        },
+        "favoriteAtOpen": false
+       },
+       "homeTeamOdds": {
+        "favorite": true,
+        "underdog": false,
+        "team": {
+         "id": "4",
+         "abbreviation": "CIN",
+         "name": "Bengals",
+         "displayName": "Cincinnati Bengals"
+        },
+        "favoriteAtOpen": true
+       },
+       "moneyline": {
+        "displayName": "Moneyline",
+        "home": {
+         "close": {
+          "odds": "-205",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "home",
+            "desktop",
+            "bets",
+            "draftkings"
+           ],
+           "text": "Home Bet",
+           "shortText": "Home Bet",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872925,
+             "betSide": "home",
+             "betType": "straight"
+            }
+           }
+          }
+         },
+         "open": {
+          "odds": "-198"
+         }
+        },
+        "away": {
+         "close": {
+          "odds": "+170",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "away",
+            "desktop",
+            "bets",
+            "draftkings"
+           ],
+           "text": "Away Bet",
+           "shortText": "Away Bet",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872925,
+             "betSide": "away",
+             "betType": "straight"
+            }
+           }
+          }
+         },
+         "open": {
+          "odds": "+164"
+         }
+        }
+       },
+       "pointSpread": {
+        "displayName": "Spread",
+        "home": {
+         "close": {
+          "line": "-3.5",
+          "odds": "-115",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "homeSpread",
+            "desktop",
+            "bets"
+           ],
+           "text": "Home Point Spread",
+           "shortText": "Home Point Spread",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872925,
+             "betSide": "none",
+             "betType": "straight",
+             "betDetails": "Spread:CIN-3.5"
+            }
+           }
+          }
+         },
+         "open": {
+          "line": "-3.5",
+          "odds": "-110"
+         }
+        },
+        "away": {
+         "close": {
+          "line": "+3.5",
+          "odds": "-105",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "awaySpread",
+            "desktop",
+            "bets"
+           ],
+           "text": "Away Point Spread",
+           "shortText": "Away Point Spread",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872925,
+             "betSide": "none",
+             "betType": "straight",
+             "betDetails": "Spread:TB+3.5"
+            }
+           }
+          }
+         },
+         "open": {
+          "line": "+3.5",
+          "odds": "-110"
+         }
+        }
+       },
+       "total": {
+        "displayName": "Total",
+        "over": {
+         "close": {
+          "line": "o50.5",
+          "odds": "-108",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "over",
+            "desktop",
+            "bets"
+           ],
+           "text": "Over Odds",
+           "shortText": "Over Odds",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872925,
+             "betSide": "over",
+             "betType": "straight",
+             "betDetails": "Over:50.5"
+            }
+           }
+          }
+         },
+         "open": {
+          "line": "o50.5",
+          "odds": "-115"
+         }
+        },
+        "under": {
+         "close": {
+          "line": "u50.5",
+          "odds": "-112",
+          "link": {
+           "language": "en-US",
+           "rel": [
+            "under",
+            "desktop",
+            "bets"
+           ],
+           "text": "Under Odds",
+           "shortText": "Under Odds",
+           "isExternal": true,
+           "isPremium": false,
+           "tracking": {
+            "campaign": "betting-integrations",
+            "tags": {
+             "league": "nfl",
+             "sport": "football",
+             "gameId": 401872925,
+             "betSide": "under",
+             "betType": "straight",
+             "betDetails": "Under:50.5"
+            }
+           }
+          }
+         },
+         "open": {
+          "line": "u50.5",
+          "odds": "-105"
+         }
+        }
+       },
+       "link": {
+        "language": "en-US",
+        "rel": [
+         "game",
+         "desktop",
+         "bets"
+        ],
+        "text": "See More Odds",
+        "shortText": "Game",
+        "isExternal": true,
+        "isPremium": false,
+        "tracking": {
+         "campaign": "betting-integrations",
+         "tags": {
+          "league": "nfl",
+          "sport": "football",
+          "gameId": 401872925,
+          "betSide": "none",
+          "betType": "straight"
+         }
+        }
+       },
+       "header": {
+        "text": "Game Odds"
+       },
+       "footer": {
+        "disclaimer": "GAMBLING PROBLEM? CALL 1-800-GAMBLER or 1-800-MY-RESET, (800) 327-5050 or visit gamblinghelplinema.org (MA). Call 877-8-HOPENY/text HOPENY (467369) (NY). Call 888-789-7777/visit ccpg.org (CT), or visit www.mdgamblinghelp.org (MD), 1-800-981-0023 (PR). 21+ and present in most states. (18+ DC/KY/NH/PR/WY). Void in ONT. Eligibility restrictions apply. Terms: draftkings.com/sportsbook. On behalf of Boot Hill Casino (KS). Pass-thru of per wager tax may apply in IL."
+       }
+      }
+     ],
+     "highlights": []
+    }
+   ],
+   "weather": {
+    "displayValue": "Partly sunny w/ t-storms",
+    "temperature": 81,
+    "highTemperature": 81,
+    "conditionId": "17",
+    "link": {
+     "language": "en-US",
+     "rel": [
+      "45202"
+     ],
+     "text": "Weather",
+     "shortText": "Weather",
+     "isExternal": true,
+     "isPremium": false
+    }
+   },
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 0,
+    "type": {
+     "id": "1",
+     "name": "STATUS_SCHEDULED",
+     "state": "pre",
+     "completed": false,
+     "detail": "Sun, September 13th at 1:00 PM EDT",
+     "shortDetail": "9/13 - 1:00 PM EDT"
+    }
+   }
+  }
+ ]
+}

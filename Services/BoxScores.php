@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Convoro\Extensions\Picks\Services;
 
 use Convoro\Engine\Database\Connection;
+use Convoro\Extensions\Picks\Services\Leagues\League;
+use Convoro\Extensions\Picks\Services\Leagues\Leagues;
 use Convoro\Extensions\Picks\Services\Sources\Cfbd;
+use Convoro\Extensions\Picks\Services\Sources\EspnGames;
 
 /**
  * What happened in a game, kept in a shape this system owns.
@@ -42,6 +45,8 @@ final class BoxScores
         private Connection $db,
         private Cfbd $cfbd,
         private Settings $settings,
+        private EspnGames $espn = new EspnGames(new Http()),
+        private Leagues $leagues = new Leagues(),
     ) {
     }
 
@@ -53,10 +58,6 @@ final class BoxScores
     public function sync(?int $now = null): array
     {
         $now ??= time();
-
-        if (!$this->cfbd->configured()) {
-            return ['fetched' => 0, 'weeks' => 0, 'error' => 'unconfigured'];
-        }
 
         $weeks = $this->weeksNeeding($now);
 
@@ -125,6 +126,23 @@ final class BoxScores
      */
     private function fetchWeek(array $week, int $now): array
     {
+        $league = $this->leagues->get($week['league'] ?? null);
+
+        if ($league->provider !== 'cfbd') {
+            return $this->fetchWeekFromEspn($week, $league, $now);
+        }
+
+        /*
+         * 🚨 The key check lives HERE rather than at the top of `sync()`, where
+         * it used to be. Every league but college football is on ESPN, which
+         * needs no key at all — and a board following only the NFL would
+         * otherwise be told it was "unconfigured" and never fetch a single box
+         * score, with nothing on screen explaining why.
+         */
+        if (!$this->cfbd->configured()) {
+            return [0, ''];
+        }
+
         [$teams, $error] = $this->cfbd->teamBoxScores(
             $week['year'],
             $week['season_type'],
@@ -166,7 +184,55 @@ final class BoxScores
                 continue;
             }
 
-            $document = $this->normalise($gameId, $teams[$gameId], $players[$gameId] ?? []);
+            $document = $this->normalise($gameId, $teams[$gameId], $players[$gameId] ?? [], $league);
+
+            if ($document === null) {
+                continue;
+            }
+
+            $this->store((int) $event['id'], $document);
+            $stored++;
+        }
+
+        return [$stored, ''];
+    }
+
+    /**
+     * The same week, from ESPN.
+     *
+     * 🚨 ESPN answers a box score per GAME, where CollegeFootballData answers a
+     * whole week at once — so this loops where the other does not, and the
+     * adapter caps how many summaries one run may fetch. A Saturday of college
+     * basketball is a hundred and fifty games, and a scheduled job that fired a
+     * hundred and fifty outbound requests inside a minute has taken a site on
+     * this stack down before. What is not fetched now is fetched next hour; a
+     * box score arriving late is invisible, a dead queue worker is not.
+     *
+     * @param array<string, mixed> $week
+     * @return array{0: int, 1: string}
+     */
+    private function fetchWeekFromEspn(array $week, League $league, int $now): array
+    {
+        if (!$this->espn->supports($league)) {
+            return [0, ''];
+        }
+
+        $stored = 0;
+
+        foreach ($this->finishedInWeek((int) $week['week_id'], $now) as $event) {
+            $externalId = (string) ($event['external_id'] ?? '');
+
+            if ($externalId === '') {
+                continue;
+            }
+
+            $sides = $this->espn->boxScore($league, $externalId, (int) $week['week_number']);
+
+            if ($sides === null) {
+                continue;
+            }
+
+            $document = $this->normalise((int) $event['id'], $sides['teams'], $sides['players'], $league);
 
             if ($document === null) {
                 continue;
@@ -193,13 +259,19 @@ final class BoxScores
 
         $rows = $this->db->select(
             "SELECT DISTINCT w.`id` AS week_id, w.`week_number`, w.`season_type`,
-                    s.`id` AS season_id, s.`year`
+                    s.`id` AS season_id, s.`year`, s.`league`
                FROM `{$events}` e
                JOIN `{$weeks}` w ON w.`id` = e.`week_id`
                JOIN `{$seasons}` s ON s.`id` = w.`season_id`
           LEFT JOIN `{$box}` b ON b.`event_id` = e.`id`
               WHERE e.`status` = 'finished'
-                AND e.`cfbd_id` > 0
+                /*
+                 * 🚨 Either id will do. `cfbd_id` was the only one there was;
+                 * a league synced from ESPN has an `external_id` and no
+                 * `cfbd_id`, and requiring the old column would quietly exclude
+                 * every game that is not college football.
+                 */
+                AND (e.`cfbd_id` > 0 OR e.`external_id` <> '')
                 AND b.`id` IS NULL
                 AND e.`match_at` > ?
            ORDER BY w.`week_number` DESC",
@@ -215,6 +287,7 @@ final class BoxScores
                 'year' => (int) $row['year'],
                 'week_number' => (int) $row['week_number'],
                 'season_type' => (string) $row['season_type'],
+                'league' => (string) ($row['league'] ?? Leagues::DEFAULT),
             ];
         }
 
@@ -228,7 +301,7 @@ final class BoxScores
             ->where('week_id', $weekId)
             ->where('status', 'finished')
             ->where('match_at', '>', $now - (self::KEEP_TRYING_HOURS * 3600))
-            ->get(['id', 'cfbd_id', 'home_team_id', 'away_team_id']);
+            ->get(['id', 'cfbd_id', 'external_id', 'home_team_id', 'away_team_id']);
     }
 
     /** @param array<string, mixed> $document */
@@ -257,8 +330,10 @@ final class BoxScores
      * @param list<array<string, mixed>> $playerSides
      * @return array<string, mixed>|null
      */
-    public function normalise(int $gameId, array $teamSides, array $playerSides): ?array
+    public function normalise(int $gameId, array $teamSides, array $playerSides, ?League $league = null): ?array
     {
+        $league ??= $this->leagues->get(Leagues::DEFAULT);
+
         $document = ['game' => $gameId];
 
         foreach ($teamSides as $side) {
@@ -284,7 +359,7 @@ final class BoxScores
                 continue;
             }
 
-            $document[$where]['leaders'] = $this->leaders($side['categories'] ?? []);
+            $document[$where]['leaders'] = $this->leaders($side['categories'] ?? [], $league->leaders);
         }
 
         return $document;
@@ -339,15 +414,8 @@ final class BoxScores
      * @param mixed $categories
      * @return array<string, array{name: string, stats: array<string, string>}>
      */
-    private function leaders(mixed $categories): array
+    private function leaders(mixed $categories, array $decidedBy): array
     {
-        $decidedBy = [
-            'passing' => 'YDS',
-            'rushing' => 'YDS',
-            'receiving' => 'YDS',
-            'defensive' => 'TOT',
-        ];
-
         $out = [];
 
         foreach (is_array($categories) ? $categories : [] as $category) {

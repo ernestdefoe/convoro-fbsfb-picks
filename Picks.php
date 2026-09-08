@@ -6,6 +6,7 @@ namespace Convoro\Extensions\Picks;
 
 use Convoro\Engine\Module\Module;
 use Convoro\Extensions\Picks\Services\BoxScores;
+use Convoro\Extensions\Picks\Services\EspnSync;
 use Convoro\Extensions\Picks\Services\Games;
 use Convoro\Extensions\Picks\Services\Http;
 use Convoro\Extensions\Picks\Services\Picks as Store;
@@ -14,6 +15,7 @@ use Convoro\Extensions\Picks\Services\Seasons;
 use Convoro\Extensions\Picks\Services\Settings;
 use Convoro\Extensions\Picks\Services\Sources\Cfbd;
 use Convoro\Extensions\Picks\Services\Sources\Espn;
+use Convoro\Extensions\Picks\Services\Sources\EspnGames;
 use Convoro\Extensions\Picks\Services\Sync;
 use Convoro\Extensions\Picks\Services\Teams;
 
@@ -75,6 +77,7 @@ final class Picks extends Module
     public const SCORES = 'picks.scores';
     public const RESCORE = 'picks.rescore';
     public const BOX_SCORES = 'picks.box-scores';
+    public const ESPN_FIXTURES = 'picks.espn-fixtures';
 
     public function register(): void
     {
@@ -150,6 +153,27 @@ final class Picks extends Module
             $this->app->make('db'),
             $this->app->make('picks.cfbd'),
             $this->app->make('picks.settings'),
+            $this->app->make('picks.espn_games'),
+        ));
+
+        $this->app->singleton('picks.espn_games', fn (): EspnGames => new EspnGames(
+            $this->app->make('picks.http'),
+        ));
+
+        /*
+         * 🚨 A second sync beside the college one rather than a rewrite of it.
+         * CollegeFootballData is asked for a year and a week and answers a
+         * calendar; ESPN is asked for a league and answers a scoreboard. One
+         * service for both would be one set of decisions that is wrong for
+         * whichever feed it was not written for.
+         */
+        $this->app->singleton('picks.espn_sync', fn (): EspnSync => new EspnSync(
+            $this->app->make('db'),
+            $this->app->make('picks.espn_games'),
+            $this->app->make('picks.seasons'),
+            $this->app->make('picks.teams'),
+            $this->app->make('picks.games'),
+            $this->app->make('picks.settings'),
         ));
 
         $this->app->singleton('picks.sync', fn (): Sync => new Sync(
@@ -195,6 +219,18 @@ final class Picks extends Module
          * every finished game has one, which is most of the week.
          */
         $this->schedule()->hourly(self::BOX_SCORES);
+
+        /*
+         * 🚨 Hourly, alongside the college fixtures and for the same reason: a
+         * scoreboard is one call per league, and fixtures change on the
+         * timescale of a press release. A board following six leagues at
+         * minutely intervals would be three hundred and sixty outbound calls an
+         * hour for a schedule that moves a few times a season.
+         *
+         * It returns immediately on a board with no ESPN-backed season, which
+         * is every board that exists today.
+         */
+        $this->schedule()->hourly(self::ESPN_FIXTURES);
     }
 
     public function boot(): void
@@ -204,6 +240,7 @@ final class Picks extends Module
         $queue->handle(self::FIXTURES, fn (): array => $this->app->make('picks.sync')->fixtures());
         $queue->handle(self::SCORES, fn (): array => $this->app->make('picks.sync')->scores());
         $queue->handle(self::BOX_SCORES, fn (): array => $this->app->make('picks.box_scores')->sync());
+        $queue->handle(self::ESPN_FIXTURES, fn (): array => $this->app->make('picks.espn_sync')->fixtures());
 
         /*
          * The tail of a large re-scoring. A slate of thirty bowls finishing at
@@ -248,7 +285,14 @@ final class Picks extends Module
                 ];
             }
 
-            if (!$settings->hasCfbdKey()) {
+            /*
+             * 🚨 Only a board that actually follows college football needs a
+             * CollegeFootballData key. Every other league is on ESPN, which
+             * needs none — and telling somebody who follows only the NFL that
+             * their install is misconfigured, in red, is a false alarm they
+             * cannot act on and would not want to.
+             */
+            if (!$settings->hasCfbdKey() && $this->app->make('picks.seasons')->anyOnCfbd()) {
                 return [
                     'label' => $label,
                     'value' => __('picks.health_unconfigured'),

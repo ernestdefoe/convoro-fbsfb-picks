@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Convoro\Extensions\Picks\Services;
 
 use Convoro\Engine\Database\Connection;
+use Convoro\Extensions\Picks\Services\Leagues\Leagues;
 
 /**
  * Seasons and the weeks inside them, and the one question the front page asks:
@@ -38,21 +39,74 @@ final class Seasons
         return $id < 1 ? null : $this->db->table('picks_seasons')->where('id', $id)->first();
     }
 
-    /** Finds or creates the season for a year, and returns its id. */
-    public function seasonForYear(int $year): int
+    /**
+     * Finds or creates the season for a year IN A LEAGUE, and returns its id.
+     *
+     * 🚨 The league is part of the identity, not a detail on the row. The NFL
+     * and the Premier League both run in 2026, and looking a season up by year
+     * alone would hand the football sync the football season and quietly file
+     * every fixture in it.
+     */
+    public function seasonForYear(int $year, string $league = Leagues::DEFAULT): int
     {
-        $existing = $this->db->table('picks_seasons')->where('year', $year)->first();
+        $existing = $this->db->table('picks_seasons')
+            ->where('year', $year)
+            ->where('league', $league)
+            ->first();
 
         if ($existing !== null) {
             return (int) $existing['id'];
         }
 
+        $definition = (new Leagues())->get($league);
+
         return (int) $this->db->table('picks_seasons')->insertGetId([
-            'name' => $year . ' Season',
-            'slug' => $year . '-season',
+            /*
+             * 🚨 The league is in the NAME and the SLUG as well as the column.
+             * Two seasons called "2026 Season" on one screen are indistinguishable,
+             * and `slug` is unique — the second league's season would be refused
+             * outright.
+             */
+            'name' => $league === Leagues::DEFAULT
+                ? $year . ' Season'
+                : $definition->name . ' ' . $year,
+            'slug' => $league === Leagues::DEFAULT
+                ? $year . '-season'
+                : $league . '-' . $year,
             'year' => $year,
+            'league' => $league,
             'created_at' => date('Y-m-d H:i:s'),
         ]);
+    }
+
+    /** Whether any season is on a league CollegeFootballData answers for. */
+    public function anyOnCfbd(): bool
+    {
+        $leagues = new Leagues();
+
+        foreach ($this->db->table('picks_seasons')->get(['league']) as $row) {
+            if ($leagues->get($row['league'] ?? null)->provider === 'cfbd') {
+                return true;
+            }
+        }
+
+        /*
+         * 🚨 True when there are no seasons at all. A fresh install has nothing
+         * to go on, and the default league is college football — so the key is
+         * still the thing that install needs next.
+         */
+        return $this->db->table('picks_seasons')->count() === 0;
+    }
+
+    /** @return list<array<string, mixed>> the seasons on ESPN-backed leagues */
+    public function onEspn(): array
+    {
+        $leagues = new Leagues();
+
+        return array_values(array_filter(
+            $this->all(),
+            static fn (array $season): bool => $leagues->get($season['league'] ?? null)->provider === 'espn'
+        ));
     }
 
     /* --------------------------------------------------------------- weeks */
