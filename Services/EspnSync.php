@@ -116,8 +116,8 @@ final class EspnSync
                 continue;
             }
 
-            $homeId = $this->team($byName, (string) $game['home'], $summary);
-            $awayId = $this->team($byName, (string) $game['away'], $summary);
+            $homeId = $this->team($byName, (string) $game['home'], (array) ($game['home_team'] ?? []), $summary);
+            $awayId = $this->team($byName, (string) $game['away'], (array) ($game['away_team'] ?? []), $summary);
 
             if ($homeId < 1 || $awayId < 1) {
                 continue;
@@ -160,7 +160,7 @@ final class EspnSync
      * @param array<string, int>   $byName
      * @param array<string, mixed> $summary
      */
-    private function team(array &$byName, string $name, array &$summary): int
+    private function team(array &$byName, string $name, array $club, array &$summary): int
     {
         $name = trim($name);
 
@@ -169,16 +169,43 @@ final class EspnSync
         }
 
         $key = $this->key($name);
+        $logo = (string) ($club['logo'] ?? '');
+        $espnId = ($club['external_id'] ?? '') !== '' ? (int) $club['external_id'] : 0;
 
         if (isset($byName[$key])) {
+            /*
+             * 🚨 A crest an operator chose is never overwritten — `logo_custom`
+             * is the only way to keep a hand-picked one through a sync — and
+             * neither is one that is already there. This fills a gap; it does
+             * not re-fetch every hour.
+             */
+            if ($logo !== '') {
+                $this->db->table('picks_teams')
+                    ->where('id', $byName[$key])
+                    ->where('logo_custom', 0)
+                    ->where('logo_path', '')
+                    ->updateAll(['logo_path' => $logo, 'espn_id' => $espnId]);
+            }
+
             return $byName[$key];
         }
+
+        $abbreviation = (string) ($club['abbreviation'] ?? '');
 
         $id = (int) $this->db->table('picks_teams')->insertGetId([
             'name' => mb_substr($name, 0, 190),
             'slug' => $this->slug($name),
-            'abbreviation' => mb_strtoupper(mb_substr((string) preg_replace('/[^A-Za-z]/', '', $name), 0, 4)),
+            'abbreviation' => mb_substr($abbreviation !== ''
+                ? $abbreviation
+                : mb_strtoupper(mb_substr((string) preg_replace('/[^A-Za-z]/', '', $name), 0, 4)), 0, 16),
             'conference' => '',
+            /*
+             * 🚨 The crest comes off the FIXTURE, which is the whole reason it
+             * is carried there. A pick'em whose teams have no logo is a board
+             * of grey squares.
+             */
+            'logo_path' => $logo,
+            'espn_id' => $espnId,
             'created_at' => date('Y-m-d H:i:s'),
         ]);
 

@@ -203,11 +203,38 @@ final class EspnGames
             'start' => (string) ($event['date'] ?? ''),
             'home' => (string) (($home['team'] ?? [])['displayName'] ?? ''),
             'away' => (string) (($away['team'] ?? [])['displayName'] ?? ''),
+            /*
+             * 🚨 The crest comes back with the FIXTURE, and taking it here is
+             * what saves a second endpoint entirely. A pick'em whose teams have
+             * no logo is a board of grey squares — the first version of this
+             * shipped exactly that, and it looked broken rather than unfinished.
+             */
+            'home_team' => $this->club($home),
+            'away_team' => $this->club($away),
             'home_score' => isset($home['score']) ? (int) $home['score'] : null,
             'away_score' => isset($away['score']) ? (int) $away['score'] : null,
             'completed' => $completed,
             'status' => (string) ($type['state'] ?? 'pre'),
             'neutral_site' => (bool) ($competition['neutralSite'] ?? false),
+        ];
+    }
+
+    /**
+     * The club itself, as much of it as a scoreboard carries.
+     *
+     * @param  array<string, mixed> $side
+     * @return array<string, string>
+     */
+    private function club(array $side): array
+    {
+        $team = is_array($side['team'] ?? null) ? $side['team'] : [];
+
+        return [
+            'external_id' => (string) ($team['id'] ?? ''),
+            'name' => (string) ($team['displayName'] ?? ''),
+            'abbreviation' => (string) ($team['abbreviation'] ?? ''),
+            'logo' => (string) ($team['logo'] ?? ''),
+            'color' => (string) ($team['color'] ?? ''),
         ];
     }
 

@@ -395,7 +395,15 @@ final class Games
 
         if ($existing === null) {
             $id = (int) $this->db->table('picks_events')->insertGetId($changed + [
-                'cfbd_id' => $cfbdId,
+                /*
+                 * 🚨 NULL, never 0, when there is no CollegeFootballData id.
+                 * `cfbd_id` carries a UNIQUE index, and MySQL treats NULLs in
+                 * one as distinct while treating zeros as equal — so a league
+                 * synced from ESPN inserted its first fixture happily and died
+                 * on the second with a duplicate-key error naming a column it
+                 * had never written. Found the first time this ran on Convoro.
+                 */
+                'cfbd_id' => $cfbdId > 0 ? $cfbdId : null,
                 'external_id' => $externalId,
                 'status' => $changed['status'] ?? self::SCHEDULED,
                 'created_at' => date('Y-m-d H:i:s'),
