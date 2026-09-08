@@ -207,6 +207,86 @@ final class Cfbd
     }
 
     /**
+     * The team box score for every game in a week.
+     *
+     * 🚨 A WEEK, not a game, and that is a budget decision. This provider spends
+     * a monthly allowance per call, and a Saturday has sixty games on it —
+     * asking per game is sixty calls for the same answer one call gives. The
+     * caller sorts out which games it wanted.
+     *
+     * Answered as `[cfbd game id => raw teams array]`, still in the provider's
+     * shape. Normalising happens once, in `BoxScores`, so this file stays what
+     * every other method here is: the place that knows the provider and nothing
+     * else does.
+     *
+     * @return array{0: array<int, list<array<string, mixed>>>, 1: string}
+     */
+    public function teamBoxScores(int $year, string $seasonType, int $week): array
+    {
+        return $this->boxScores('/games/teams', $year, $seasonType, $week, 'teams');
+    }
+
+    /**
+     * The player box score for every game in a week.
+     *
+     * @return array{0: array<int, list<array<string, mixed>>>, 1: string}
+     */
+    public function playerBoxScores(int $year, string $seasonType, int $week): array
+    {
+        return $this->boxScores('/games/players', $year, $seasonType, $week, 'teams');
+    }
+
+    /**
+     * @return array{0: array<int, list<array<string, mixed>>>, 1: string}
+     */
+    private function boxScores(string $path, int $year, string $seasonType, int $week, string $key): array
+    {
+        $query = [
+            'year' => (string) $year,
+            'seasonType' => $seasonType,
+            'week' => (string) $week,
+            'classification' => self::CLASSIFICATION,
+        ];
+
+        $conference = $this->settings->conference();
+
+        if ($conference !== '') {
+            $query['conference'] = $conference;
+        }
+
+        [$rows, $error] = $this->fetch($path, $query);
+
+        if ($error !== '') {
+            return [[], $error];
+        }
+
+        $out = [];
+
+        foreach ($rows as $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+
+            $id = (int) ($row['id'] ?? 0);
+            $sides = $row[$key] ?? null;
+
+            /*
+             * 🚨 A game with no game id, or with one side missing, is dropped
+             * rather than half-stored. A box score showing one team's numbers
+             * beside a blank column reads as the other team having done
+             * nothing, which is worse than showing no box score at all.
+             */
+            if ($id < 1 || !is_array($sides) || count($sides) < 2) {
+                continue;
+            }
+
+            $out[$id] = array_values(array_filter($sides, 'is_array'));
+        }
+
+        return [$out, ''];
+    }
+
+    /**
      * @param array<string, string> $query
      * @return array{0: list<mixed>, 1: string}
      */

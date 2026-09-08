@@ -1,0 +1,3170 @@
+{
+ "teams": [
+  {
+   "teamId": 87,
+   "team": "Notre Dame",
+   "conference": "FBS Independents",
+   "homeAway": "home",
+   "points": 41,
+   "stats": [
+    {
+     "category": "firstDowns",
+     "stat": "20"
+    },
+    {
+     "category": "thirdDownEff",
+     "stat": "3-9"
+    },
+    {
+     "category": "fourthDownEff",
+     "stat": "1-1"
+    },
+    {
+     "category": "totalYards",
+     "stat": "350"
+    },
+    {
+     "category": "netPassingYards",
+     "stat": "239"
+    },
+    {
+     "category": "completionAttempts",
+     "stat": "19-29"
+    },
+    {
+     "category": "yardsPerPass",
+     "stat": "8.2"
+    },
+    {
+     "category": "rushingYards",
+     "stat": "111"
+    },
+    {
+     "category": "rushingAttempts",
+     "stat": "32"
+    },
+    {
+     "category": "yardsPerRushAttempt",
+     "stat": "3.5"
+    },
+    {
+     "category": "totalPenaltiesYards",
+     "stat": "4-41"
+    },
+    {
+     "category": "turnovers",
+     "stat": "0"
+    },
+    {
+     "category": "fumblesLost",
+     "stat": "0"
+    },
+    {
+     "category": "interceptions",
+     "stat": "0"
+    },
+    {
+     "category": "possessionTime",
+     "stat": "31:36"
+    },
+    {
+     "category": "passesDeflected",
+     "stat": "5"
+    },
+    {
+     "category": "qbHurries",
+     "stat": "1"
+    },
+    {
+     "category": "sacks",
+     "stat": "2"
+    },
+    {
+     "category": "tackles",
+     "stat": "36"
+    },
+    {
+     "category": "defensiveTDs",
+     "stat": "1"
+    },
+    {
+     "category": "tacklesForLoss",
+     "stat": "6"
+    },
+    {
+     "category": "totalFumbles",
+     "stat": "1"
+    },
+    {
+     "category": "fumblesRecovered",
+     "stat": "1"
+    },
+    {
+     "category": "passesIntercepted",
+     "stat": "1"
+    },
+    {
+     "category": "interceptionTDs",
+     "stat": "1"
+    },
+    {
+     "category": "interceptionYards",
+     "stat": "55"
+    },
+    {
+     "category": "kickingPoints",
+     "stat": "11"
+    },
+    {
+     "category": "kickReturns",
+     "stat": "2"
+    },
+    {
+     "category": "kickReturnTDs",
+     "stat": "0"
+    },
+    {
+     "category": "kickReturnYards",
+     "stat": "42"
+    },
+    {
+     "category": "passingTDs",
+     "stat": "2"
+    },
+    {
+     "category": "puntReturns",
+     "stat": "1"
+    },
+    {
+     "category": "puntReturnTDs",
+     "stat": "0"
+    },
+    {
+     "category": "puntReturnYards",
+     "stat": "12"
+    },
+    {
+     "category": "rushingTDs",
+     "stat": "2"
+    }
+   ]
+  },
+  {
+   "teamId": 275,
+   "team": "Wisconsin",
+   "conference": "Big Ten",
+   "homeAway": "away",
+   "points": 13,
+   "stats": [
+    {
+     "category": "firstDowns",
+     "stat": "16"
+    },
+    {
+     "category": "thirdDownEff",
+     "stat": "5-13"
+    },
+    {
+     "category": "fourthDownEff",
+     "stat": "1-1"
+    },
+    {
+     "category": "totalYards",
+     "stat": "284"
+    },
+    {
+     "category": "netPassingYards",
+     "stat": "217"
+    },
+    {
+     "category": "completionAttempts",
+     "stat": "19-30"
+    },
+    {
+     "category": "yardsPerPass",
+     "stat": "7.2"
+    },
+    {
+     "category": "rushingYards",
+     "stat": "67"
+    },
+    {
+     "category": "rushingAttempts",
+     "stat": "31"
+    },
+    {
+     "category": "yardsPerRushAttempt",
+     "stat": "2.2"
+    },
+    {
+     "category": "totalPenaltiesYards",
+     "stat": "6-43"
+    },
+    {
+     "category": "turnovers",
+     "stat": "2"
+    },
+    {
+     "category": "fumblesLost",
+     "stat": "1"
+    },
+    {
+     "category": "interceptions",
+     "stat": "1"
+    },
+    {
+     "category": "possessionTime",
+     "stat": "28:24"
+    },
+    {
+     "category": "passesDeflected",
+     "stat": "5"
+    },
+    {
+     "category": "qbHurries",
+     "stat": "2"
+    },
+    {
+     "category": "sacks",
+     "stat": "1"
+    },
+    {
+     "category": "tackles",
+     "stat": "27"
+    },
+    {
+     "category": "defensiveTDs",
+     "stat": "0"
+    },
+    {
+     "category": "tacklesForLoss",
+     "stat": "1"
+    },
+    {
+     "category": "totalFumbles",
+     "stat": "1"
+    },
+    {
+     "category": "fumblesRecovered",
+     "stat": "0"
+    },
+    {
+     "category": "kickReturns",
+     "stat": "3"
+    },
+    {
+     "category": "kickReturnTDs",
+     "stat": "0"
+    },
+    {
+     "category": "kickReturnYards",
+     "stat": "51"
+    },
+    {
+     "category": "passingTDs",
+     "stat": "1"
+    },
+    {
+     "category": "puntReturns",
+     "stat": "1"
+    },
+    {
+     "category": "puntReturnTDs",
+     "stat": "0"
+    },
+    {
+     "category": "puntReturnYards",
+     "stat": "3"
+    },
+    {
+     "category": "rushingTDs",
+     "stat": "0"
+    }
+   ]
+  }
+ ],
+ "players": [
+  {
+   "team": "Notre Dame",
+   "conference": "FBS Independents",
+   "homeAway": "home",
+   "points": 41,
+   "categories": [
+    {
+     "name": "passing",
+     "types": [
+      {
+       "name": "C/ATT",
+       "athletes": [
+        {
+         "id": "5079369",
+         "name": "C.J. Carr",
+         "stat": "19/29"
+        }
+       ]
+      },
+      {
+       "name": "YDS",
+       "athletes": [
+        {
+         "id": "5079369",
+         "name": "C.J. Carr",
+         "stat": "239"
+        }
+       ]
+      },
+      {
+       "name": "AVG",
+       "athletes": [
+        {
+         "id": "5079369",
+         "name": "C.J. Carr",
+         "stat": "8.2"
+        }
+       ]
+      },
+      {
+       "name": "TD",
+       "athletes": [
+        {
+         "id": "5079369",
+         "name": "C.J. Carr",
+         "stat": "2"
+        }
+       ]
+      },
+      {
+       "name": "INT",
+       "athletes": [
+        {
+         "id": "5079369",
+         "name": "C.J. Carr",
+         "stat": "0"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "rushing",
+     "types": [
+      {
+       "name": "CAR",
+       "athletes": [
+        {
+         "id": "5079742",
+         "name": "Aneyas Williams",
+         "stat": "20"
+        },
+        {
+         "id": "5189515",
+         "name": "Nolan James Jr.",
+         "stat": "7"
+        },
+        {
+         "id": "5106301",
+         "name": "Kedren Young",
+         "stat": "3"
+        },
+        {
+         "id": "5079369",
+         "name": "C.J. Carr",
+         "stat": "2"
+        }
+       ]
+      },
+      {
+       "name": "YDS",
+       "athletes": [
+        {
+         "id": "5079742",
+         "name": "Aneyas Williams",
+         "stat": "90"
+        },
+        {
+         "id": "5189515",
+         "name": "Nolan James Jr.",
+         "stat": "19"
+        },
+        {
+         "id": "5106301",
+         "name": "Kedren Young",
+         "stat": "8"
+        },
+        {
+         "id": "5079369",
+         "name": "C.J. Carr",
+         "stat": "-6"
+        }
+       ]
+      },
+      {
+       "name": "AVG",
+       "athletes": [
+        {
+         "id": "5079742",
+         "name": "Aneyas Williams",
+         "stat": "4.5"
+        },
+        {
+         "id": "5189515",
+         "name": "Nolan James Jr.",
+         "stat": "2.7"
+        },
+        {
+         "id": "5106301",
+         "name": "Kedren Young",
+         "stat": "2.7"
+        },
+        {
+         "id": "5079369",
+         "name": "C.J. Carr",
+         "stat": "-3.0"
+        }
+       ]
+      },
+      {
+       "name": "TD",
+       "athletes": [
+        {
+         "id": "5079742",
+         "name": "Aneyas Williams",
+         "stat": "2"
+        },
+        {
+         "id": "5189515",
+         "name": "Nolan James Jr.",
+         "stat": "0"
+        },
+        {
+         "id": "5106301",
+         "name": "Kedren Young",
+         "stat": "0"
+        },
+        {
+         "id": "5079369",
+         "name": "C.J. Carr",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "LONG",
+       "athletes": [
+        {
+         "id": "5079742",
+         "name": "Aneyas Williams",
+         "stat": "16"
+        },
+        {
+         "id": "5189515",
+         "name": "Nolan James Jr.",
+         "stat": "7"
+        },
+        {
+         "id": "5106301",
+         "name": "Kedren Young",
+         "stat": "3"
+        },
+        {
+         "id": "5079369",
+         "name": "C.J. Carr",
+         "stat": "2"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "receiving",
+     "types": [
+      {
+       "name": "REC",
+       "athletes": [
+        {
+         "id": "5150424",
+         "name": "Jordan Faison",
+         "stat": "4"
+        },
+        {
+         "id": "5189515",
+         "name": "Nolan James Jr.",
+         "stat": "4"
+        },
+        {
+         "id": "5079475",
+         "name": "Micah Gilbert",
+         "stat": "3"
+        },
+        {
+         "id": "4870733",
+         "name": "Cooper Flanagan",
+         "stat": "2"
+        },
+        {
+         "id": "5079742",
+         "name": "Aneyas Williams",
+         "stat": "1"
+        },
+        {
+         "id": "5106301",
+         "name": "Kedren Young",
+         "stat": "1"
+        },
+        {
+         "id": "5142596",
+         "name": "James Flanigan",
+         "stat": "2"
+        },
+        {
+         "id": "4837392",
+         "name": "Ty Washington",
+         "stat": "1"
+        },
+        {
+         "id": "4870768",
+         "name": "Jaden Greathouse",
+         "stat": "1"
+        }
+       ]
+      },
+      {
+       "name": "YDS",
+       "athletes": [
+        {
+         "id": "5150424",
+         "name": "Jordan Faison",
+         "stat": "81"
+        },
+        {
+         "id": "5189515",
+         "name": "Nolan James Jr.",
+         "stat": "67"
+        },
+        {
+         "id": "5079475",
+         "name": "Micah Gilbert",
+         "stat": "34"
+        },
+        {
+         "id": "4870733",
+         "name": "Cooper Flanagan",
+         "stat": "13"
+        },
+        {
+         "id": "5079742",
+         "name": "Aneyas Williams",
+         "stat": "11"
+        },
+        {
+         "id": "5106301",
+         "name": "Kedren Young",
+         "stat": "11"
+        },
+        {
+         "id": "5142596",
+         "name": "James Flanigan",
+         "stat": "10"
+        },
+        {
+         "id": "4837392",
+         "name": "Ty Washington",
+         "stat": "6"
+        },
+        {
+         "id": "4870768",
+         "name": "Jaden Greathouse",
+         "stat": "6"
+        }
+       ]
+      },
+      {
+       "name": "AVG",
+       "athletes": [
+        {
+         "id": "5150424",
+         "name": "Jordan Faison",
+         "stat": "20.3"
+        },
+        {
+         "id": "5189515",
+         "name": "Nolan James Jr.",
+         "stat": "16.8"
+        },
+        {
+         "id": "5079475",
+         "name": "Micah Gilbert",
+         "stat": "11.3"
+        },
+        {
+         "id": "4870733",
+         "name": "Cooper Flanagan",
+         "stat": "6.5"
+        },
+        {
+         "id": "5079742",
+         "name": "Aneyas Williams",
+         "stat": "11.0"
+        },
+        {
+         "id": "5106301",
+         "name": "Kedren Young",
+         "stat": "11.0"
+        },
+        {
+         "id": "5142596",
+         "name": "James Flanigan",
+         "stat": "5.0"
+        },
+        {
+         "id": "4837392",
+         "name": "Ty Washington",
+         "stat": "6.0"
+        },
+        {
+         "id": "4870768",
+         "name": "Jaden Greathouse",
+         "stat": "6.0"
+        }
+       ]
+      },
+      {
+       "name": "TD",
+       "athletes": [
+        {
+         "id": "5150424",
+         "name": "Jordan Faison",
+         "stat": "0"
+        },
+        {
+         "id": "5189515",
+         "name": "Nolan James Jr.",
+         "stat": "1"
+        },
+        {
+         "id": "5079475",
+         "name": "Micah Gilbert",
+         "stat": "0"
+        },
+        {
+         "id": "4870733",
+         "name": "Cooper Flanagan",
+         "stat": "0"
+        },
+        {
+         "id": "5079742",
+         "name": "Aneyas Williams",
+         "stat": "0"
+        },
+        {
+         "id": "5106301",
+         "name": "Kedren Young",
+         "stat": "0"
+        },
+        {
+         "id": "5142596",
+         "name": "James Flanigan",
+         "stat": "1"
+        },
+        {
+         "id": "4837392",
+         "name": "Ty Washington",
+         "stat": "0"
+        },
+        {
+         "id": "4870768",
+         "name": "Jaden Greathouse",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "LONG",
+       "athletes": [
+        {
+         "id": "5150424",
+         "name": "Jordan Faison",
+         "stat": "30"
+        },
+        {
+         "id": "5189515",
+         "name": "Nolan James Jr.",
+         "stat": "28"
+        },
+        {
+         "id": "5079475",
+         "name": "Micah Gilbert",
+         "stat": "18"
+        },
+        {
+         "id": "4870733",
+         "name": "Cooper Flanagan",
+         "stat": "8"
+        },
+        {
+         "id": "5079742",
+         "name": "Aneyas Williams",
+         "stat": "11"
+        },
+        {
+         "id": "5106301",
+         "name": "Kedren Young",
+         "stat": "11"
+        },
+        {
+         "id": "5142596",
+         "name": "James Flanigan",
+         "stat": "7"
+        },
+        {
+         "id": "4837392",
+         "name": "Ty Washington",
+         "stat": "6"
+        },
+        {
+         "id": "4870768",
+         "name": "Jaden Greathouse",
+         "stat": "6"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "fumbles",
+     "types": [
+      {
+       "name": "FUM",
+       "athletes": [
+        {
+         "id": "5079369",
+         "name": "C.J. Carr",
+         "stat": "1"
+        },
+        {
+         "id": "4705623",
+         "name": "Kahanu Kia",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "LOST",
+       "athletes": [
+        {
+         "id": "5079369",
+         "name": "C.J. Carr",
+         "stat": "0"
+        },
+        {
+         "id": "4705623",
+         "name": "Kahanu Kia",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "REC",
+       "athletes": [
+        {
+         "id": "5079369",
+         "name": "C.J. Carr",
+         "stat": "0"
+        },
+        {
+         "id": "4705623",
+         "name": "Kahanu Kia",
+         "stat": "1"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "defensive",
+     "types": [
+      {
+       "name": "TOT",
+       "athletes": [
+        {
+         "id": "4870622",
+         "name": "Drayk Bowen",
+         "stat": "9"
+        },
+        {
+         "id": "4880937",
+         "name": "Adon Shuler",
+         "stat": "7"
+        },
+        {
+         "id": "4870589",
+         "name": "Jaiden Ausberry",
+         "stat": "7"
+        },
+        {
+         "id": "5079629",
+         "name": "Leonard Moore",
+         "stat": "5"
+        },
+        {
+         "id": "5127031",
+         "name": "Tionne Gray",
+         "stat": "5"
+        },
+        {
+         "id": "5121819",
+         "name": "Luke Talich",
+         "stat": "4"
+        },
+        {
+         "id": "5112630",
+         "name": "Bryce Young",
+         "stat": "4"
+        },
+        {
+         "id": "4871079",
+         "name": "Boubacar Traore",
+         "stat": "3"
+        },
+        {
+         "id": "5136784",
+         "name": "Francis Brewu",
+         "stat": "3"
+        },
+        {
+         "id": "4870708",
+         "name": "Christian Gray",
+         "stat": "2"
+        },
+        {
+         "id": "5078062",
+         "name": "Armel Mukam",
+         "stat": "1"
+        },
+        {
+         "id": "5079723",
+         "name": "Loghan Thomas",
+         "stat": "1"
+        },
+        {
+         "id": "5214506",
+         "name": "Brandon Logan",
+         "stat": "1"
+        },
+        {
+         "id": "5214512",
+         "name": "Jayden Sanders",
+         "stat": "1"
+        },
+        {
+         "id": "5218506",
+         "name": "Tae Johnson",
+         "stat": "1"
+        },
+        {
+         "id": "5218516",
+         "name": "Joseph Vinci",
+         "stat": "1"
+        },
+        {
+         "id": "4594985",
+         "name": "Jason Onye",
+         "stat": "1"
+        },
+        {
+         "id": "4685527",
+         "name": "Jaylen Sneed",
+         "stat": "1"
+        },
+        {
+         "id": "5209310",
+         "name": "Rodney Dunham",
+         "stat": "1"
+        },
+        {
+         "id": "5209353",
+         "name": "Ja'Kobe Clapper",
+         "stat": "1"
+        },
+        {
+         "id": "5218507",
+         "name": "Matt Jeffery",
+         "stat": "1"
+        },
+        {
+         "id": "4707184",
+         "name": "Dylahn McKinney",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "SOLO",
+       "athletes": [
+        {
+         "id": "4870622",
+         "name": "Drayk Bowen",
+         "stat": "4"
+        },
+        {
+         "id": "4880937",
+         "name": "Adon Shuler",
+         "stat": "4"
+        },
+        {
+         "id": "4870589",
+         "name": "Jaiden Ausberry",
+         "stat": "3"
+        },
+        {
+         "id": "5079629",
+         "name": "Leonard Moore",
+         "stat": "5"
+        },
+        {
+         "id": "5127031",
+         "name": "Tionne Gray",
+         "stat": "1"
+        },
+        {
+         "id": "5121819",
+         "name": "Luke Talich",
+         "stat": "4"
+        },
+        {
+         "id": "5112630",
+         "name": "Bryce Young",
+         "stat": "3"
+        },
+        {
+         "id": "4871079",
+         "name": "Boubacar Traore",
+         "stat": "3"
+        },
+        {
+         "id": "5136784",
+         "name": "Francis Brewu",
+         "stat": "1"
+        },
+        {
+         "id": "4870708",
+         "name": "Christian Gray",
+         "stat": "2"
+        },
+        {
+         "id": "5078062",
+         "name": "Armel Mukam",
+         "stat": "1"
+        },
+        {
+         "id": "5079723",
+         "name": "Loghan Thomas",
+         "stat": "1"
+        },
+        {
+         "id": "5214506",
+         "name": "Brandon Logan",
+         "stat": "1"
+        },
+        {
+         "id": "5214512",
+         "name": "Jayden Sanders",
+         "stat": "1"
+        },
+        {
+         "id": "5218506",
+         "name": "Tae Johnson",
+         "stat": "1"
+        },
+        {
+         "id": "5218516",
+         "name": "Joseph Vinci",
+         "stat": "1"
+        },
+        {
+         "id": "4594985",
+         "name": "Jason Onye",
+         "stat": "0"
+        },
+        {
+         "id": "4685527",
+         "name": "Jaylen Sneed",
+         "stat": "0"
+        },
+        {
+         "id": "5209310",
+         "name": "Rodney Dunham",
+         "stat": "0"
+        },
+        {
+         "id": "5209353",
+         "name": "Ja'Kobe Clapper",
+         "stat": "0"
+        },
+        {
+         "id": "5218507",
+         "name": "Matt Jeffery",
+         "stat": "0"
+        },
+        {
+         "id": "4707184",
+         "name": "Dylahn McKinney",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "SACKS",
+       "athletes": [
+        {
+         "id": "4870622",
+         "name": "Drayk Bowen",
+         "stat": "0"
+        },
+        {
+         "id": "4880937",
+         "name": "Adon Shuler",
+         "stat": "0"
+        },
+        {
+         "id": "4870589",
+         "name": "Jaiden Ausberry",
+         "stat": "0"
+        },
+        {
+         "id": "5079629",
+         "name": "Leonard Moore",
+         "stat": "0"
+        },
+        {
+         "id": "5127031",
+         "name": "Tionne Gray",
+         "stat": "0"
+        },
+        {
+         "id": "5121819",
+         "name": "Luke Talich",
+         "stat": "0"
+        },
+        {
+         "id": "5112630",
+         "name": "Bryce Young",
+         "stat": "0"
+        },
+        {
+         "id": "4871079",
+         "name": "Boubacar Traore",
+         "stat": "1"
+        },
+        {
+         "id": "5136784",
+         "name": "Francis Brewu",
+         "stat": "1"
+        },
+        {
+         "id": "4870708",
+         "name": "Christian Gray",
+         "stat": "0"
+        },
+        {
+         "id": "5078062",
+         "name": "Armel Mukam",
+         "stat": "0"
+        },
+        {
+         "id": "5079723",
+         "name": "Loghan Thomas",
+         "stat": "0"
+        },
+        {
+         "id": "5214506",
+         "name": "Brandon Logan",
+         "stat": "0"
+        },
+        {
+         "id": "5214512",
+         "name": "Jayden Sanders",
+         "stat": "0"
+        },
+        {
+         "id": "5218506",
+         "name": "Tae Johnson",
+         "stat": "0"
+        },
+        {
+         "id": "5218516",
+         "name": "Joseph Vinci",
+         "stat": "0"
+        },
+        {
+         "id": "4594985",
+         "name": "Jason Onye",
+         "stat": "0"
+        },
+        {
+         "id": "4685527",
+         "name": "Jaylen Sneed",
+         "stat": "0"
+        },
+        {
+         "id": "5209310",
+         "name": "Rodney Dunham",
+         "stat": "0"
+        },
+        {
+         "id": "5209353",
+         "name": "Ja'Kobe Clapper",
+         "stat": "0"
+        },
+        {
+         "id": "5218507",
+         "name": "Matt Jeffery",
+         "stat": "0"
+        },
+        {
+         "id": "4707184",
+         "name": "Dylahn McKinney",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "TFL",
+       "athletes": [
+        {
+         "id": "4870622",
+         "name": "Drayk Bowen",
+         "stat": "1"
+        },
+        {
+         "id": "4880937",
+         "name": "Adon Shuler",
+         "stat": "0"
+        },
+        {
+         "id": "4870589",
+         "name": "Jaiden Ausberry",
+         "stat": "0"
+        },
+        {
+         "id": "5079629",
+         "name": "Leonard Moore",
+         "stat": "0"
+        },
+        {
+         "id": "5127031",
+         "name": "Tionne Gray",
+         "stat": "0.5"
+        },
+        {
+         "id": "5121819",
+         "name": "Luke Talich",
+         "stat": "0"
+        },
+        {
+         "id": "5112630",
+         "name": "Bryce Young",
+         "stat": "1"
+        },
+        {
+         "id": "4871079",
+         "name": "Boubacar Traore",
+         "stat": "2"
+        },
+        {
+         "id": "5136784",
+         "name": "Francis Brewu",
+         "stat": "1"
+        },
+        {
+         "id": "4870708",
+         "name": "Christian Gray",
+         "stat": "0"
+        },
+        {
+         "id": "5078062",
+         "name": "Armel Mukam",
+         "stat": "0"
+        },
+        {
+         "id": "5079723",
+         "name": "Loghan Thomas",
+         "stat": "0"
+        },
+        {
+         "id": "5214506",
+         "name": "Brandon Logan",
+         "stat": "0"
+        },
+        {
+         "id": "5214512",
+         "name": "Jayden Sanders",
+         "stat": "0"
+        },
+        {
+         "id": "5218506",
+         "name": "Tae Johnson",
+         "stat": "0"
+        },
+        {
+         "id": "5218516",
+         "name": "Joseph Vinci",
+         "stat": "0"
+        },
+        {
+         "id": "4594985",
+         "name": "Jason Onye",
+         "stat": "0"
+        },
+        {
+         "id": "4685527",
+         "name": "Jaylen Sneed",
+         "stat": "0"
+        },
+        {
+         "id": "5209310",
+         "name": "Rodney Dunham",
+         "stat": "0.5"
+        },
+        {
+         "id": "5209353",
+         "name": "Ja'Kobe Clapper",
+         "stat": "0"
+        },
+        {
+         "id": "5218507",
+         "name": "Matt Jeffery",
+         "stat": "0"
+        },
+        {
+         "id": "4707184",
+         "name": "Dylahn McKinney",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "PD",
+       "athletes": [
+        {
+         "id": "4870622",
+         "name": "Drayk Bowen",
+         "stat": "0"
+        },
+        {
+         "id": "4880937",
+         "name": "Adon Shuler",
+         "stat": "0"
+        },
+        {
+         "id": "4870589",
+         "name": "Jaiden Ausberry",
+         "stat": "0"
+        },
+        {
+         "id": "5079629",
+         "name": "Leonard Moore",
+         "stat": "1"
+        },
+        {
+         "id": "5127031",
+         "name": "Tionne Gray",
+         "stat": "0"
+        },
+        {
+         "id": "5121819",
+         "name": "Luke Talich",
+         "stat": "0"
+        },
+        {
+         "id": "5112630",
+         "name": "Bryce Young",
+         "stat": "0"
+        },
+        {
+         "id": "4871079",
+         "name": "Boubacar Traore",
+         "stat": "0"
+        },
+        {
+         "id": "5136784",
+         "name": "Francis Brewu",
+         "stat": "0"
+        },
+        {
+         "id": "4870708",
+         "name": "Christian Gray",
+         "stat": "0"
+        },
+        {
+         "id": "5078062",
+         "name": "Armel Mukam",
+         "stat": "0"
+        },
+        {
+         "id": "5079723",
+         "name": "Loghan Thomas",
+         "stat": "0"
+        },
+        {
+         "id": "5214506",
+         "name": "Brandon Logan",
+         "stat": "0"
+        },
+        {
+         "id": "5214512",
+         "name": "Jayden Sanders",
+         "stat": "2"
+        },
+        {
+         "id": "5218506",
+         "name": "Tae Johnson",
+         "stat": "1"
+        },
+        {
+         "id": "5218516",
+         "name": "Joseph Vinci",
+         "stat": "0"
+        },
+        {
+         "id": "4594985",
+         "name": "Jason Onye",
+         "stat": "0"
+        },
+        {
+         "id": "4685527",
+         "name": "Jaylen Sneed",
+         "stat": "0"
+        },
+        {
+         "id": "5209310",
+         "name": "Rodney Dunham",
+         "stat": "0"
+        },
+        {
+         "id": "5209353",
+         "name": "Ja'Kobe Clapper",
+         "stat": "0"
+        },
+        {
+         "id": "5218507",
+         "name": "Matt Jeffery",
+         "stat": "0"
+        },
+        {
+         "id": "4707184",
+         "name": "Dylahn McKinney",
+         "stat": "1"
+        }
+       ]
+      },
+      {
+       "name": "QB HUR",
+       "athletes": [
+        {
+         "id": "4870622",
+         "name": "Drayk Bowen",
+         "stat": "0"
+        },
+        {
+         "id": "4880937",
+         "name": "Adon Shuler",
+         "stat": "0"
+        },
+        {
+         "id": "4870589",
+         "name": "Jaiden Ausberry",
+         "stat": "0"
+        },
+        {
+         "id": "5079629",
+         "name": "Leonard Moore",
+         "stat": "0"
+        },
+        {
+         "id": "5127031",
+         "name": "Tionne Gray",
+         "stat": "0"
+        },
+        {
+         "id": "5121819",
+         "name": "Luke Talich",
+         "stat": "0"
+        },
+        {
+         "id": "5112630",
+         "name": "Bryce Young",
+         "stat": "0"
+        },
+        {
+         "id": "4871079",
+         "name": "Boubacar Traore",
+         "stat": "1"
+        },
+        {
+         "id": "5136784",
+         "name": "Francis Brewu",
+         "stat": "0"
+        },
+        {
+         "id": "4870708",
+         "name": "Christian Gray",
+         "stat": "0"
+        },
+        {
+         "id": "5078062",
+         "name": "Armel Mukam",
+         "stat": "0"
+        },
+        {
+         "id": "5079723",
+         "name": "Loghan Thomas",
+         "stat": "0"
+        },
+        {
+         "id": "5214506",
+         "name": "Brandon Logan",
+         "stat": "0"
+        },
+        {
+         "id": "5214512",
+         "name": "Jayden Sanders",
+         "stat": "0"
+        },
+        {
+         "id": "5218506",
+         "name": "Tae Johnson",
+         "stat": "0"
+        },
+        {
+         "id": "5218516",
+         "name": "Joseph Vinci",
+         "stat": "0"
+        },
+        {
+         "id": "4594985",
+         "name": "Jason Onye",
+         "stat": "0"
+        },
+        {
+         "id": "4685527",
+         "name": "Jaylen Sneed",
+         "stat": "0"
+        },
+        {
+         "id": "5209310",
+         "name": "Rodney Dunham",
+         "stat": "0"
+        },
+        {
+         "id": "5209353",
+         "name": "Ja'Kobe Clapper",
+         "stat": "0"
+        },
+        {
+         "id": "5218507",
+         "name": "Matt Jeffery",
+         "stat": "0"
+        },
+        {
+         "id": "4707184",
+         "name": "Dylahn McKinney",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "TD",
+       "athletes": [
+        {
+         "id": "4870622",
+         "name": "Drayk Bowen",
+         "stat": "0"
+        },
+        {
+         "id": "4880937",
+         "name": "Adon Shuler",
+         "stat": "0"
+        },
+        {
+         "id": "4870589",
+         "name": "Jaiden Ausberry",
+         "stat": "0"
+        },
+        {
+         "id": "5079629",
+         "name": "Leonard Moore",
+         "stat": "0"
+        },
+        {
+         "id": "5127031",
+         "name": "Tionne Gray",
+         "stat": "0"
+        },
+        {
+         "id": "5121819",
+         "name": "Luke Talich",
+         "stat": "0"
+        },
+        {
+         "id": "5112630",
+         "name": "Bryce Young",
+         "stat": "0"
+        },
+        {
+         "id": "4871079",
+         "name": "Boubacar Traore",
+         "stat": "0"
+        },
+        {
+         "id": "5136784",
+         "name": "Francis Brewu",
+         "stat": "0"
+        },
+        {
+         "id": "4870708",
+         "name": "Christian Gray",
+         "stat": "0"
+        },
+        {
+         "id": "5078062",
+         "name": "Armel Mukam",
+         "stat": "0"
+        },
+        {
+         "id": "5079723",
+         "name": "Loghan Thomas",
+         "stat": "0"
+        },
+        {
+         "id": "5214506",
+         "name": "Brandon Logan",
+         "stat": "0"
+        },
+        {
+         "id": "5214512",
+         "name": "Jayden Sanders",
+         "stat": "0"
+        },
+        {
+         "id": "5218506",
+         "name": "Tae Johnson",
+         "stat": "0"
+        },
+        {
+         "id": "5218516",
+         "name": "Joseph Vinci",
+         "stat": "0"
+        },
+        {
+         "id": "4594985",
+         "name": "Jason Onye",
+         "stat": "0"
+        },
+        {
+         "id": "4685527",
+         "name": "Jaylen Sneed",
+         "stat": "0"
+        },
+        {
+         "id": "5209310",
+         "name": "Rodney Dunham",
+         "stat": "0"
+        },
+        {
+         "id": "5209353",
+         "name": "Ja'Kobe Clapper",
+         "stat": "0"
+        },
+        {
+         "id": "5218507",
+         "name": "Matt Jeffery",
+         "stat": "0"
+        },
+        {
+         "id": "4707184",
+         "name": "Dylahn McKinney",
+         "stat": "1"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "interceptions",
+     "types": [
+      {
+       "name": "INT",
+       "athletes": [
+        {
+         "id": "4707184",
+         "name": "Dylahn McKinney",
+         "stat": "1"
+        }
+       ]
+      },
+      {
+       "name": "YDS",
+       "athletes": [
+        {
+         "id": "4707184",
+         "name": "Dylahn McKinney",
+         "stat": "55"
+        }
+       ]
+      },
+      {
+       "name": "TD",
+       "athletes": [
+        {
+         "id": "4707184",
+         "name": "Dylahn McKinney",
+         "stat": "1"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "kickReturns",
+     "types": [
+      {
+       "name": "NO",
+       "athletes": [
+        {
+         "id": "5079742",
+         "name": "Aneyas Williams",
+         "stat": "2"
+        }
+       ]
+      },
+      {
+       "name": "YDS",
+       "athletes": [
+        {
+         "id": "5079742",
+         "name": "Aneyas Williams",
+         "stat": "42"
+        }
+       ]
+      },
+      {
+       "name": "AVG",
+       "athletes": [
+        {
+         "id": "5079742",
+         "name": "Aneyas Williams",
+         "stat": "21.0"
+        }
+       ]
+      },
+      {
+       "name": "LONG",
+       "athletes": [
+        {
+         "id": "5079742",
+         "name": "Aneyas Williams",
+         "stat": "29"
+        }
+       ]
+      },
+      {
+       "name": "TD",
+       "athletes": [
+        {
+         "id": "5079742",
+         "name": "Aneyas Williams",
+         "stat": "0"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "puntReturns",
+     "types": [
+      {
+       "name": "NO",
+       "athletes": [
+        {
+         "id": "5150424",
+         "name": "Jordan Faison",
+         "stat": "1"
+        }
+       ]
+      },
+      {
+       "name": "YDS",
+       "athletes": [
+        {
+         "id": "5150424",
+         "name": "Jordan Faison",
+         "stat": "12"
+        }
+       ]
+      },
+      {
+       "name": "AVG",
+       "athletes": [
+        {
+         "id": "5150424",
+         "name": "Jordan Faison",
+         "stat": "12.0"
+        }
+       ]
+      },
+      {
+       "name": "LONG",
+       "athletes": [
+        {
+         "id": "5150424",
+         "name": "Jordan Faison",
+         "stat": "12"
+        }
+       ]
+      },
+      {
+       "name": "TD",
+       "athletes": [
+        {
+         "id": "5150424",
+         "name": "Jordan Faison",
+         "stat": "0"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "kicking",
+     "types": [
+      {
+       "name": "FG",
+       "athletes": [
+        {
+         "id": "5148363",
+         "name": "Spencer Porath",
+         "stat": "2/2"
+        }
+       ]
+      },
+      {
+       "name": "PCT",
+       "athletes": [
+        {
+         "id": "5148363",
+         "name": "Spencer Porath",
+         "stat": "100.0"
+        }
+       ]
+      },
+      {
+       "name": "LONG",
+       "athletes": [
+        {
+         "id": "5148363",
+         "name": "Spencer Porath",
+         "stat": "52"
+        }
+       ]
+      },
+      {
+       "name": "XP",
+       "athletes": [
+        {
+         "id": "5148363",
+         "name": "Spencer Porath",
+         "stat": "5/5"
+        }
+       ]
+      },
+      {
+       "name": "PTS",
+       "athletes": [
+        {
+         "id": "5148363",
+         "name": "Spencer Porath",
+         "stat": "11"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "punting",
+     "types": [
+      {
+       "name": "NO",
+       "athletes": [
+        {
+         "id": "5329697",
+         "name": "Jasper Scaife",
+         "stat": "2"
+        },
+        {
+         "id": "-6965",
+         "name": " Team",
+         "stat": "1"
+        }
+       ]
+      },
+      {
+       "name": "YDS",
+       "athletes": [
+        {
+         "id": "5329697",
+         "name": "Jasper Scaife",
+         "stat": "87"
+        },
+        {
+         "id": "-6965",
+         "name": " Team",
+         "stat": "21"
+        }
+       ]
+      },
+      {
+       "name": "AVG",
+       "athletes": [
+        {
+         "id": "5329697",
+         "name": "Jasper Scaife",
+         "stat": "43.5"
+        },
+        {
+         "id": "-6965",
+         "name": " Team",
+         "stat": "21.0"
+        }
+       ]
+      },
+      {
+       "name": "TB",
+       "athletes": [
+        {
+         "id": "5329697",
+         "name": "Jasper Scaife",
+         "stat": "0"
+        },
+        {
+         "id": "-6965",
+         "name": " Team",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "In 20",
+       "athletes": [
+        {
+         "id": "5329697",
+         "name": "Jasper Scaife",
+         "stat": "0"
+        },
+        {
+         "id": "-6965",
+         "name": " Team",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "LONG",
+       "athletes": [
+        {
+         "id": "5329697",
+         "name": "Jasper Scaife",
+         "stat": "46"
+        },
+        {
+         "id": "-6965",
+         "name": " Team",
+         "stat": "21"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "team": "Wisconsin",
+   "conference": "Big Ten",
+   "homeAway": "away",
+   "points": 13,
+   "categories": [
+    {
+     "name": "passing",
+     "types": [
+      {
+       "name": "C/ATT",
+       "athletes": [
+        {
+         "id": "5125715",
+         "name": "Colton Joseph",
+         "stat": "19/30"
+        }
+       ]
+      },
+      {
+       "name": "YDS",
+       "athletes": [
+        {
+         "id": "5125715",
+         "name": "Colton Joseph",
+         "stat": "217"
+        }
+       ]
+      },
+      {
+       "name": "AVG",
+       "athletes": [
+        {
+         "id": "5125715",
+         "name": "Colton Joseph",
+         "stat": "7.2"
+        }
+       ]
+      },
+      {
+       "name": "TD",
+       "athletes": [
+        {
+         "id": "5125715",
+         "name": "Colton Joseph",
+         "stat": "1"
+        }
+       ]
+      },
+      {
+       "name": "INT",
+       "athletes": [
+        {
+         "id": "5125715",
+         "name": "Colton Joseph",
+         "stat": "1"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "rushing",
+     "types": [
+      {
+       "name": "CAR",
+       "athletes": [
+        {
+         "id": "5078005",
+         "name": "Abu Sama III",
+         "stat": "15"
+        },
+        {
+         "id": "5079378",
+         "name": "Darrion Dupree",
+         "stat": "4"
+        },
+        {
+         "id": "5125715",
+         "name": "Colton Joseph",
+         "stat": "12"
+        }
+       ]
+      },
+      {
+       "name": "YDS",
+       "athletes": [
+        {
+         "id": "5078005",
+         "name": "Abu Sama III",
+         "stat": "49"
+        },
+        {
+         "id": "5079378",
+         "name": "Darrion Dupree",
+         "stat": "15"
+        },
+        {
+         "id": "5125715",
+         "name": "Colton Joseph",
+         "stat": "3"
+        }
+       ]
+      },
+      {
+       "name": "AVG",
+       "athletes": [
+        {
+         "id": "5078005",
+         "name": "Abu Sama III",
+         "stat": "3.3"
+        },
+        {
+         "id": "5079378",
+         "name": "Darrion Dupree",
+         "stat": "3.8"
+        },
+        {
+         "id": "5125715",
+         "name": "Colton Joseph",
+         "stat": "0.3"
+        }
+       ]
+      },
+      {
+       "name": "TD",
+       "athletes": [
+        {
+         "id": "5078005",
+         "name": "Abu Sama III",
+         "stat": "0"
+        },
+        {
+         "id": "5079378",
+         "name": "Darrion Dupree",
+         "stat": "0"
+        },
+        {
+         "id": "5125715",
+         "name": "Colton Joseph",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "LONG",
+       "athletes": [
+        {
+         "id": "5078005",
+         "name": "Abu Sama III",
+         "stat": "7"
+        },
+        {
+         "id": "5079378",
+         "name": "Darrion Dupree",
+         "stat": "8"
+        },
+        {
+         "id": "5125715",
+         "name": "Colton Joseph",
+         "stat": "5"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "receiving",
+     "types": [
+      {
+       "name": "REC",
+       "athletes": [
+        {
+         "id": "4917947",
+         "name": "Malachi Coleman",
+         "stat": "4"
+        },
+        {
+         "id": "4714046",
+         "name": "Tyrell Henry",
+         "stat": "4"
+        },
+        {
+         "id": "4917172",
+         "name": "Chris Brooks Jr.",
+         "stat": "3"
+        },
+        {
+         "id": "5141505",
+         "name": "Eugene Hilton Jr.",
+         "stat": "3"
+        },
+        {
+         "id": "5079705",
+         "name": "Grant Stec",
+         "stat": "3"
+        },
+        {
+         "id": "5079378",
+         "name": "Darrion Dupree",
+         "stat": "1"
+        },
+        {
+         "id": "5122018",
+         "name": "Jacob Harris",
+         "stat": "1"
+        }
+       ]
+      },
+      {
+       "name": "YDS",
+       "athletes": [
+        {
+         "id": "4917947",
+         "name": "Malachi Coleman",
+         "stat": "76"
+        },
+        {
+         "id": "4714046",
+         "name": "Tyrell Henry",
+         "stat": "42"
+        },
+        {
+         "id": "4917172",
+         "name": "Chris Brooks Jr.",
+         "stat": "38"
+        },
+        {
+         "id": "5141505",
+         "name": "Eugene Hilton Jr.",
+         "stat": "31"
+        },
+        {
+         "id": "5079705",
+         "name": "Grant Stec",
+         "stat": "20"
+        },
+        {
+         "id": "5079378",
+         "name": "Darrion Dupree",
+         "stat": "7"
+        },
+        {
+         "id": "5122018",
+         "name": "Jacob Harris",
+         "stat": "3"
+        }
+       ]
+      },
+      {
+       "name": "AVG",
+       "athletes": [
+        {
+         "id": "4917947",
+         "name": "Malachi Coleman",
+         "stat": "19.0"
+        },
+        {
+         "id": "4714046",
+         "name": "Tyrell Henry",
+         "stat": "10.5"
+        },
+        {
+         "id": "4917172",
+         "name": "Chris Brooks Jr.",
+         "stat": "12.7"
+        },
+        {
+         "id": "5141505",
+         "name": "Eugene Hilton Jr.",
+         "stat": "10.3"
+        },
+        {
+         "id": "5079705",
+         "name": "Grant Stec",
+         "stat": "6.7"
+        },
+        {
+         "id": "5079378",
+         "name": "Darrion Dupree",
+         "stat": "7.0"
+        },
+        {
+         "id": "5122018",
+         "name": "Jacob Harris",
+         "stat": "3.0"
+        }
+       ]
+      },
+      {
+       "name": "TD",
+       "athletes": [
+        {
+         "id": "4917947",
+         "name": "Malachi Coleman",
+         "stat": "1"
+        },
+        {
+         "id": "4714046",
+         "name": "Tyrell Henry",
+         "stat": "0"
+        },
+        {
+         "id": "4917172",
+         "name": "Chris Brooks Jr.",
+         "stat": "0"
+        },
+        {
+         "id": "5141505",
+         "name": "Eugene Hilton Jr.",
+         "stat": "0"
+        },
+        {
+         "id": "5079705",
+         "name": "Grant Stec",
+         "stat": "0"
+        },
+        {
+         "id": "5079378",
+         "name": "Darrion Dupree",
+         "stat": "0"
+        },
+        {
+         "id": "5122018",
+         "name": "Jacob Harris",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "LONG",
+       "athletes": [
+        {
+         "id": "4917947",
+         "name": "Malachi Coleman",
+         "stat": "28"
+        },
+        {
+         "id": "4714046",
+         "name": "Tyrell Henry",
+         "stat": "17"
+        },
+        {
+         "id": "4917172",
+         "name": "Chris Brooks Jr.",
+         "stat": "17"
+        },
+        {
+         "id": "5141505",
+         "name": "Eugene Hilton Jr.",
+         "stat": "20"
+        },
+        {
+         "id": "5079705",
+         "name": "Grant Stec",
+         "stat": "8"
+        },
+        {
+         "id": "5079378",
+         "name": "Darrion Dupree",
+         "stat": "7"
+        },
+        {
+         "id": "5122018",
+         "name": "Jacob Harris",
+         "stat": "3"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "fumbles",
+     "types": [
+      {
+       "name": "FUM",
+       "athletes": [
+        {
+         "id": "5294111",
+         "name": "Harrison Bortolotti",
+         "stat": "1"
+        }
+       ]
+      },
+      {
+       "name": "LOST",
+       "athletes": [
+        {
+         "id": "5294111",
+         "name": "Harrison Bortolotti",
+         "stat": "1"
+        }
+       ]
+      },
+      {
+       "name": "REC",
+       "athletes": [
+        {
+         "id": "5294111",
+         "name": "Harrison Bortolotti",
+         "stat": "0"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "defensive",
+     "types": [
+      {
+       "name": "TOT",
+       "athletes": [
+        {
+         "id": "5195298",
+         "name": "Mason Posa",
+         "stat": "15"
+        },
+        {
+         "id": "5260561",
+         "name": "Matthew Jung",
+         "stat": "9"
+        },
+        {
+         "id": "5167173",
+         "name": "Cooper Catalano",
+         "stat": "9"
+        },
+        {
+         "id": "4896318",
+         "name": "Javan Robinson",
+         "stat": "6"
+        },
+        {
+         "id": "4596362",
+         "name": "Justus Boone",
+         "stat": "4"
+        },
+        {
+         "id": "5158842",
+         "name": "Michael Garner",
+         "stat": "4"
+        },
+        {
+         "id": "4603090",
+         "name": "Hammond Russell IV",
+         "stat": "3"
+        },
+        {
+         "id": "5079737",
+         "name": "Bryce West",
+         "stat": "3"
+        },
+        {
+         "id": "4685314",
+         "name": "Sebastian Cheeks",
+         "stat": "2"
+        },
+        {
+         "id": "5148631",
+         "name": "Jai'Mier Scott",
+         "stat": "2"
+        },
+        {
+         "id": "5085935",
+         "name": "Charles Perkins",
+         "stat": "2"
+        },
+        {
+         "id": "5146814",
+         "name": "Carson Van Dinter",
+         "stat": "2"
+        },
+        {
+         "id": "4870652",
+         "name": "Marvin Burks Jr.",
+         "stat": "1"
+        },
+        {
+         "id": "5198303",
+         "name": "Nicolas Clayton",
+         "stat": "1"
+        },
+        {
+         "id": "4705474",
+         "name": "Tyreese Fearbry",
+         "stat": "1"
+        },
+        {
+         "id": "5122016",
+         "name": "Junior Poyser",
+         "stat": "1"
+        },
+        {
+         "id": "5221278",
+         "name": "Mason Lane",
+         "stat": "1"
+        },
+        {
+         "id": "5222610",
+         "name": "Cairo Skanes",
+         "stat": "1"
+        }
+       ]
+      },
+      {
+       "name": "SOLO",
+       "athletes": [
+        {
+         "id": "5195298",
+         "name": "Mason Posa",
+         "stat": "5"
+        },
+        {
+         "id": "5260561",
+         "name": "Matthew Jung",
+         "stat": "4"
+        },
+        {
+         "id": "5167173",
+         "name": "Cooper Catalano",
+         "stat": "1"
+        },
+        {
+         "id": "4896318",
+         "name": "Javan Robinson",
+         "stat": "4"
+        },
+        {
+         "id": "4596362",
+         "name": "Justus Boone",
+         "stat": "3"
+        },
+        {
+         "id": "5158842",
+         "name": "Michael Garner",
+         "stat": "1"
+        },
+        {
+         "id": "4603090",
+         "name": "Hammond Russell IV",
+         "stat": "1"
+        },
+        {
+         "id": "5079737",
+         "name": "Bryce West",
+         "stat": "0"
+        },
+        {
+         "id": "4685314",
+         "name": "Sebastian Cheeks",
+         "stat": "2"
+        },
+        {
+         "id": "5148631",
+         "name": "Jai'Mier Scott",
+         "stat": "2"
+        },
+        {
+         "id": "5085935",
+         "name": "Charles Perkins",
+         "stat": "1"
+        },
+        {
+         "id": "5146814",
+         "name": "Carson Van Dinter",
+         "stat": "1"
+        },
+        {
+         "id": "4870652",
+         "name": "Marvin Burks Jr.",
+         "stat": "1"
+        },
+        {
+         "id": "5198303",
+         "name": "Nicolas Clayton",
+         "stat": "1"
+        },
+        {
+         "id": "4705474",
+         "name": "Tyreese Fearbry",
+         "stat": "0"
+        },
+        {
+         "id": "5122016",
+         "name": "Junior Poyser",
+         "stat": "0"
+        },
+        {
+         "id": "5221278",
+         "name": "Mason Lane",
+         "stat": "0"
+        },
+        {
+         "id": "5222610",
+         "name": "Cairo Skanes",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "SACKS",
+       "athletes": [
+        {
+         "id": "5195298",
+         "name": "Mason Posa",
+         "stat": "0"
+        },
+        {
+         "id": "5260561",
+         "name": "Matthew Jung",
+         "stat": "0"
+        },
+        {
+         "id": "5167173",
+         "name": "Cooper Catalano",
+         "stat": "0"
+        },
+        {
+         "id": "4896318",
+         "name": "Javan Robinson",
+         "stat": "0"
+        },
+        {
+         "id": "4596362",
+         "name": "Justus Boone",
+         "stat": "0"
+        },
+        {
+         "id": "5158842",
+         "name": "Michael Garner",
+         "stat": "0"
+        },
+        {
+         "id": "4603090",
+         "name": "Hammond Russell IV",
+         "stat": "0"
+        },
+        {
+         "id": "5079737",
+         "name": "Bryce West",
+         "stat": "0"
+        },
+        {
+         "id": "4685314",
+         "name": "Sebastian Cheeks",
+         "stat": "1"
+        },
+        {
+         "id": "5148631",
+         "name": "Jai'Mier Scott",
+         "stat": "0"
+        },
+        {
+         "id": "5085935",
+         "name": "Charles Perkins",
+         "stat": "0"
+        },
+        {
+         "id": "5146814",
+         "name": "Carson Van Dinter",
+         "stat": "0"
+        },
+        {
+         "id": "4870652",
+         "name": "Marvin Burks Jr.",
+         "stat": "0"
+        },
+        {
+         "id": "5198303",
+         "name": "Nicolas Clayton",
+         "stat": "0"
+        },
+        {
+         "id": "4705474",
+         "name": "Tyreese Fearbry",
+         "stat": "0"
+        },
+        {
+         "id": "5122016",
+         "name": "Junior Poyser",
+         "stat": "0"
+        },
+        {
+         "id": "5221278",
+         "name": "Mason Lane",
+         "stat": "0"
+        },
+        {
+         "id": "5222610",
+         "name": "Cairo Skanes",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "TFL",
+       "athletes": [
+        {
+         "id": "5195298",
+         "name": "Mason Posa",
+         "stat": "0"
+        },
+        {
+         "id": "5260561",
+         "name": "Matthew Jung",
+         "stat": "0"
+        },
+        {
+         "id": "5167173",
+         "name": "Cooper Catalano",
+         "stat": "0"
+        },
+        {
+         "id": "4896318",
+         "name": "Javan Robinson",
+         "stat": "0"
+        },
+        {
+         "id": "4596362",
+         "name": "Justus Boone",
+         "stat": "0"
+        },
+        {
+         "id": "5158842",
+         "name": "Michael Garner",
+         "stat": "0"
+        },
+        {
+         "id": "4603090",
+         "name": "Hammond Russell IV",
+         "stat": "0"
+        },
+        {
+         "id": "5079737",
+         "name": "Bryce West",
+         "stat": "0"
+        },
+        {
+         "id": "4685314",
+         "name": "Sebastian Cheeks",
+         "stat": "1"
+        },
+        {
+         "id": "5148631",
+         "name": "Jai'Mier Scott",
+         "stat": "0"
+        },
+        {
+         "id": "5085935",
+         "name": "Charles Perkins",
+         "stat": "0"
+        },
+        {
+         "id": "5146814",
+         "name": "Carson Van Dinter",
+         "stat": "0"
+        },
+        {
+         "id": "4870652",
+         "name": "Marvin Burks Jr.",
+         "stat": "0"
+        },
+        {
+         "id": "5198303",
+         "name": "Nicolas Clayton",
+         "stat": "0"
+        },
+        {
+         "id": "4705474",
+         "name": "Tyreese Fearbry",
+         "stat": "0"
+        },
+        {
+         "id": "5122016",
+         "name": "Junior Poyser",
+         "stat": "0"
+        },
+        {
+         "id": "5221278",
+         "name": "Mason Lane",
+         "stat": "0"
+        },
+        {
+         "id": "5222610",
+         "name": "Cairo Skanes",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "PD",
+       "athletes": [
+        {
+         "id": "5195298",
+         "name": "Mason Posa",
+         "stat": "0"
+        },
+        {
+         "id": "5260561",
+         "name": "Matthew Jung",
+         "stat": "1"
+        },
+        {
+         "id": "5167173",
+         "name": "Cooper Catalano",
+         "stat": "0"
+        },
+        {
+         "id": "4896318",
+         "name": "Javan Robinson",
+         "stat": "1"
+        },
+        {
+         "id": "4596362",
+         "name": "Justus Boone",
+         "stat": "0"
+        },
+        {
+         "id": "5158842",
+         "name": "Michael Garner",
+         "stat": "0"
+        },
+        {
+         "id": "4603090",
+         "name": "Hammond Russell IV",
+         "stat": "0"
+        },
+        {
+         "id": "5079737",
+         "name": "Bryce West",
+         "stat": "2"
+        },
+        {
+         "id": "4685314",
+         "name": "Sebastian Cheeks",
+         "stat": "1"
+        },
+        {
+         "id": "5148631",
+         "name": "Jai'Mier Scott",
+         "stat": "0"
+        },
+        {
+         "id": "5085935",
+         "name": "Charles Perkins",
+         "stat": "0"
+        },
+        {
+         "id": "5146814",
+         "name": "Carson Van Dinter",
+         "stat": "0"
+        },
+        {
+         "id": "4870652",
+         "name": "Marvin Burks Jr.",
+         "stat": "0"
+        },
+        {
+         "id": "5198303",
+         "name": "Nicolas Clayton",
+         "stat": "0"
+        },
+        {
+         "id": "4705474",
+         "name": "Tyreese Fearbry",
+         "stat": "0"
+        },
+        {
+         "id": "5122016",
+         "name": "Junior Poyser",
+         "stat": "0"
+        },
+        {
+         "id": "5221278",
+         "name": "Mason Lane",
+         "stat": "0"
+        },
+        {
+         "id": "5222610",
+         "name": "Cairo Skanes",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "QB HUR",
+       "athletes": [
+        {
+         "id": "5195298",
+         "name": "Mason Posa",
+         "stat": "0"
+        },
+        {
+         "id": "5260561",
+         "name": "Matthew Jung",
+         "stat": "0"
+        },
+        {
+         "id": "5167173",
+         "name": "Cooper Catalano",
+         "stat": "1"
+        },
+        {
+         "id": "4896318",
+         "name": "Javan Robinson",
+         "stat": "0"
+        },
+        {
+         "id": "4596362",
+         "name": "Justus Boone",
+         "stat": "0"
+        },
+        {
+         "id": "5158842",
+         "name": "Michael Garner",
+         "stat": "1"
+        },
+        {
+         "id": "4603090",
+         "name": "Hammond Russell IV",
+         "stat": "0"
+        },
+        {
+         "id": "5079737",
+         "name": "Bryce West",
+         "stat": "0"
+        },
+        {
+         "id": "4685314",
+         "name": "Sebastian Cheeks",
+         "stat": "0"
+        },
+        {
+         "id": "5148631",
+         "name": "Jai'Mier Scott",
+         "stat": "0"
+        },
+        {
+         "id": "5085935",
+         "name": "Charles Perkins",
+         "stat": "0"
+        },
+        {
+         "id": "5146814",
+         "name": "Carson Van Dinter",
+         "stat": "0"
+        },
+        {
+         "id": "4870652",
+         "name": "Marvin Burks Jr.",
+         "stat": "0"
+        },
+        {
+         "id": "5198303",
+         "name": "Nicolas Clayton",
+         "stat": "0"
+        },
+        {
+         "id": "4705474",
+         "name": "Tyreese Fearbry",
+         "stat": "0"
+        },
+        {
+         "id": "5122016",
+         "name": "Junior Poyser",
+         "stat": "0"
+        },
+        {
+         "id": "5221278",
+         "name": "Mason Lane",
+         "stat": "0"
+        },
+        {
+         "id": "5222610",
+         "name": "Cairo Skanes",
+         "stat": "0"
+        }
+       ]
+      },
+      {
+       "name": "TD",
+       "athletes": [
+        {
+         "id": "5195298",
+         "name": "Mason Posa",
+         "stat": "0"
+        },
+        {
+         "id": "5260561",
+         "name": "Matthew Jung",
+         "stat": "0"
+        },
+        {
+         "id": "5167173",
+         "name": "Cooper Catalano",
+         "stat": "0"
+        },
+        {
+         "id": "4896318",
+         "name": "Javan Robinson",
+         "stat": "0"
+        },
+        {
+         "id": "4596362",
+         "name": "Justus Boone",
+         "stat": "0"
+        },
+        {
+         "id": "5158842",
+         "name": "Michael Garner",
+         "stat": "0"
+        },
+        {
+         "id": "4603090",
+         "name": "Hammond Russell IV",
+         "stat": "0"
+        },
+        {
+         "id": "5079737",
+         "name": "Bryce West",
+         "stat": "0"
+        },
+        {
+         "id": "4685314",
+         "name": "Sebastian Cheeks",
+         "stat": "0"
+        },
+        {
+         "id": "5148631",
+         "name": "Jai'Mier Scott",
+         "stat": "0"
+        },
+        {
+         "id": "5085935",
+         "name": "Charles Perkins",
+         "stat": "0"
+        },
+        {
+         "id": "5146814",
+         "name": "Carson Van Dinter",
+         "stat": "0"
+        },
+        {
+         "id": "4870652",
+         "name": "Marvin Burks Jr.",
+         "stat": "0"
+        },
+        {
+         "id": "5198303",
+         "name": "Nicolas Clayton",
+         "stat": "0"
+        },
+        {
+         "id": "4705474",
+         "name": "Tyreese Fearbry",
+         "stat": "0"
+        },
+        {
+         "id": "5122016",
+         "name": "Junior Poyser",
+         "stat": "0"
+        },
+        {
+         "id": "5221278",
+         "name": "Mason Lane",
+         "stat": "0"
+        },
+        {
+         "id": "5222610",
+         "name": "Cairo Skanes",
+         "stat": "0"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "kickReturns",
+     "types": [
+      {
+       "name": "NO",
+       "athletes": [
+        {
+         "id": "5079552",
+         "name": "Nate Palmer",
+         "stat": "2"
+        },
+        {
+         "id": "5294111",
+         "name": "Harrison Bortolotti",
+         "stat": "1"
+        }
+       ]
+      },
+      {
+       "name": "YDS",
+       "athletes": [
+        {
+         "id": "5079552",
+         "name": "Nate Palmer",
+         "stat": "43"
+        },
+        {
+         "id": "5294111",
+         "name": "Harrison Bortolotti",
+         "stat": "8"
+        }
+       ]
+      },
+      {
+       "name": "AVG",
+       "athletes": [
+        {
+         "id": "5079552",
+         "name": "Nate Palmer",
+         "stat": "21.5"
+        },
+        {
+         "id": "5294111",
+         "name": "Harrison Bortolotti",
+         "stat": "8.0"
+        }
+       ]
+      },
+      {
+       "name": "LONG",
+       "athletes": [
+        {
+         "id": "5079552",
+         "name": "Nate Palmer",
+         "stat": "22"
+        },
+        {
+         "id": "5294111",
+         "name": "Harrison Bortolotti",
+         "stat": "8"
+        }
+       ]
+      },
+      {
+       "name": "TD",
+       "athletes": [
+        {
+         "id": "5079552",
+         "name": "Nate Palmer",
+         "stat": "0"
+        },
+        {
+         "id": "5294111",
+         "name": "Harrison Bortolotti",
+         "stat": "0"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "puntReturns",
+     "types": [
+      {
+       "name": "NO",
+       "athletes": [
+        {
+         "id": "4714046",
+         "name": "Tyrell Henry",
+         "stat": "1"
+        }
+       ]
+      },
+      {
+       "name": "YDS",
+       "athletes": [
+        {
+         "id": "4714046",
+         "name": "Tyrell Henry",
+         "stat": "3"
+        }
+       ]
+      },
+      {
+       "name": "AVG",
+       "athletes": [
+        {
+         "id": "4714046",
+         "name": "Tyrell Henry",
+         "stat": "3.0"
+        }
+       ]
+      },
+      {
+       "name": "LONG",
+       "athletes": [
+        {
+         "id": "4714046",
+         "name": "Tyrell Henry",
+         "stat": "3"
+        }
+       ]
+      },
+      {
+       "name": "TD",
+       "athletes": [
+        {
+         "id": "4714046",
+         "name": "Tyrell Henry",
+         "stat": "0"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "punting",
+     "types": [
+      {
+       "name": "NO",
+       "athletes": [
+        {
+         "id": "5221280",
+         "name": "Sean West",
+         "stat": "5"
+        }
+       ]
+      },
+      {
+       "name": "YDS",
+       "athletes": [
+        {
+         "id": "5221280",
+         "name": "Sean West",
+         "stat": "225"
+        }
+       ]
+      },
+      {
+       "name": "AVG",
+       "athletes": [
+        {
+         "id": "5221280",
+         "name": "Sean West",
+         "stat": "45.0"
+        }
+       ]
+      },
+      {
+       "name": "TB",
+       "athletes": [
+        {
+         "id": "5221280",
+         "name": "Sean West",
+         "stat": "1"
+        }
+       ]
+      },
+      {
+       "name": "In 20",
+       "athletes": [
+        {
+         "id": "5221280",
+         "name": "Sean West",
+         "stat": "2"
+        }
+       ]
+      },
+      {
+       "name": "LONG",
+       "athletes": [
+        {
+         "id": "5221280",
+         "name": "Sean West",
+         "stat": "70"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "game": 401858438
+}

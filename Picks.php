@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Convoro\Extensions\Picks;
 
 use Convoro\Engine\Module\Module;
+use Convoro\Extensions\Picks\Services\BoxScores;
 use Convoro\Extensions\Picks\Services\Games;
 use Convoro\Extensions\Picks\Services\Http;
 use Convoro\Extensions\Picks\Services\Picks as Store;
@@ -73,6 +74,7 @@ final class Picks extends Module
     public const FIXTURES = 'picks.fixtures';
     public const SCORES = 'picks.scores';
     public const RESCORE = 'picks.rescore';
+    public const BOX_SCORES = 'picks.box-scores';
 
     public function register(): void
     {
@@ -137,6 +139,19 @@ final class Picks extends Module
 
         $this->app->singleton('picks.espn', fn (): Espn => new Espn($this->app->make('picks.http')));
 
+        /*
+         * 🚨 Bound here rather than inside Game Day, and that is the whole
+         * architecture in one line: Picks owns the provider, the API key and
+         * the monthly call budget, so anything that talks to
+         * collegefootballdata.com lives on this side of the seam and everything
+         * else reads what it left behind.
+         */
+        $this->app->singleton('picks.box_scores', fn (): BoxScores => new BoxScores(
+            $this->app->make('db'),
+            $this->app->make('picks.cfbd'),
+            $this->app->make('picks.settings'),
+        ));
+
         $this->app->singleton('picks.sync', fn (): Sync => new Sync(
             $this->app,
             $this->app->make('picks.settings'),
@@ -164,6 +179,22 @@ final class Picks extends Module
          */
         $this->schedule()->hourly(self::FIXTURES);
         $this->schedule()->minutely(self::SCORES);
+
+        /*
+         * 🚨 Hourly, and deliberately not tied to a game finishing.
+         *
+         * A box score is published minutes to hours after the final whistle, so
+         * fetching it at the moment a game settles would usually fetch nothing
+         * and never try again. This looks instead for finished games that still
+         * have none, which self-corrects: a scheduler that was off for a night
+         * catches up, and a game the provider never covered stops being asked
+         * about after two days rather than for ever.
+         *
+         * Cheap on the budget by construction. It fetches a WEEK at a time — two
+         * calls cover every game on a Saturday — and returns immediately once
+         * every finished game has one, which is most of the week.
+         */
+        $this->schedule()->hourly(self::BOX_SCORES);
     }
 
     public function boot(): void
@@ -172,6 +203,7 @@ final class Picks extends Module
 
         $queue->handle(self::FIXTURES, fn (): array => $this->app->make('picks.sync')->fixtures());
         $queue->handle(self::SCORES, fn (): array => $this->app->make('picks.sync')->scores());
+        $queue->handle(self::BOX_SCORES, fn (): array => $this->app->make('picks.box_scores')->sync());
 
         /*
          * The tail of a large re-scoring. A slate of thirty bowls finishing at
